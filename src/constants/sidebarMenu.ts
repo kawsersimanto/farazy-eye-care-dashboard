@@ -3,6 +3,7 @@ import {
   CircleDollarSign,
   Hospital,
   LayoutDashboard,
+  Stethoscope,
   Users,
 } from "lucide-react";
 
@@ -28,6 +29,17 @@ export const sidebarMenu = [
     items: [
       { title: "All Department", url: "/department" },
       { title: "Add New", url: "/department/create" },
+    ],
+  },
+  {
+    title: "Doctors",
+    icon: Stethoscope,
+    url: "#",
+    items: [
+      { title: "All Doctors", url: "/doctors" },
+      { title: "Add New", url: "/doctors/create" },
+      { title: "Schedules", url: "/doctors/schedules" },
+      { title: "Specializations", url: "/doctors/specializations" },
     ],
   },
   {
