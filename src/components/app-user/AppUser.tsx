@@ -4,8 +4,8 @@ import {
   BadgeCheck,
   Bell,
   ChevronsUpDown,
-  CreditCard,
   LogOut,
+  Settings,
 } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -93,8 +93,8 @@ export const AppUser = ({
                 Account
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <CreditCard className="!text-inherit" />
-                Billing
+                <Settings className="!text-inherit" />
+                Settings
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Bell className="!text-inherit" />
