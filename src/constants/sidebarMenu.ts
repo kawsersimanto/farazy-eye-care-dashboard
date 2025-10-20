@@ -1,4 +1,5 @@
 import {
+  BriefcaseMedical,
   CircleDollarSign,
   Hospital,
   LayoutDashboard,
@@ -18,6 +19,15 @@ export const sidebarMenu = [
     items: [
       { title: "All Branches", url: "/branches" },
       { title: "Add New", url: "/branches/create" },
+    ],
+  },
+  {
+    title: "Department",
+    icon: BriefcaseMedical,
+    url: "#",
+    items: [
+      { title: "All Department", url: "/department" },
+      { title: "Add New", url: "/department/create" },
     ],
   },
   {
