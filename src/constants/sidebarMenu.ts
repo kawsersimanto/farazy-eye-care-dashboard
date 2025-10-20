@@ -51,6 +51,8 @@ export const sidebarMenu = [
     items: [
       { title: "All Medicine", url: "/medicine" },
       { title: "Add New", url: "/medicine/create" },
+      { title: "Brands", url: "/medicine/brands" },
+      { title: "Categories", url: "/medicine/categories" },
     ],
   },
   {
