@@ -38,8 +38,9 @@ export const sidebarMenu = [
     items: [
       { title: "All Doctors", url: "/doctors" },
       { title: "Add New", url: "/doctors/create" },
-      { title: "Schedules", url: "/doctors/schedules" },
-      { title: "Specializations", url: "/doctors/specializations" },
+      { title: "Schedule", url: "/doctors/schedules" },
+      { title: "Specialization", url: "/doctors/specializations" },
+      { title: "Leave Requests", url: "/doctors/leave-requests" },
     ],
   },
   {
