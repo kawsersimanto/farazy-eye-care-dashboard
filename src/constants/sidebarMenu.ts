@@ -1,10 +1,24 @@
-import { CircleDollarSign, LayoutDashboard, Users } from "lucide-react";
+import {
+  CircleDollarSign,
+  Hospital,
+  LayoutDashboard,
+  Users,
+} from "lucide-react";
 
 export const sidebarMenu = [
   {
     title: "Dashboard",
     icon: LayoutDashboard,
     url: "/",
+  },
+  {
+    title: "Branches",
+    icon: Hospital,
+    url: "#",
+    items: [
+      { title: "All Branches", url: "/branches" },
+      { title: "Add New", url: "/branches/create" },
+    ],
   },
   {
     title: "Payments",
