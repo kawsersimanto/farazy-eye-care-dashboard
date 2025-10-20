@@ -41,9 +41,9 @@ export const AppSidebar = () => {
   };
 
   const user = {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
+    name: "Farazy Admin",
+    email: "admin@farazy-eye-care.com",
+    avatar: "/logo.webp",
   };
 
   return (
@@ -52,7 +52,7 @@ export const AppSidebar = () => {
       <SidebarHeader className="py-4 md:px-5 px-1">
         <Link href="/" className="flex items-center justify-center">
           <Image
-            src="/logo.svg"
+            src="/logo.webp"
             width={150}
             height={50}
             className="md:w-[150px] md:h-[50px] w-[150px] h-auto object-contain"

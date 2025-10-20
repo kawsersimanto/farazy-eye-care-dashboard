@@ -1,10 +1,9 @@
 import { Metadata } from "next";
 
-const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || "Daily Haxx";
+const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || "Farazy Eye Care";
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
-const APP_DESCRIPTION =
-  "Insight you can trust, trusted by professionals worldwide.";
-const APP_IMAGE = "/social.png";
+const APP_DESCRIPTION = "We card, Allah Cure";
+const APP_IMAGE = "/social.jpg";
 
 export const getDefaultMetadata = (overrides?: Partial<Metadata>): Metadata => {
   const title = overrides?.title ?? APP_NAME;
@@ -15,7 +14,7 @@ export const getDefaultMetadata = (overrides?: Partial<Metadata>): Metadata => {
       template: `%s | ${APP_NAME}`,
     },
     icons: {
-      icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
+      icon: [{ url: "/favicon.jpg", type: "image/svg+xml" }],
     },
     description: overrides?.description ?? APP_DESCRIPTION,
     openGraph: {
