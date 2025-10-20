@@ -4,6 +4,7 @@ import {
   Hospital,
   LayoutDashboard,
   Stethoscope,
+  Syringe,
   Users,
 } from "lucide-react";
 
@@ -23,7 +24,7 @@ export const sidebarMenu = [
     ],
   },
   {
-    title: "Department",
+    title: "Departments",
     icon: BriefcaseMedical,
     url: "#",
     items: [
@@ -41,6 +42,15 @@ export const sidebarMenu = [
       { title: "Schedule", url: "/doctors/schedules" },
       { title: "Specialization", url: "/doctors/specializations" },
       { title: "Leave Requests", url: "/doctors/leave-requests" },
+    ],
+  },
+  {
+    title: "Medicine",
+    icon: Syringe,
+    url: "#",
+    items: [
+      { title: "All Medicine", url: "/medicine" },
+      { title: "Add New", url: "/medicine/create" },
     ],
   },
   {
