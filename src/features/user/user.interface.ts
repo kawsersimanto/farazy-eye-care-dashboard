@@ -1,25 +1,27 @@
-export enum UserRole {
-  SUPER_ADMIN = "SUPER_ADMIN",
+export enum Role {
   ADMIN = "ADMIN",
-  BRANCH_ADMIN = "BRANCH_ADMIN",
-  DOCTOR = "DOCTOR",
-  EMPLOYEE = "EMPLOYEE",
-  PATIENT = "PATIENT",
+  USER = "USER",
 }
 
 export interface IUser {
   id: string;
-  name: string;
+  firstName: string;
+  lastName: string;
   email: string;
+  companyName: string;
+  jobTitle: string;
+  jobFunction: string;
+  country: string;
+  jobLevel: string;
+  companyIndustry: string;
+  companySize: string;
+  postalCode: string;
   phone: string;
-  password: string;
-  emailVerified: boolean;
-  phoneVerified: boolean;
-  profileImageUrl: string;
+  isEmailVerified: boolean;
+  role: Role;
   isActive: boolean;
-  role: UserRole;
-  branchId: string;
-  createdByUserId: string;
+  hasActiveSubscription: boolean;
+  stripeCustomerId: string;
   createdAt: string;
   updatedAt: string;
 }
