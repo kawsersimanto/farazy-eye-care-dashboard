@@ -1,22 +1,22 @@
 import { baseApi } from "@/redux/api/baseApi";
 
-export const userApi = baseApi.injectEndpoints({
+export const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    sendOtp: builder.mutation({
-      query: (email) => ({
-        url: "/otp/send",
+    login: builder.mutation({
+      query: (body) => ({
+        url: "/auth/login",
         method: "POST",
-        body: { email },
+        body,
       }),
     }),
-    verifyOtp: builder.mutation({
-      query: ({ email, otp }) => ({
-        url: "/otp/verify",
+    register: builder.mutation({
+      query: (body) => ({
+        url: "/auth/register",
         method: "POST",
-        body: { email, otp: Number(otp) },
+        body,
       }),
     }),
   }),
 });
 
-export const { useSendOtpMutation, useVerifyOtpMutation } = userApi;
+export const { useLoginMutation, useRegisterMutation } = authApi;

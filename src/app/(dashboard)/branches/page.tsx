@@ -1,5 +1,7 @@
+import { BranchTable } from "@/features/branch/components/BranchTable";
+
 const BranchPage = () => {
-  return <>Branch</>;
+  return <BranchTable />;
 };
 
 export default BranchPage;

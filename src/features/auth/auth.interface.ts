@@ -1,14 +1,10 @@
 import { IUser } from "@/features/user/user.interface";
+import { ApiResponse } from "@/types/api";
 
 export interface AuthState {
   email: string;
-  currentStep: number;
-  totalSteps: number;
   token: string;
   user: Partial<IUser> | null;
 }
 
-export interface VerifyOtpData {
-  token: string;
-  user?: IUser | null;
-}
+export type AuthResponse = ApiResponse<Pick<AuthState, "token">>;

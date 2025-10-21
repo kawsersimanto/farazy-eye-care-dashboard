@@ -6,8 +6,6 @@ import storage from "redux-persist/lib/storage";
 
 const initialState: AuthState = {
   email: "",
-  currentStep: 0,
-  totalSteps: 2,
   token: "",
   user: null,
 };
@@ -32,37 +30,12 @@ const authSlice = createSlice({
         state.user = { ...state.user, ...action.payload };
       }
     },
-
-    nextStep: (state) => {
-      if (state.currentStep < state.totalSteps - 1) {
-        state.currentStep += 1;
-      }
-    },
-    prevStep: (state) => {
-      if (state.currentStep > 0) {
-        state.currentStep -= 1;
-      }
-    },
-    goToStep: (state, action: PayloadAction<number>) => {
-      const step = action.payload;
-      if (step >= 0 && step < state.totalSteps) {
-        state.currentStep = step;
-      }
-    },
     reset: () => initialState,
   },
 });
 
-export const {
-  setEmail,
-  setToken,
-  setUser,
-  updateUser,
-  nextStep,
-  prevStep,
-  goToStep,
-  reset,
-} = authSlice.actions;
+export const { setEmail, setToken, setUser, updateUser, reset } =
+  authSlice.actions;
 
 const authPersistConfig = {
   key: "auth",

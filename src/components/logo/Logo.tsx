@@ -5,7 +5,7 @@ export const Logo = ({ className }: { className?: string }) => {
   return (
     <div>
       <Image
-        src="/logo.svg"
+        src="/logo.webp"
         width={180}
         height={40}
         className={cn(
@@ -15,7 +15,7 @@ export const Logo = ({ className }: { className?: string }) => {
         alt={`${process.env.NEXT_PUBLIC_APP_NAME}`}
       />
       <Image
-        src="/dark-logo.svg"
+        src="/dark-logo.webp"
         width={180}
         height={40}
         className={cn(
