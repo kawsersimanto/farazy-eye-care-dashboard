@@ -1,6 +1,7 @@
 import { authReducer } from "@/features/auth/store/auth.slice";
 import { userReducer } from "@/features/user/store/user.slice";
 import { baseApi } from "@/redux/api/baseApi";
+import { branchReducer } from "@/features/branch/store/branch.slice";
 import { paymentReducer } from "@/features/payment/store/payment.slice";
 import { imageReducer } from "@/features/image/store/image.slice";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
@@ -24,6 +25,7 @@ const persistConfig = {
 };
 
 const rootReducer = combineReducers({
+  branch: branchReducer,
   payment: paymentReducer,
   image: imageReducer,
   user: userReducer,
