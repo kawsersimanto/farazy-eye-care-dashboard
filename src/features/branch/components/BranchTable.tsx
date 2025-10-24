@@ -2,6 +2,14 @@
 
 import { DataTableColumnHeader } from "@/components/data-table-column-header/DataTableColumnHeader";
 import { DataTable } from "@/components/data-table/DataTable";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -25,6 +33,7 @@ import {
   Unlock,
 } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
 import {
   useDeleteBranchMutation,
   useGetBranchesQuery,
@@ -36,7 +45,11 @@ export const BranchTable = () => {
     useUpdateBranchMutation();
   const { data } = useGetBranchesQuery();
   const branches = data?.data || [];
-  const [deleteBranchFn] = useDeleteBranchMutation();
+  const [deleteBranchFn, { isLoading: isDeletingBranch }] =
+    useDeleteBranchMutation();
+
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [branchToDelete, setBranchToDelete] = useState<IBranch | null>(null);
 
   const handleDeleteMany = (rows: IBranch[], ids: string[]) => {
     console.log("Deleting:", ids, rows);
@@ -60,11 +73,21 @@ export const BranchTable = () => {
     );
   };
 
-  const handleDelete = async (branch: IBranch) => {
-    await handleMutationRequest(deleteBranchFn, branch?.id, {
+  const openDeleteDialog = (branch: IBranch) => {
+    setBranchToDelete(branch);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!branchToDelete) return;
+
+    await handleMutationRequest(deleteBranchFn, branchToDelete?.id, {
       loadingMessage: "Deleting Branch",
       successMessage: (res: ApiResponse<string>) => res?.message,
     });
+
+    setDeleteDialogOpen(false);
+    setBranchToDelete(null);
   };
 
   const columns: ColumnDef<IBranch>[] = [
@@ -164,7 +187,7 @@ export const BranchTable = () => {
                 </>
               )}
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => handleDelete(row.original)}>
+            <DropdownMenuItem onClick={() => openDeleteDialog(row.original)}>
               <Trash className="text-inherit" />
               Delete
             </DropdownMenuItem>
@@ -176,28 +199,41 @@ export const BranchTable = () => {
   ];
 
   return (
-    <DataTable
-      data={branches}
-      columns={columns}
-      paginationMode="client"
-      // total={total}
-      // page={page}
-      // limit={limit}
-      // totalPages={totalPages}
-      // onPageChange={setPage}
-      // onDeleteSelected={handleDeleteMany}
-      // onPageSizeChange={(newLimit) => {
-      //   setLimit(newLimit);
-      //   setPage(1);
-      // }}
-      onDeleteSelected={handleDeleteMany}
-      renderActions={() => (
-        <Button variant="outline" size="sm" asChild>
-          <Link href="/branches/create">
-            <PlusCircle /> Add New
-          </Link>
-        </Button>
-      )}
-    />
+    <>
+      <DataTable
+        data={branches}
+        columns={columns}
+        paginationMode="client"
+        onDeleteSelected={handleDeleteMany}
+        renderActions={() => (
+          <Button variant="outline" size="sm" asChild>
+            <Link href="/branches/create">
+              <PlusCircle /> Add New
+            </Link>
+          </Button>
+        )}
+      />
+
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogTitle>Delete Branch</AlertDialogTitle>
+          <AlertDialogDescription>
+            Are you sure you want to delete the branch {branchToDelete?.name}?
+            Note Once you delete the branch all the data associated with the
+            branch will be deleted forever.
+          </AlertDialogDescription>
+          <div className="flex justify-end gap-2">
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleConfirmDelete}
+              disabled={isDeletingBranch}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              {isDeletingBranch ? "Deleting..." : "Delete"}
+            </AlertDialogAction>
+          </div>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 };
