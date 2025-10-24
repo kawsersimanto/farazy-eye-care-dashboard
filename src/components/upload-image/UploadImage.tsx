@@ -216,7 +216,7 @@ export const UploadImage = ({
                   src={displayImageUrl}
                   alt="Cover"
                   className={cn(
-                    "h-full w-full object-cover transition-opacity duration-300",
+                    "h-full w-full object-contain transition-opacity duration-300",
                     imageLoading || isUploading ? "opacity-0" : "opacity-100"
                   )}
                   onLoad={() => setImageLoading(false)}

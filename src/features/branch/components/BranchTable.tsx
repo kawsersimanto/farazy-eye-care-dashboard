@@ -1,6 +1,5 @@
 "use client";
 
-import { DataTableColumnHeader } from "@/components/data-table-column-header/DataTableColumnHeader";
 import { DataTable } from "@/components/data-table/DataTable";
 import {
   AlertDialog,
@@ -28,10 +27,12 @@ import {
   Ban,
   EyeIcon,
   MoreHorizontal,
+  Pencil,
   PlusCircle,
   Trash,
   Unlock,
 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import {
@@ -111,9 +112,31 @@ export const BranchTable = () => {
     },
     {
       accessorKey: "name",
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Branch Name" />
-      ),
+      header: "Branch Name",
+      cell: ({ row }) => {
+        const imageUrl = row.original.logoUrl?.trim();
+        const isValidUrl =
+          imageUrl && (imageUrl.startsWith("http") || imageUrl.startsWith("/"));
+        const src = isValidUrl ? imageUrl : "/placeholder.png";
+
+        return (
+          <div className="flex items-center gap-2">
+            <Image
+              src={src}
+              alt={row.original.name || "Branch Logo"}
+              height={80}
+              width={80}
+              className="h-[50px] w-[50px] object-contain rounded-lg border-border border"
+              unoptimized
+              onError={(e) => {
+                e.currentTarget.src = "/placeholder.png";
+              }}
+            />
+            {row.original.name}
+          </div>
+        );
+      },
+      size: 200,
     },
     {
       accessorKey: "code",
@@ -171,6 +194,12 @@ export const BranchTable = () => {
               <Link href={`branches/${row?.original?.id}`}>
                 <EyeIcon className="text-inherit" />
                 Preview
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href={`branches/${row?.original?.id}/edit`}>
+                <Pencil className="text-inherit" />
+                Edit
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem

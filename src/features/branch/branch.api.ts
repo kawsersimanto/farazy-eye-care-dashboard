@@ -8,7 +8,7 @@ export const branchApi = baseApi.injectEndpoints({
       query: () => "/branch",
       providesTags: ["branch"],
     }),
-    getBranchById: builder.query<IBranch, string>({
+    getBranchById: builder.query<ApiResponse<IBranch>, string>({
       query: (id) => `/branch/${id}`,
     }),
     createBranch: builder.mutation<IBranch, Partial<IBranch>>({
