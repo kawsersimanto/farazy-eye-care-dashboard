@@ -17,83 +17,52 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Spinner } from "@/components/ui/spinner";
+import { UploadImage } from "@/components/upload-image/UploadImage";
+import {
+  useDeleteImageByUrlMutation,
+  useUploadSingleImageMutation,
+} from "@/features/image/image.api";
+import { ApiResponse } from "@/types/api";
+import { handleMutationRequest } from "@/utils/handleMutationRequest";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import { z } from "zod";
-
-const formSchema = z.object({
-  name: z.string().min(1, {
-    message: "Name is required",
-  }),
-  code: z.string().min(1, {
-    message: "Code is required",
-  }),
-  email: z
-    .string()
-    .min(1, {
-      message: "Email is required",
-    })
-    .email({
-      message: "Please enter a valid email address",
-    }),
-  addressLine1: z.string().min(1, {
-    message: "Address line 1 is required",
-  }),
-  addressLine2: z.string().optional(),
-  city: z.string().min(1, {
-    message: "City is required",
-  }),
-  postalCode: z
-    .number()
-    .gt(0, {
-      message: "Postal code must be greater than zero",
-    })
-    .refine((val) => val >= 10, {
-      message: "Postal code must be at least 2 digits",
-    }),
-  country: z.string().min(1, {
-    message: "Country is required",
-  }),
-  phone: z.string().min(1, {
-    message: "Phone number is required",
-  }),
-  isActive: z.boolean({
-    message: "Status is required",
-  }),
-});
+import { useCreateBranchMutation } from "../branch.api";
+import { BranchFormValues, BranchSchema } from "../branch.schema";
 
 export const BranchForm = () => {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const router = useRouter();
+  const [createBranchFn, { isLoading }] = useCreateBranchMutation();
+  const uploadMutation = useUploadSingleImageMutation();
+  const deleteMutation = useDeleteImageByUrlMutation();
+
+  const form = useForm<BranchFormValues>({
+    resolver: zodResolver(BranchSchema),
     defaultValues: {
       name: "",
       email: "",
       code: "",
-      // logoUrl: "",
+      logoUrl: "",
       addressLine1: "",
       addressLine2: "",
       city: "",
-      postalCode: 1216,
+      postalCode: "",
       country: "Bangladesh",
       phone: "",
       isActive: true,
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    try {
-      console.log(values);
-      toast(
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(values, null, 2)}</code>
-        </pre>
-      );
-    } catch (error) {
-      console.error("Form submission error", error);
-      toast.error("Failed to submit the form. Please try again.");
-    }
-  }
+  const onSubmit = async (values: BranchFormValues) => {
+    await handleMutationRequest(createBranchFn, values, {
+      loadingMessage: "Creating Branch",
+      successMessage: (res: ApiResponse<string>) => res?.message,
+      onSuccess: () => {
+        router.push("/branches");
+      },
+    });
+  };
 
   return (
     <Form {...form}>
@@ -127,7 +96,7 @@ export const BranchForm = () => {
           )}
         />
 
-        {/* <FormField
+        <FormField
           control={form.control}
           name="logoUrl"
           render={({ field }) => (
@@ -135,17 +104,18 @@ export const BranchForm = () => {
               <FormLabel>Branch Logo</FormLabel>
               <FormControl>
                 <UploadImage
-                  onImageChange={}
-                  deleteMutation={}
-                  uploadMutation={}
+                  uploadMutation={uploadMutation}
+                  deleteMutation={deleteMutation}
+                  onImageChange={(url) => field.onChange(url)}
+                  defaultImageUrl={field.value || ""}
+                  maxSize={5}
                 />
-                <Input placeholder="ex. BADDA01" type="text" {...field} />
               </FormControl>
 
               <FormMessage />
             </FormItem>
           )}
-        /> */}
+        />
 
         <FormField
           control={form.control}
@@ -244,16 +214,7 @@ export const BranchForm = () => {
             <FormItem>
               <FormLabel>Postal Code</FormLabel>
               <FormControl>
-                <Input
-                  placeholder="ex. 1204"
-                  type="number"
-                  {...field}
-                  onChange={(e) =>
-                    field.onChange(
-                      e.target.value ? parseInt(e.target.value, 10) : 0
-                    )
-                  }
-                />
+                <Input placeholder="ex. 1204" type="text" {...field} />
               </FormControl>
 
               <FormMessage />
@@ -301,7 +262,16 @@ export const BranchForm = () => {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button type="submit" disabled={isLoading}>
+          {isLoading ? (
+            <>
+              <Spinner />
+              Submitting
+            </>
+          ) : (
+            "Submit"
+          )}
+        </Button>
       </form>
     </Form>
   );
