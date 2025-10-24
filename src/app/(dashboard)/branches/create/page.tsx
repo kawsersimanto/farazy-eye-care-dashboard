@@ -1,4 +1,5 @@
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
+import { BranchForm } from "@/features/branch/components/BranchForm";
 
 const CreateBranchPage = () => {
   return (
@@ -7,7 +8,9 @@ const CreateBranchPage = () => {
         <CardTitle className="flex items-center gap-3">
           <h2 className="font-work-sans font-medium text-lg">Create Branch</h2>
         </CardTitle>
-        <CardDescription>Form</CardDescription>
+        <CardDescription>
+          <BranchForm />
+        </CardDescription>
       </Card>
     </div>
   );
