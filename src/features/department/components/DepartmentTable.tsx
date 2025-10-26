@@ -213,11 +213,15 @@ export const DepartmentTable = () => {
 
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <AlertDialogContent>
-          <AlertDialogTitle>Delete Department</AlertDialogTitle>
+          <AlertDialogTitle>
+            Are you sure you want to delete{" "}
+            <span className="font-bold">{departmentToDelete?.name}?</span>
+          </AlertDialogTitle>
           <AlertDialogDescription>
-            Are you sure you want to delete the department{" "}
-            {departmentToDelete?.name}? Note: Once you delete the department,
-            all the data associated with the department will be deleted forever.
+            <span className="">
+              Note: Once you delete the department, all the data associated with
+              the department will be deleted forever.
+            </span>
           </AlertDialogDescription>
           <div className="flex justify-end gap-2">
             <AlertDialogCancel>Cancel</AlertDialogCancel>
