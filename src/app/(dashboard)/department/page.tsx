@@ -1,5 +1,7 @@
+import { DepartmentTable } from "@/features/department/components/DepartmentTable";
+
 const DepartmentPage = () => {
-  return <>Department</>;
+  return <DepartmentTable />;
 };
 
 export default DepartmentPage;
