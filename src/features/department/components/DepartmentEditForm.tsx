@@ -30,9 +30,10 @@ import {
   useUpdateDepartmentMutation,
 } from "../department.api";
 import { DepartmentFormValues, DepartmentSchema } from "../department.schema";
+import { DepartmentFormSkeleton } from "./DepartmentFormSkeleton";
 
 export const DepartmentEditForm = ({ id }: { id: string }) => {
-  const { data } = useGetDepartmentByIdQuery(id);
+  const { data, isLoading: loadingDepartment } = useGetDepartmentByIdQuery(id);
   const router = useRouter();
   const [updateDepartmentFn, { isLoading }] = useUpdateDepartmentMutation();
 
@@ -72,6 +73,8 @@ export const DepartmentEditForm = ({ id }: { id: string }) => {
       }
     );
   };
+
+  if (loadingDepartment) return <DepartmentFormSkeleton />;
 
   return (
     <Form {...form}>
