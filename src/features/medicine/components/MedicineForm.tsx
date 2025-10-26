@@ -17,13 +17,27 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
+import { useGetMedicineBrandsQuery } from "@/features/medicine-brand/medicine-brand.api";
+import { useGetMedicineCategoriesQuery } from "@/features/medicine-category/medicine-category.api";
+import { ApiResponse } from "@/types/api";
+import { handleMutationRequest } from "@/utils/handleMutationRequest";
+import { normalizePayload } from "@/utils/normalizePayload";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+import { useCreateMedicineMutation } from "../medicine.api";
 import { MedicineFormValues, MedicineSchema } from "../medicine.schema";
+import { MedicineFormSkeleton } from "./MedicineFormSkeleton";
 
 export const MedicineForm = () => {
+  const router = useRouter();
+  const [createMedicineFn, { isLoading }] = useCreateMedicineMutation();
+  const { data: categories, isLoading: loadingCategory } =
+    useGetMedicineCategoriesQuery();
+  const { data: brands, isLoading: loadingBrand } = useGetMedicineBrandsQuery();
+
   const form = useForm<MedicineFormValues>({
     resolver: zodResolver(MedicineSchema),
     defaultValues: {
@@ -45,19 +59,17 @@ export const MedicineForm = () => {
     },
   });
 
-  function onSubmit(values: MedicineFormValues) {
-    try {
-      console.log(values);
-      toast(
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(values, null, 2)}</code>
-        </pre>
-      );
-    } catch (error) {
-      console.error("Form submission error", error);
-      toast.error("Failed to submit the form. Please try again.");
-    }
-  }
+  if (loadingBrand || loadingCategory) return <MedicineFormSkeleton />;
+
+  const onSubmit = async (values: MedicineFormValues) => {
+    await handleMutationRequest(createMedicineFn, normalizePayload(values), {
+      loadingMessage: "Creating Medicine",
+      successMessage: (res: ApiResponse<string>) => res?.message,
+      onSuccess: () => {
+        router.push("/medicine");
+      },
+    });
+  };
 
   return (
     <Form {...form}>
@@ -204,31 +216,47 @@ export const MedicineForm = () => {
         <FormField
           control={form.control}
           name="unitPrice"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Unit Price</FormLabel>
-              <FormControl>
-                <Input placeholder="ex. 0.8" type="number" {...field} />
-              </FormControl>
-
-              <FormMessage />
-            </FormItem>
-          )}
+          render={({ field }) => {
+            const { onChange, ...rest } = field;
+            return (
+              <FormItem>
+                <FormLabel>Unit Price</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="ex. 0.8"
+                    type="number"
+                    onChange={(e) => onChange(e.target.valueAsNumber)}
+                    step="0.01"
+                    {...rest}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            );
+          }}
         />
 
         <FormField
           control={form.control}
           name="mrp"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>MRP</FormLabel>
-              <FormControl>
-                <Input placeholder="ex. 1.20" type="number" {...field} />
-              </FormControl>
-
-              <FormMessage />
-            </FormItem>
-          )}
+          render={({ field }) => {
+            const { onChange, ...rest } = field;
+            return (
+              <FormItem>
+                <FormLabel>MRP</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="ex. 1.20"
+                    type="number"
+                    onChange={(e) => onChange(e.target.valueAsNumber)}
+                    step="0.01"
+                    {...rest}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            );
+          }}
         />
 
         <FormField
@@ -244,9 +272,11 @@ export const MedicineForm = () => {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="m@example.com">m@example.com</SelectItem>
-                  <SelectItem value="m@google.com">m@google.com</SelectItem>
-                  <SelectItem value="m@support.com">m@support.com</SelectItem>
+                  {categories?.data?.map((category) => (
+                    <SelectItem key={category?.id} value={category?.id}>
+                      {category?.name}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
 
@@ -268,9 +298,11 @@ export const MedicineForm = () => {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="m@example.com">m@example.com</SelectItem>
-                  <SelectItem value="m@google.com">m@google.com</SelectItem>
-                  <SelectItem value="m@support.com">m@support.com</SelectItem>
+                  {brands?.data?.map((brand) => (
+                    <SelectItem key={brand?.id} value={brand?.id}>
+                      {brand?.name}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
 
@@ -329,7 +361,16 @@ export const MedicineForm = () => {
           )}
         />
 
-        <Button type="submit">Submit</Button>
+        <Button type="submit" disabled={isLoading}>
+          {isLoading ? (
+            <>
+              <Spinner />
+              Submitting
+            </>
+          ) : (
+            "Submit"
+          )}
+        </Button>
       </form>
     </Form>
   );
