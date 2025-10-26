@@ -14,9 +14,11 @@ const MedicineDetailsPage = async ({
     <div>
       <Card className="max-w-4xl mx-auto px-10">
         <CardTitle className="flex items-center gap-3">
-          <h2 className="font-work-sans font-medium text-lg">View Medicine</h2>
+          <h2 className="font-work-sans font-medium text-lg sr-only">
+            View Medicine
+          </h2>
         </CardTitle>
-        <CardDescription>
+        <CardDescription className="pb-5">
           <Medicine id={id} />
         </CardDescription>
       </Card>
