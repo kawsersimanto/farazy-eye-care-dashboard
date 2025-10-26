@@ -235,6 +235,7 @@ export const UploadImage = ({
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-200 group-hover:opacity-100 z-20">
                   <div className="flex gap-2">
                     <Button
+                      type="button"
                       onClick={openFileDialog}
                       variant="secondary"
                       size="sm"
@@ -244,6 +245,7 @@ export const UploadImage = ({
                       Change Cover
                     </Button>
                     <Button
+                      type="button"
                       onClick={removeCoverImage}
                       variant="destructive"
                       size="sm"
@@ -309,6 +311,7 @@ export const UploadImage = ({
             <p>{errorMessage}</p>
             {localError && (
               <Button
+                type="button"
                 onClick={retryUpload}
                 variant="outline"
                 size="sm"
