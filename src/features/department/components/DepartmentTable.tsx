@@ -52,16 +52,6 @@ export const DepartmentTable = () => {
   const [departmentToDelete, setDepartmentToDelete] =
     useState<IDepartment | null>(null);
 
-  // const departmentFilterOptions = generateFilterOptions(
-  //   departments,
-  //   (dept) => dept.name,
-  //   {
-  //     sort: true,
-  //     removeEmpty: true,
-  //     normalize: (val) => val.toUpperCase(),
-  //   }
-  // );
-
   const handleDeleteMany = (rows: IDepartment[], ids: string[]) => {
     console.log("Deleting:", ids, rows);
   };
@@ -167,13 +157,13 @@ export const DepartmentTable = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem asChild>
-              <Link href={`departments/${row?.original?.id}`}>
+              <Link href={`department/${row?.original?.id}`}>
                 <EyeIcon className="text-inherit" />
                 Preview
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link href={`departments/${row?.original?.id}/edit`}>
+              <Link href={`department/${row?.original?.id}/edit`}>
                 <Pencil className="text-inherit" />
                 Edit
               </Link>
