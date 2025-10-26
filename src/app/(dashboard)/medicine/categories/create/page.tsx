@@ -1,4 +1,5 @@
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
+import { MedicineCategoryForm } from "@/features/medicine-category/components/MedicineCategoryForm";
 
 const CreateCategoryPage = () => {
   return (
@@ -9,7 +10,9 @@ const CreateCategoryPage = () => {
             Create Category
           </h2>
         </CardTitle>
-        <CardDescription>Form</CardDescription>
+        <CardDescription>
+          <MedicineCategoryForm />
+        </CardDescription>
       </Card>
     </div>
   );
