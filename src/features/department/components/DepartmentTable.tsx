@@ -127,7 +127,9 @@ export const DepartmentTable = () => {
     {
       accessorKey: "description",
       header: "Description",
-      size: 250,
+      cell: ({ row }) => (
+        <div className="line-clamp-1">{row.original.description}</div>
+      ),
     },
     {
       accessorKey: "isActive",
