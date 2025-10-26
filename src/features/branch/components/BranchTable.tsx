@@ -21,7 +21,7 @@ import {
 import { IBranch } from "@/features/branch/branch.interface";
 import { ApiResponse } from "@/types/api";
 import { handleMutationRequest } from "@/utils/handleMutationRequest";
-import { multiSelectFilterFn } from "@/utils/table";
+import { generateFilterOptions, multiSelectFilterFn } from "@/utils/table";
 import { type ColumnDef } from "@tanstack/react-table";
 import {
   Ban,
@@ -51,6 +51,16 @@ export const BranchTable = () => {
 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [branchToDelete, setBranchToDelete] = useState<IBranch | null>(null);
+
+  const cityFilterOptions = generateFilterOptions(
+    branches,
+    (branch) => branch.city,
+    {
+      sort: true,
+      removeEmpty: true,
+      normalize: (val) => val.toUpperCase(),
+    }
+  );
 
   const handleDeleteMany = (rows: IBranch[], ids: string[]) => {
     console.log("Deleting:", ids, rows);
@@ -158,6 +168,11 @@ export const BranchTable = () => {
     {
       accessorKey: "city",
       header: "City",
+      meta: {
+        filterLabel: "City",
+        filterOptions: cityFilterOptions,
+      },
+      filterFn: multiSelectFilterFn,
     },
     {
       accessorKey: "country",
