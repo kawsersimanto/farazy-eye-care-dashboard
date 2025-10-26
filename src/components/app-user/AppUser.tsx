@@ -45,11 +45,11 @@ export const AppUser = ({
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <Avatar className="h-8 w-8 rounded-lg">
+              <Avatar className="h-8 w-8 rounded-lg border border-border">
                 <AvatarImage
                   src={user.avatar}
                   alt={user.name}
-                  className="object-cover"
+                  className="object-contain"
                 />
                 <AvatarFallback className="rounded-lg bg-primary text-white">
                   CN
@@ -70,11 +70,11 @@ export const AppUser = ({
           >
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                <Avatar className="h-8 w-8 rounded-lg">
+                <Avatar className="h-8 w-8 rounded-lg border border-border">
                   <AvatarImage
                     src={user.avatar}
                     alt={user.name}
-                    className="object-cover"
+                    className="object-contain"
                   />
                   <AvatarFallback className="rounded-lg bg-primary text-white">
                     CN
