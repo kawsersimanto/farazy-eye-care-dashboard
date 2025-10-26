@@ -4,13 +4,13 @@ import { Badge } from "@/components/ui/badge";
 import { CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { useGetMedicineByIdQuery } from "../medicine.api";
-import { MedicineFormSkeleton } from "./MedicineFormSkeleton";
+import { MedicinePreloader } from "./MedicinePreloader";
 
 export const Medicine = ({ id }: { id: string }) => {
   const { data, isLoading } = useGetMedicineByIdQuery(id);
   const medicine = data?.data;
 
-  if (isLoading) return <MedicineFormSkeleton />;
+  if (isLoading) return <MedicinePreloader />;
 
   return (
     <div>
