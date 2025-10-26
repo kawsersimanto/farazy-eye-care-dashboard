@@ -2,7 +2,7 @@ import { IMedicineBrand } from "@/features/medicine-brand/medicine-brand.interfa
 import { IMedicineCategory } from "@/features/medicine-category/medicine-category.interface";
 
 export interface IMedicine {
-  id?: string;
+  id: string;
   name: string;
   genericName: string;
   strength: string | null;

@@ -4,7 +4,7 @@ import { IMedicine } from "./medicine.interface";
 
 export const medicineApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getMedicines: builder.query<ApiResponse<IMedicine[]>, void>({
+    getMedicines: builder.query<ApiResponse<IMedicine[], true>, void>({
       query: () => "/medicine",
       providesTags: ["medicine"],
     }),
@@ -16,16 +16,17 @@ export const medicineApi = baseApi.injectEndpoints({
       query: (body) => ({ url: "/medicine", method: "POST", body }),
       invalidatesTags: ["medicine"],
     }),
-    updateMedicine: builder.mutation<IMedicine, Partial<IMedicine> & { id: string }>(
-      {
-        query: ({ id, ...body }) => ({
-          url: `/medicine/${id}`,
-          method: "PUT",
-          body,
-        }),
-        invalidatesTags: ["medicine"],
-      }
-    ),
+    updateMedicine: builder.mutation<
+      IMedicine,
+      Partial<IMedicine> & { id: string }
+    >({
+      query: ({ id, ...body }) => ({
+        url: `/medicine/${id}`,
+        method: "PUT",
+        body,
+      }),
+      invalidatesTags: ["medicine"],
+    }),
     deleteMedicine: builder.mutation<{ success: boolean; id: string }, string>({
       query: (id) => ({ url: `/medicine/${id}`, method: "DELETE" }),
       invalidatesTags: ["medicine"],
