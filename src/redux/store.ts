@@ -1,6 +1,7 @@
 import { authReducer } from "@/features/auth/store/auth.slice";
 import { userReducer } from "@/features/user/store/user.slice";
 import { baseApi } from "@/redux/api/baseApi";
+import { medicineCategoryReducer } from "@/features/medicine-category/store/medicine-category.slice";
 import { medicineBrandReducer } from "@/features/medicine-brand/store/medicine-brand.slice";
 import { departmentReducer } from "@/features/department/store/department.slice";
 import { branchReducer } from "@/features/branch/store/branch.slice";
@@ -27,6 +28,7 @@ const persistConfig = {
 };
 
 const rootReducer = combineReducers({
+  medicineCategory: medicineCategoryReducer,
   medicineBrand: medicineBrandReducer,
   department: departmentReducer,
   branch: branchReducer,
