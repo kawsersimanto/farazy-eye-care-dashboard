@@ -1,4 +1,5 @@
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
+import { DepartmentForm } from "@/features/department/components/DepartmentForm";
 
 const CreateDepartmentPage = () => {
   return (
@@ -9,7 +10,9 @@ const CreateDepartmentPage = () => {
             Create Department
           </h2>
         </CardTitle>
-        <CardDescription>Form</CardDescription>
+        <CardDescription>
+          <DepartmentForm />
+        </CardDescription>
       </Card>
     </div>
   );

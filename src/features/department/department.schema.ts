@@ -1,5 +1,12 @@
 import { z } from "zod";
 
-export const DepartmentSchema = z.object({});
+export const DepartmentSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  alias: z.string().min(1, "Alias is required"),
+  isActive: z.boolean({
+    message: "Status is required",
+  }),
+  description: z.string().min(1, "Description is required"),
+});
 
-export type DepartmentSchemaType = z.infer<typeof DepartmentSchema>;
+export type DepartmentFormValues = z.infer<typeof DepartmentSchema>;

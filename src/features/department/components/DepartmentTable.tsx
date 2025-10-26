@@ -202,7 +202,7 @@ export const DepartmentTable = () => {
         onDeleteSelected={handleDeleteMany}
         renderActions={() => (
           <Button variant="outline" size="sm" asChild>
-            <Link href="/departments/create">
+            <Link href="/department/create">
               <PlusCircle /> Add New
             </Link>
           </Button>
