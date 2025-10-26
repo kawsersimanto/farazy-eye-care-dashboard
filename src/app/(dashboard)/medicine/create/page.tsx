@@ -1,4 +1,5 @@
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
+import { MedicineForm } from "@/features/medicine/components/MedicineForm";
 
 const CreateMedicinePage = () => {
   return (
@@ -9,7 +10,9 @@ const CreateMedicinePage = () => {
             Create Medicine
           </h2>
         </CardTitle>
-        <CardDescription>Form</CardDescription>
+        <CardDescription>
+          <MedicineForm />
+        </CardDescription>
       </Card>
     </div>
   );
