@@ -1,5 +1,7 @@
+import { MedicineBrandTable } from "@/features/medicine-brand/components/MedicineBrandTable";
+
 const BrandsPage = () => {
-  return <>Brands</>;
+  return <MedicineBrandTable />;
 };
 
 export default BrandsPage;
