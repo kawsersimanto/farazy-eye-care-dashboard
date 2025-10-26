@@ -10,6 +10,7 @@ export const departmentApi = baseApi.injectEndpoints({
     }),
     getDepartmentById: builder.query<ApiResponse<IDepartment>, string>({
       query: (id) => `/department/${id}`,
+      providesTags: ["department"],
     }),
     createDepartment: builder.mutation<IDepartment, Partial<IDepartment>>({
       query: (body) => ({ url: "/department", method: "POST", body }),
