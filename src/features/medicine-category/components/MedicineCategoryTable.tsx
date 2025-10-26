@@ -154,13 +154,13 @@ export const MedicineCategoryTable = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem asChild>
-              <Link href={`medicine-category/${row?.original?.id}`}>
+              <Link href={`/medicine/categories/${row?.original?.id}`}>
                 <EyeIcon className="text-inherit" />
                 Preview
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link href={`medicine-category/${row?.original?.id}/edit`}>
+              <Link href={`/medicine/categories/${row?.original?.id}/edit`}>
                 <Pencil className="text-inherit" />
                 Edit
               </Link>
@@ -199,7 +199,7 @@ export const MedicineCategoryTable = () => {
         onDeleteSelected={handleDeleteMany}
         renderActions={() => (
           <Button variant="outline" size="sm" asChild>
-            <Link href="/medicine-category/create">
+            <Link href="/medicine/categories/create">
               <PlusCircle /> Add New
             </Link>
           </Button>
