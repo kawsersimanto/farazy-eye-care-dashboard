@@ -123,7 +123,7 @@ export const MedicineCategoryTable = () => {
       accessorKey: "description",
       header: "Description",
       cell: ({ row }) => (
-        <div className="line-clamp-1">{row.original.description}</div>
+        <div className="line-clamp-1">{row.original.description || "-"}</div>
       ),
     },
     {
