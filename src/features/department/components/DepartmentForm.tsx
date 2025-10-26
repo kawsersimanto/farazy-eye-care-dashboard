@@ -1,4 +1,5 @@
 "use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -16,13 +17,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
+import { ApiResponse } from "@/types/api";
+import { handleMutationRequest } from "@/utils/handleMutationRequest";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+import { useCreateDepartmentMutation } from "../department.api";
 import { DepartmentFormValues, DepartmentSchema } from "../department.schema";
 
 export const DepartmentForm = () => {
+  const router = useRouter();
+  const [createDepartmentFn, { isLoading }] = useCreateDepartmentMutation();
   const form = useForm<DepartmentFormValues>({
     resolver: zodResolver(DepartmentSchema),
     defaultValues: {
@@ -33,19 +40,15 @@ export const DepartmentForm = () => {
     },
   });
 
-  function onSubmit(values: DepartmentFormValues) {
-    try {
-      console.log(values);
-      toast(
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(values, null, 2)}</code>
-        </pre>
-      );
-    } catch (error) {
-      console.error("Form submission error", error);
-      toast.error("Failed to submit the form. Please try again.");
-    }
-  }
+  const onSubmit = async (values: DepartmentFormValues) => {
+    await handleMutationRequest(createDepartmentFn, values, {
+      loadingMessage: "Creating Department",
+      successMessage: (res: ApiResponse<string>) => res?.message,
+      onSuccess: () => {
+        router.push("/department");
+      },
+    });
+  };
 
   return (
     <Form {...form}>
@@ -128,7 +131,16 @@ export const DepartmentForm = () => {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button type="submit" disabled={isLoading}>
+          {isLoading ? (
+            <>
+              <Spinner />
+              Submitting
+            </>
+          ) : (
+            "Submit"
+          )}
+        </Button>
       </form>
     </Form>
   );
