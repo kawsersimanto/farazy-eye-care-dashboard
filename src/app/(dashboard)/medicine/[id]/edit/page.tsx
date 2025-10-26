@@ -1,4 +1,5 @@
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
+import { MedicineEdit } from "@/features/medicine/components/MedicineEdit";
 
 const MedicineEditPage = async ({
   params,
@@ -6,8 +7,6 @@ const MedicineEditPage = async ({
   params: Promise<{ id: string }>;
 }) => {
   const { id } = await params;
-
-  console.log(id);
 
   return (
     <div>
@@ -17,7 +16,9 @@ const MedicineEditPage = async ({
             Create Medicine
           </h2>
         </CardTitle>
-        <CardDescription>Edit</CardDescription>
+        <CardDescription>
+          <MedicineEdit id={id} />
+        </CardDescription>
       </Card>
     </div>
   );
