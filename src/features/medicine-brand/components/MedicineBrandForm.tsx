@@ -16,15 +16,23 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Spinner } from "@/components/ui/spinner";
+import { ApiResponse } from "@/types/api";
+import { handleMutationRequest } from "@/utils/handleMutationRequest";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+import { useCreateMedicineBrandMutation } from "../medicine-brand.api";
 import {
   MedicineBrandSchema,
   MedicineBrandValues,
 } from "../medicine-brand.schema";
 
 export const MedicineBrandForm = () => {
+  const router = useRouter();
+  const [createMedicineBrandFn, { isLoading }] =
+    useCreateMedicineBrandMutation();
+
   const form = useForm<MedicineBrandValues>({
     resolver: zodResolver(MedicineBrandSchema),
     defaultValues: {
@@ -35,18 +43,14 @@ export const MedicineBrandForm = () => {
     },
   });
 
-  const onSubmit = (values: MedicineBrandValues) => {
-    try {
-      console.log(values);
-      toast(
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(values, null, 2)}</code>
-        </pre>
-      );
-    } catch (error) {
-      console.error("Form submission error", error);
-      toast.error("Failed to submit the form. Please try again.");
-    }
+  const onSubmit = async (values: MedicineBrandValues) => {
+    await handleMutationRequest(createMedicineBrandFn, values, {
+      loadingMessage: "Creating Medicine Brand",
+      successMessage: (res: ApiResponse<string>) => res?.message,
+      onSuccess: () => {
+        router.push("/medicine/brands");
+      },
+    });
   };
 
   return (
@@ -119,7 +123,16 @@ export const MedicineBrandForm = () => {
           )}
         />
 
-        <Button type="submit">Submit</Button>
+        <Button type="submit" disabled={isLoading}>
+          {isLoading ? (
+            <>
+              <Spinner />
+              Submitting
+            </>
+          ) : (
+            "Submit"
+          )}
+        </Button>
       </form>
     </Form>
   );
