@@ -8,8 +8,6 @@ const MedicineDetailsPage = async ({
 }) => {
   const { id } = await params;
 
-  console.log(id);
-
   return (
     <div>
       <Card className="max-w-4xl mx-auto px-10">
