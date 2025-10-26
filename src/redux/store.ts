@@ -1,6 +1,7 @@
 import { authReducer } from "@/features/auth/store/auth.slice";
 import { userReducer } from "@/features/user/store/user.slice";
 import { baseApi } from "@/redux/api/baseApi";
+import { departmentReducer } from "@/features/department/store/department.slice";
 import { branchReducer } from "@/features/branch/store/branch.slice";
 import { paymentReducer } from "@/features/payment/store/payment.slice";
 import { imageReducer } from "@/features/image/store/image.slice";
@@ -25,6 +26,7 @@ const persistConfig = {
 };
 
 const rootReducer = combineReducers({
+  department: departmentReducer,
   branch: branchReducer,
   payment: paymentReducer,
   image: imageReducer,
