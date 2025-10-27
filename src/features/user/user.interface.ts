@@ -1,27 +1,34 @@
-export enum Role {
+export enum IRole {
+  SUPER_ADMIN = "SUPER_ADMIN",
   ADMIN = "ADMIN",
-  USER = "USER",
+  EMPLOYEE = "EMPLOYEE",
+  DOCTOR = "DOCTOR",
+  PATIENT = "PATIENT",
+}
+
+export interface IEmployee {
+  id: string;
+}
+
+export interface IPatient {
+  id: string;
 }
 
 export interface IUser {
   id: string;
-  firstName: string;
-  lastName: string;
+  name: string;
   email: string;
-  companyName: string;
-  jobTitle: string;
-  jobFunction: string;
-  country: string;
-  jobLevel: string;
-  companyIndustry: string;
-  companySize: string;
-  postalCode: string;
   phone: string;
-  isEmailVerified: boolean;
-  role: Role;
+  password: string;
+  emailVerified: boolean;
+  phoneVerified: boolean;
+  profileImageUrl: string | null;
   isActive: boolean;
-  hasActiveSubscription: boolean;
-  stripeCustomerId: string;
+  role: IRole;
+  branchId: string | null;
+  createdByUserId: string | null;
+  employeeProfile: IEmployee | null;
+  patientProfile: IPatient | null;
   createdAt: string;
   updatedAt: string;
 }

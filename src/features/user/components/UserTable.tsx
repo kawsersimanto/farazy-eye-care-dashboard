@@ -1,6 +1,5 @@
 "use client";
 
-import { DataTableColumnHeader } from "@/components/data-table-column-header/DataTableColumnHeader";
 import { DataTable } from "@/components/data-table/DataTable";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -11,8 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { IUser, Role } from "@/features/user/user.interface";
-import { ApiResponse } from "@/types/api";
+import { IRole, IUser } from "@/features/user/user.interface";
 import { handleMutationRequest } from "@/utils/handleMutationRequest";
 import { generateFilterOptions, multiSelectFilterFn } from "@/utils/table";
 import { type ColumnDef } from "@tanstack/react-table";
@@ -24,6 +22,7 @@ import {
   Trash,
   Unlock,
 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import {
@@ -35,11 +34,20 @@ import {
 export const UserTable = () => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
-  const [updateUserFn, { isLoading: isUpdatingUser }] = useUpdateUserMutation();
-  const { data } = useGetUsersQuery({ page, limit });
-  const users = data?.data?.data || [];
-  const [deleteUserFn] = useDeleteUserMutation();
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
+  const [updateUserFn, { isLoading: isUpdatingUser }] = useUpdateUserMutation();
+  const [deleteUserFn, { isLoading: isDeletingUser }] = useDeleteUserMutation();
+  const {
+    data,
+    isLoading: isLoadingUsers,
+    isFetching,
+  } = useGetUsersQuery({
+    page,
+    limit,
+  });
+
+  const users = data?.data?.data || [];
   const total = data?.data?.meta?.total ?? 0;
   const totalPages = data?.data?.meta?.totalPages ?? 0;
 
@@ -60,7 +68,7 @@ export const UserTable = () => {
   };
 
   const roleOptions = generateFilterOptions(
-    Object.values(Role),
+    Object.values(IRole),
     (role) => role,
     {
       sort: true,
@@ -70,9 +78,13 @@ export const UserTable = () => {
 
   const handleDelete = async (user: IUser) => {
     await handleMutationRequest(deleteUserFn, user?.id, {
-      loadingMessage: "Deleting User",
-      successMessage: (res: ApiResponse<string>) => res?.message,
+      loadingMessage: "Deleting User...",
+      successMessage: () => "User deleted successfully!",
     });
+  };
+
+  const handleDeleteMany = async (rows: IUser[], ids: string[]) => {
+    console.log(rows, ids);
   };
 
   const columns: ColumnDef<IUser>[] = [
@@ -81,13 +93,29 @@ export const UserTable = () => {
       header: ({ table }) => (
         <Checkbox
           checked={table.getIsAllPageRowsSelected()}
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          onCheckedChange={(value) => {
+            table.toggleAllPageRowsSelected(!!value);
+            if (value) {
+              setSelectedIds(users.map((user) => user.id));
+            } else {
+              setSelectedIds([]);
+            }
+          }}
         />
       ),
       cell: ({ row }) => (
         <Checkbox
           checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          onCheckedChange={(value) => {
+            row.toggleSelected(!!value);
+            if (value) {
+              setSelectedIds((prev) => [...prev, row.original.id]);
+            } else {
+              setSelectedIds((prev) =>
+                prev.filter((id) => id !== row.original.id)
+              );
+            }
+          }}
         />
       ),
       enableSorting: false,
@@ -95,25 +123,51 @@ export const UserTable = () => {
       size: 30,
     },
     {
-      accessorFn: (row) => `${row.firstName} ${row.lastName}`,
+      accessorFn: (row) => `${row.name}`,
       id: "name",
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Name" />
+      header: "Name",
+      cell: ({ row }) => {
+        const imageUrl = row.original.profileImageUrl?.trim();
+        const isValidUrl =
+          imageUrl && (imageUrl.startsWith("http") || imageUrl.startsWith("/"));
+        const src = isValidUrl ? imageUrl : "/placeholder.png";
+
+        return (
+          <div className="flex items-center gap-2">
+            <Image
+              src={src || "/placeholder.png"}
+              alt={row.original.name || "User Image"}
+              height={80}
+              width={80}
+              className="h-[50px] w-[50px] object-contain rounded-lg border-border border"
+              unoptimized
+              onError={(e) => {
+                e.currentTarget.src = "/placeholder.png";
+              }}
+            />
+            {row.original.name}
+          </div>
+        );
+      },
+      size: 100,
+    },
+    {
+      id: "phone",
+      header: "phone",
+      cell: ({ row }) => (
+        <Badge variant="outline" asChild>
+          <Link href={`tel:${row.original.phone}`}>{row.original.phone}</Link>
+        </Badge>
       ),
-      cell: ({ row }) => `${row.original.firstName} ${row.original.lastName}`,
     },
     {
       accessorKey: "email",
       header: "Email",
+      cell: ({ row }) => (
+        <Link href={`mailto:${row.original.email}`}>{row.original.email}</Link>
+      ),
     },
-    {
-      accessorKey: "companyName",
-      header: "Company",
-    },
-    {
-      accessorKey: "jobTitle",
-      header: "Job Title",
-    },
+
     {
       accessorKey: "role",
       header: "Role",
@@ -123,6 +177,7 @@ export const UserTable = () => {
         </Badge>
       ),
       meta: {
+        filterLabel: "Role",
         filterOptions: roleOptions,
         filterFn: multiSelectFilterFn,
       },
@@ -145,17 +200,6 @@ export const UserTable = () => {
       filterFn: multiSelectFilterFn,
     },
     {
-      accessorKey: "subscription",
-      header: "Subscription",
-      cell: ({ row }) => (
-        <Badge
-          variant={row.original.hasActiveSubscription ? "default" : "secondary"}
-        >
-          {row.original.hasActiveSubscription ? "Active" : "None"}
-        </Badge>
-      ),
-    },
-    {
       id: "actions",
       cell: ({ row }) => (
         <DropdownMenu>
@@ -173,7 +217,7 @@ export const UserTable = () => {
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => handleToggleActive(row.original)}
-              disabled={isUpdatingUser}
+              disabled={isUpdatingUser || isDeletingUser}
             >
               {row.original.isActive ? (
                 <>
@@ -185,7 +229,10 @@ export const UserTable = () => {
                 </>
               )}
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => handleDelete(row.original)}>
+            <DropdownMenuItem
+              onClick={() => handleDelete(row.original)}
+              disabled={isDeletingUser}
+            >
               <Trash className="text-inherit" />
               Delete
             </DropdownMenuItem>
@@ -194,10 +241,6 @@ export const UserTable = () => {
       ),
     },
   ];
-
-  const handleDeleteMany = (rows: IUser[], ids: string[]) => {
-    console.log("Deleting:", ids, rows);
-  };
 
   return (
     <DataTable
@@ -208,11 +251,12 @@ export const UserTable = () => {
       limit={limit}
       totalPages={totalPages}
       onPageChange={setPage}
-      onDeleteSelected={handleDeleteMany}
       onPageSizeChange={(newLimit) => {
         setLimit(newLimit);
         setPage(1);
       }}
+      onDeleteSelected={() => handleDeleteMany(users, selectedIds)}
+      isLoading={isLoadingUsers || isFetching}
       renderActions={() => (
         <Button variant="outline" size="sm" asChild>
           <Link href="/users/create">
