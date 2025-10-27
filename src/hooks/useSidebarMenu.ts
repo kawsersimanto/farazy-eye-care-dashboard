@@ -1,7 +1,7 @@
 "use client";
 
-import { getSidebarMenu } from "@/constants/sidebarMenu";
 import { useAuth } from "@/features/auth/hooks/useAuth";
+import { getSidebarMenu } from "@/utils/role";
 import { useMemo } from "react";
 
 export const useSidebarMenu = () => {
