@@ -1,5 +1,11 @@
 import { IRole, IUser } from "@/features/user/user.interface";
 
+export interface AuthState {
+  email: string;
+  token: string;
+  user: null | IUser;
+}
+
 export interface LoginCredentials {
   email: string;
   password: string;
