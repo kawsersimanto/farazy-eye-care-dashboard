@@ -12,21 +12,15 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
-import { useAppDispatch } from "@/redux/hook";
-import { handleMutationRequest } from "@/utils/handleMutationRequest";
+import { handleApiError } from "@/utils/handleApiError";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { useLoginMutation } from "../auth.api";
-import { AuthResponse } from "../auth.interface";
 import { AuthFormValues, authSchema } from "../auth.schema";
-import { setToken } from "../store/auth.slice";
+import { useAuth } from "../hooks/useAuth";
 
 export const SignInForm = () => {
-  const [loginFn, { isLoading }] = useLoginMutation();
-  const dispatch = useAppDispatch();
-  const router = useRouter();
+  const { handleLogin, isLoading } = useAuth();
 
   const form = useForm<AuthFormValues>({
     resolver: zodResolver(authSchema),
@@ -37,21 +31,15 @@ export const SignInForm = () => {
   });
 
   const onSubmit = async (data: AuthFormValues) => {
-    await handleMutationRequest(loginFn, data, {
-      loadingMessage: "Logging in...",
-      successMessage: (res: AuthResponse) => res?.message,
-      errorMessage: "Login failed. Please check your credentials.",
-      onSuccess: (res: AuthResponse) => {
-        const token = res?.data?.token;
-        if (token) {
-          dispatch(setToken(token));
-        }
-        router.push("/");
-      },
-      onError: (message) => {
-        toast.error(message);
-      },
-    });
+    try {
+      await handleLogin({
+        email: data.email,
+        password: data.password,
+      });
+      toast.success("Login successful!");
+    } catch (error) {
+      handleApiError(error);
+    }
   };
 
   return (

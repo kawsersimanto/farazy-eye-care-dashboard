@@ -24,6 +24,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 
 export const AppUser = ({
   user,
@@ -35,6 +36,7 @@ export const AppUser = ({
   };
 }) => {
   const { isMobile } = useSidebar();
+  const { handleLogout, isLoading } = useAuth();
 
   return (
     <SidebarMenu>
@@ -102,7 +104,7 @@ export const AppUser = ({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={handleLogout} disabled={isLoading}>
               <LogOut className="!text-inherit" />
               Log out
             </DropdownMenuItem>
