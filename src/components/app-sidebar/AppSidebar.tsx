@@ -20,8 +20,8 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
-import { sidebarMenu } from "@/constants/sidebarMenu";
-import { cn } from "@/lib/utils"; // <- shadcn utility
+import { useSidebarMenu } from "@/hooks/useSidebarMenu";
+import { cn } from "@/lib/utils";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -31,6 +31,7 @@ import { useState } from "react";
 export const AppSidebar = () => {
   const [openItems, setOpenItems] = useState<string[]>(["Analytics"]);
   const pathname = usePathname();
+  const sidebarMenu = useSidebarMenu();
 
   const toggleItem = (title: string) => {
     setOpenItems((prev) =>

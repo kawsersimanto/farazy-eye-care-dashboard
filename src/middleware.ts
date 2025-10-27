@@ -1,3 +1,8 @@
+// ========================================
+// middleware.ts (ROOT LEVEL - same level as app/)
+// ========================================
+
+import { isRouteAccessible } from "@/constants/sidebarMenu";
 import { IRole } from "@/features/user/user.interface";
 import { jwtDecode } from "jwt-decode";
 import { NextRequest, NextResponse } from "next/server";
@@ -9,23 +14,6 @@ export interface DecodedToken {
   iat: number;
   exp: number;
 }
-
-// Routes accessible by all authenticated roles
-const COMMON_ROUTES = [
-  "/profile",
-  "/settings",
-  "/change-password",
-  "/notifications",
-];
-
-// Role-specific protected routes
-const ROLE_PROTECTED_ROUTES: Record<IRole, string[]> = {
-  [IRole.SUPER_ADMIN]: [], // SUPER_ADMIN can access all routes
-  [IRole.ADMIN]: ["/admin", "/dashboard"],
-  [IRole.EMPLOYEE]: ["/employee", "/employee/dashboard"],
-  [IRole.DOCTOR]: ["/doctor", "/doctor/dashboard", "/patients"],
-  [IRole.PATIENT]: ["/patient", "/appointments", "/medical-records"],
-};
 
 const PUBLIC_ROUTES = [
   "/login",
@@ -46,22 +34,6 @@ function decodeToken(token: string): DecodedToken | null {
 
 function isTokenExpired(token: DecodedToken): boolean {
   return Date.now() >= token.exp * 1000;
-}
-
-function hasRouteAccess(userRole: IRole, pathname: string): boolean {
-  // SUPER_ADMIN has access to all routes
-  if (userRole === IRole.SUPER_ADMIN) {
-    return true;
-  }
-
-  // Check if route is in common routes (accessible by all roles)
-  if (COMMON_ROUTES.some((route) => pathname.startsWith(route))) {
-    return true;
-  }
-
-  // Check role-specific routes
-  const allowedRoutes = ROLE_PROTECTED_ROUTES[userRole];
-  return allowedRoutes.some((route) => pathname.startsWith(route));
 }
 
 export function middleware(request: NextRequest) {
@@ -98,7 +70,7 @@ export function middleware(request: NextRequest) {
   }
 
   // ---- Role-based access control ----
-  if (!hasRouteAccess(decoded.role, pathname)) {
+  if (!isRouteAccessible(decoded.role, pathname)) {
     return NextResponse.redirect(new URL("/unauthorized", request.url));
   }
 
