@@ -20,6 +20,20 @@ export interface RegisterCredentials {
   name?: string;
 }
 
+export interface ChangePasswordCredentials {
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
+export interface ResetPasswordCredentials {
+  password: string;
+}
+
+export interface ForgotPasswordCredentials {
+  email: string;
+}
+
 export interface UseAuthReturn {
   user: IUser | null;
   token: string | null;
@@ -28,5 +42,12 @@ export interface UseAuthReturn {
   isAuthenticated: boolean;
   handleLogin: (credentials: LoginCredentials) => Promise<void>;
   handleLogout: () => Promise<void>;
+  handleChangePassword: (
+    credentials: ChangePasswordCredentials
+  ) => Promise<void>;
+  handleResetPassword: (credentials: ResetPasswordCredentials) => Promise<void>;
+  handleForgotPassword: (
+    credentials: ForgotPasswordCredentials
+  ) => Promise<void>;
   // handleRegister: (credentials: RegisterCredentials) => Promise<void>;
 }

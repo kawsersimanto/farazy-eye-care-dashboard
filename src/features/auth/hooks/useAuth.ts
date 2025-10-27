@@ -6,8 +6,20 @@ import { decodeToken } from "@/utils/tokenHandler";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
-import { useLoginMutation, useLogoutMutation } from "../auth.api";
-import { LoginCredentials, UseAuthReturn } from "../auth.interface";
+import {
+  useChangePasswordMutation,
+  useForgotPasswordMutation,
+  useLoginMutation,
+  useLogoutMutation,
+  useResetPasswordMutation,
+} from "../auth.api";
+import {
+  ChangePasswordCredentials,
+  ForgotPasswordCredentials,
+  LoginCredentials,
+  ResetPasswordCredentials,
+  UseAuthReturn,
+} from "../auth.interface";
 import { clearToken, extractErrorMessage, saveToken } from "../auth.utils";
 import { reset, setEmail, setToken, setUser } from "../store/auth.slice";
 
@@ -19,9 +31,21 @@ export const useAuth = (): UseAuthReturn => {
 
   const [login, { isLoading: loginLoading }] = useLoginMutation();
   const [logout, { isLoading: logoutLoading }] = useLogoutMutation();
+  const [changePassword, { isLoading: changePasswordLoading }] =
+    useChangePasswordMutation();
+  const [resetPassword, { isLoading: resetPasswordLoading }] =
+    useResetPasswordMutation();
+  const [forgotPassword, { isLoading: forgotPasswordLoading }] =
+    useForgotPasswordMutation();
 
-  const isLoading = loginLoading || logoutLoading;
+  const isLoading =
+    loginLoading ||
+    logoutLoading ||
+    changePasswordLoading ||
+    resetPasswordLoading ||
+    forgotPasswordLoading;
 
+  // ---- LOGIN ----
   const handleLogin = useCallback(
     async ({ email, password }: LoginCredentials) => {
       try {
@@ -29,7 +53,6 @@ export const useAuth = (): UseAuthReturn => {
         const token: string = response?.data?.token;
 
         const decodedUser = decodeToken(token);
-
         if (!decodedUser) {
           throw new Error("Failed to decode user from token");
         }
@@ -47,6 +70,7 @@ export const useAuth = (): UseAuthReturn => {
     [login, dispatch, router]
   );
 
+  // ---- LOGOUT ----
   const handleLogout = useCallback(async () => {
     try {
       await logout({}).unwrap();
@@ -58,6 +82,56 @@ export const useAuth = (): UseAuthReturn => {
     }
   }, [logout, dispatch, router]);
 
+  // ---- CHANGE PASSWORD ----
+  const handleChangePassword = useCallback(
+    async ({ oldPassword, newPassword }: ChangePasswordCredentials) => {
+      try {
+        await changePassword({
+          oldPassword,
+          newPassword,
+        }).unwrap();
+      } catch (error) {
+        throw new Error(
+          extractErrorMessage(error, "Failed to change password")
+        );
+      }
+    },
+    [changePassword]
+  );
+
+  // ---- RESET PASSWORD ----
+  const handleResetPassword = useCallback(
+    async ({ password }: ResetPasswordCredentials) => {
+      try {
+        await resetPassword({
+          password,
+        }).unwrap();
+
+        router.push("/login");
+      } catch (error) {
+        throw new Error(extractErrorMessage(error, "Failed to reset password"));
+      }
+    },
+    [resetPassword, router]
+  );
+
+  // ---- FORGOT PASSWORD ----
+  const handleForgotPassword = useCallback(
+    async ({ email }: ForgotPasswordCredentials) => {
+      try {
+        await forgotPassword({ email }).unwrap();
+      } catch (error) {
+        throw new Error(
+          extractErrorMessage(
+            error,
+            "Failed to process forgot password request"
+          )
+        );
+      }
+    },
+    [forgotPassword]
+  );
+
   return {
     user,
     token,
@@ -66,5 +140,8 @@ export const useAuth = (): UseAuthReturn => {
     isAuthenticated: Boolean(token),
     handleLogin,
     handleLogout,
+    handleChangePassword,
+    handleResetPassword,
+    handleForgotPassword,
   };
 };

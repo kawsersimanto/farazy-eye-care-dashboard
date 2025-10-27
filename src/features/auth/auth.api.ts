@@ -19,7 +19,10 @@ export const authApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["auth"],
     }),
-    changePassword: builder.mutation<ApiResponse<{ message: string }>, void>({
+    changePassword: builder.mutation<
+      ApiResponse<{ message: string }>,
+      { oldPassword: string; newPassword: string }
+    >({
       query: (body) => ({
         url: "/auth/change-password",
         method: "PUT",
@@ -27,7 +30,7 @@ export const authApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["auth"],
     }),
-    resetPassword: builder.mutation<ApiResponse<null>, void>({
+    resetPassword: builder.mutation<ApiResponse<null>, { password: string }>({
       query: (body) => ({
         url: "/auth/reset-password",
         method: "POST",
@@ -35,7 +38,7 @@ export const authApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["auth"],
     }),
-    forgotPassword: builder.mutation<ApiResponse<null>, void>({
+    forgotPassword: builder.mutation<ApiResponse<null>, { email: string }>({
       query: (body) => ({
         url: "/auth/forgot-password",
         method: "POST",
@@ -54,5 +57,11 @@ export const authApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useLoginMutation, useRegisterMutation, useLogoutMutation } =
-  authApi;
+export const {
+  useLoginMutation,
+  useRegisterMutation,
+  useLogoutMutation,
+  useChangePasswordMutation,
+  useForgotPasswordMutation,
+  useResetPasswordMutation,
+} = authApi;
