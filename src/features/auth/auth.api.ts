@@ -1,4 +1,5 @@
 import { baseApi } from "@/redux/api/baseApi";
+import { ApiResponse } from "@/types/api";
 import { AuthResponse } from "./auth.interface";
 
 export const authApi = baseApi.injectEndpoints({
@@ -15,6 +16,30 @@ export const authApi = baseApi.injectEndpoints({
       query: () => ({
         url: "/auth/logout",
         method: "POST",
+      }),
+      invalidatesTags: ["auth"],
+    }),
+    changePassword: builder.mutation<ApiResponse<{ message: string }>, void>({
+      query: (body) => ({
+        url: "/auth/change-password",
+        method: "PUT",
+        body,
+      }),
+      invalidatesTags: ["auth"],
+    }),
+    resetPassword: builder.mutation<ApiResponse<null>, void>({
+      query: (body) => ({
+        url: "/auth/reset-password",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["auth"],
+    }),
+    forgotPassword: builder.mutation<ApiResponse<null>, void>({
+      query: (body) => ({
+        url: "/auth/forgot-password",
+        method: "POST",
+        body,
       }),
       invalidatesTags: ["auth"],
     }),
