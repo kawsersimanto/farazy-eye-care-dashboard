@@ -1,8 +1,9 @@
 "use client";
 
-import { IUser } from "@/features/user/user.interface";
+import { IRole, IUser } from "@/features/user/user.interface";
 import { useAppSelector } from "@/redux/hook";
 import { decodeToken } from "@/utils/tokenHandler";
+
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
@@ -20,7 +21,12 @@ import {
   ResetPasswordCredentials,
   UseAuthReturn,
 } from "../auth.interface";
-import { clearToken, extractErrorMessage, saveToken } from "../auth.utils";
+import {
+  clearToken,
+  decodeStoredToken,
+  extractErrorMessage,
+  saveToken,
+} from "../auth.utils";
 import { reset, setEmail, setToken, setUser } from "../store/auth.slice";
 
 export const useAuth = (): UseAuthReturn => {
@@ -62,7 +68,7 @@ export const useAuth = (): UseAuthReturn => {
         dispatch(setUser(decodedUser as IUser));
 
         saveToken(token);
-        router.push("/");
+        router.push("/dashboard");
       } catch (error) {
         throw new Error(extractErrorMessage(error, "Login failed"));
       }
@@ -132,6 +138,45 @@ export const useAuth = (): UseAuthReturn => {
     [forgotPassword]
   );
 
+  // ---- ROLE HELPERS ----
+  const getUserRole = useCallback((): IRole | null => {
+    const decoded = decodeStoredToken();
+    return decoded?.role || null;
+  }, []);
+
+  const hasRole = useCallback(
+    (requiredRoles: IRole[]): boolean => {
+      const role = getUserRole();
+      return role ? requiredRoles.includes(role) : false;
+    },
+    [getUserRole]
+  );
+
+  const isSuperAdmin = useCallback(
+    (): boolean => hasRole([IRole.SUPER_ADMIN]),
+    [hasRole]
+  );
+
+  const isAdmin = useCallback(
+    (): boolean => hasRole([IRole.ADMIN, IRole.SUPER_ADMIN]),
+    [hasRole]
+  );
+
+  const isDoctor = useCallback(
+    (): boolean => hasRole([IRole.DOCTOR]),
+    [hasRole]
+  );
+
+  const isPatient = useCallback(
+    (): boolean => hasRole([IRole.PATIENT]),
+    [hasRole]
+  );
+
+  const isEmployee = useCallback(
+    (): boolean => hasRole([IRole.EMPLOYEE]),
+    [hasRole]
+  );
+
   return {
     user,
     token,
@@ -143,5 +188,12 @@ export const useAuth = (): UseAuthReturn => {
     handleChangePassword,
     handleResetPassword,
     handleForgotPassword,
+    getUserRole,
+    hasRole,
+    isSuperAdmin,
+    isAdmin,
+    isDoctor,
+    isPatient,
+    isEmployee,
   };
 };

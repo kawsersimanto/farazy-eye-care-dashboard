@@ -1,23 +1,8 @@
-import { IUser } from "@/features/user/user.interface";
-import { ApiResponse } from "@/types/api";
-
-export interface AuthState {
-  email: string;
-  token: string;
-  user: IUser | null;
-}
-
-export type AuthResponse = ApiResponse<Pick<AuthState, "token" | "user">>;
+import { IRole, IUser } from "@/features/user/user.interface";
 
 export interface LoginCredentials {
   email: string;
   password: string;
-}
-
-export interface RegisterCredentials {
-  email: string;
-  password: string;
-  name?: string;
 }
 
 export interface ChangePasswordCredentials {
@@ -28,10 +13,19 @@ export interface ChangePasswordCredentials {
 
 export interface ResetPasswordCredentials {
   password: string;
+  confirmPassword: string;
 }
 
 export interface ForgotPasswordCredentials {
   email: string;
+}
+
+export interface AuthResponse {
+  data: {
+    token: string;
+    user?: IUser;
+  };
+  message: string;
 }
 
 export interface UseAuthReturn {
@@ -49,5 +43,11 @@ export interface UseAuthReturn {
   handleForgotPassword: (
     credentials: ForgotPasswordCredentials
   ) => Promise<void>;
-  // handleRegister: (credentials: RegisterCredentials) => Promise<void>;
+  getUserRole: () => IRole | null;
+  hasRole: (requiredRoles: IRole[]) => boolean;
+  isSuperAdmin: () => boolean;
+  isAdmin: () => boolean;
+  isDoctor: () => boolean;
+  isPatient: () => boolean;
+  isEmployee: () => boolean;
 }
