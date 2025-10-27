@@ -153,7 +153,7 @@ export const UserTable = () => {
     },
     {
       id: "phone",
-      header: "phone",
+      header: "Phone",
       cell: ({ row }) => (
         <Badge variant="outline" asChild>
           <Link href={`tel:${row.original.phone}`}>{row.original.phone}</Link>
