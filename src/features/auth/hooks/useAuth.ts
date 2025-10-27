@@ -1,122 +1,62 @@
 "use client";
 
 import { IUser } from "@/features/user/user.interface";
-import { RootState } from "@/redux/store";
+import { useAppSelector } from "@/redux/hook";
 import { decodeToken } from "@/utils/tokenHandler";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  useLoginMutation,
-  useLogoutMutation,
-  useRegisterMutation,
-} from "../auth.api";
+import { useDispatch } from "react-redux";
+import { useLoginMutation, useLogoutMutation } from "../auth.api";
+import { LoginCredentials, UseAuthReturn } from "../auth.interface";
+import { clearToken, extractErrorMessage, saveToken } from "../auth.utils";
 import { reset, setEmail, setToken, setUser } from "../store/auth.slice";
 
-// ---- Types ----
-interface LoginCredentials {
-  email: string;
-  password: string;
-}
-
-interface RegisterCredentials {
-  email: string;
-  password: string;
-  name?: string;
-}
-
-interface AuthResponse {
-  token: string;
-  user: IUser;
-}
-
-interface UseAuthReturn {
-  user: IUser | null;
-  token: string | null;
-  email: string | null;
-  isLoading: boolean;
-  isAuthenticated: boolean;
-  handleLogin: (credentials: LoginCredentials) => Promise<void>;
-  handleLogout: () => Promise<void>;
-  handleRegister: (credentials: RegisterCredentials) => Promise<void>;
-}
-
-// ---- Hook ----
 export const useAuth = (): UseAuthReturn => {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const { user, token, email } = useSelector((state: RootState) => state.auth);
+  const { user, token, email } = useAppSelector((state) => state.auth);
 
   const [login, { isLoading: loginLoading }] = useLoginMutation();
   const [logout, { isLoading: logoutLoading }] = useLogoutMutation();
-  const [register, { isLoading: registerLoading }] = useRegisterMutation();
 
-  const isLoading = loginLoading || logoutLoading || registerLoading;
+  const isLoading = loginLoading || logoutLoading;
 
-  // ---- LOGIN ----
   const handleLogin = useCallback(
     async ({ email, password }: LoginCredentials) => {
       try {
         const response = await login({ email, password }).unwrap();
-
         const token: string = response?.data?.token;
+
         const decodedUser = decodeToken(token);
+
+        if (!decodedUser) {
+          throw new Error("Failed to decode user from token");
+        }
 
         dispatch(setEmail(email));
         dispatch(setToken(token));
         dispatch(setUser(decodedUser as IUser));
 
-        localStorage.setItem("token", token);
+        saveToken(token);
         router.push("/");
       } catch (error) {
-        const message =
-          (error as { data?: { message?: string } })?.data?.message ||
-          "Login failed";
-        throw new Error(message);
+        throw new Error(extractErrorMessage(error, "Login failed"));
       }
     },
     [login, dispatch, router]
   );
 
-  // ---- LOGOUT ----
   const handleLogout = useCallback(async () => {
     try {
       await logout({}).unwrap();
       dispatch(reset());
-      localStorage.removeItem("token");
-      document.cookie =
-        "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+      clearToken();
       router.push("/login");
     } catch (error) {
-      const message =
-        (error as { data?: { message?: string } })?.data?.message ||
-        "Logout failed";
-      throw new Error(message);
+      throw new Error(extractErrorMessage(error, "Logout failed"));
     }
   }, [logout, dispatch, router]);
-
-  // ---- REGISTER ----
-  const handleRegister = useCallback(
-    async (credentials: RegisterCredentials) => {
-      try {
-        const response = (await register(credentials).unwrap()) as AuthResponse;
-
-        dispatch(setEmail(credentials.email));
-        dispatch(setToken(response.token));
-        dispatch(setUser(response.user));
-
-        localStorage.setItem("token", response.token);
-        router.push("/dashboard");
-      } catch (error) {
-        const message =
-          (error as { data?: { message?: string } })?.data?.message ||
-          "Registration failed";
-        throw new Error(message);
-      }
-    },
-    [register, dispatch, router]
-  );
 
   return {
     user,
@@ -126,6 +66,5 @@ export const useAuth = (): UseAuthReturn => {
     isAuthenticated: Boolean(token),
     handleLogin,
     handleLogout,
-    handleRegister,
   };
 };
