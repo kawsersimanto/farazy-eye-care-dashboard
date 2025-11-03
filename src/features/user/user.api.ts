@@ -16,7 +16,7 @@ export const userApi = baseApi.injectEndpoints({
 
     createUser: builder.mutation<ApiResponse<IUser>, Partial<IUser>>({
       query: (body) => ({
-        url: "/users/register",
+        url: "/users/create-user",
         method: "POST",
         body,
       }),

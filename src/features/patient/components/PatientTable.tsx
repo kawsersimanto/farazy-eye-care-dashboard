@@ -156,7 +156,7 @@ export const PatientTable = () => {
       accessorKey: "patientProfile.bloodGroup",
       header: "Blood Group",
       cell: ({ row }) => (
-        <Badge variant="secondary" className="bg-red-50">
+        <Badge variant="outline" className="bg-red-50">
           {row.original.patientProfile?.bloodGroup || "N/A"}
         </Badge>
       ),
@@ -170,26 +170,6 @@ export const PatientTable = () => {
         return <span>{dob ? new Date(dob).toLocaleDateString() : "N/A"}</span>;
       },
       size: 130,
-    },
-    {
-      accessorKey: "emailVerified",
-      header: "Email Verified",
-      cell: ({ row }) => (
-        <Badge variant={row.original.emailVerified ? "default" : "secondary"}>
-          {row.original.emailVerified ? "Verified" : "Pending"}
-        </Badge>
-      ),
-      size: 120,
-    },
-    {
-      accessorKey: "phoneVerified",
-      header: "Phone Verified",
-      cell: ({ row }) => (
-        <Badge variant={row.original.phoneVerified ? "default" : "secondary"}>
-          {row.original.phoneVerified ? "Verified" : "Pending"}
-        </Badge>
-      ),
-      size: 120,
     },
     {
       accessorKey: "isActive",

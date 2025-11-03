@@ -24,19 +24,25 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Spinner } from "@/components/ui/spinner";
+import { useCreateUserMutation } from "@/features/user/user.api";
 import { IBloodGroup, IGender } from "@/features/user/user.interface";
 import { cn } from "@/lib/utils";
 import { useAppSelector } from "@/redux/hook";
+import { ApiResponse } from "@/types/api";
+import { handleMutationRequest } from "@/utils/handleMutationRequest";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { shallowEqual } from "react-redux";
-import { toast } from "sonner";
 import { PatientFormValue, patientSchema } from "../patient.schema";
 
 export const PatientForm = () => {
+  const router = useRouter();
+  const [createPatientFn, { isLoading }] = useCreateUserMutation();
   const branchId = useAppSelector(
     (state) => state.auth.user?.branchId,
     shallowEqual
@@ -50,7 +56,7 @@ export const PatientForm = () => {
       dateOfBirth: undefined,
       email: "",
       phone: "",
-      emergencyPhone: "",
+      emergencyPhone: undefined,
       password: "12345678",
       gender: IGender.MALE,
       branchId: "",
@@ -65,18 +71,14 @@ export const PatientForm = () => {
     }
   }, [form, branchId]);
 
-  const onSubmit = (values: PatientFormValue) => {
-    try {
-      console.log(values);
-      toast(
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(values, null, 2)}</code>
-        </pre>
-      );
-    } catch (error) {
-      console.error("Form submission error", error);
-      toast.error("Failed to submit the form. Please try again.");
-    }
+  const onSubmit = async (values: PatientFormValue) => {
+    await handleMutationRequest(createPatientFn, values, {
+      loadingMessage: "Creating Patient",
+      successMessage: (res: ApiResponse<string>) => res?.message,
+      onSuccess: () => {
+        router.push("/patients");
+      },
+    });
   };
 
   return (
@@ -116,6 +118,8 @@ export const PatientForm = () => {
           )}
         />
 
+        <Password control={form.control} name="password" className="py-2" />
+
         <FormField
           control={form.control}
           name="phone"
@@ -126,7 +130,7 @@ export const PatientForm = () => {
                 <PhoneInput
                   placeholder="ex. 0153123412"
                   {...field}
-                  defaultCountry="TR"
+                  defaultCountry="BD"
                 />
               </FormControl>
 
@@ -135,7 +139,24 @@ export const PatientForm = () => {
           )}
         />
 
-        <Password control={form.control} name="password" className="py-2" />
+        <FormField
+          control={form.control}
+          name="emergencyPhone"
+          render={({ field }) => (
+            <FormItem className="flex flex-col items-start">
+              <FormLabel>Emergency Phone</FormLabel>
+              <FormControl className="w-full">
+                <PhoneInput
+                  placeholder="ex. 0133512342"
+                  {...field}
+                  defaultCountry="BD"
+                />
+              </FormControl>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         <FormField
           control={form.control}
@@ -248,26 +269,16 @@ export const PatientForm = () => {
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="emergencyPhone"
-          render={({ field }) => (
-            <FormItem className="flex flex-col items-start">
-              <FormLabel>Emergency Phone</FormLabel>
-              <FormControl className="w-full">
-                <PhoneInput
-                  placeholder="ex. 0133512342"
-                  {...field}
-                  defaultCountry="TR"
-                />
-              </FormControl>
-
-              <FormMessage />
-            </FormItem>
+        <Button type="submit" disabled={isLoading}>
+          {isLoading ? (
+            <>
+              <Spinner />
+              Submitting
+            </>
+          ) : (
+            "Submit"
           )}
-        />
-
-        <Button type="submit">Submit</Button>
+        </Button>
       </form>
     </Form>
   );
