@@ -1,3 +1,6 @@
+import { IBranch } from "../branch/branch.interface";
+import { IPatient } from "../patient/patient.interface";
+
 export enum IRole {
   SUPER_ADMIN = "SUPER_ADMIN",
   ADMIN = "ADMIN",
@@ -6,11 +9,24 @@ export enum IRole {
   PATIENT = "PATIENT",
 }
 
-export interface IEmployee {
-  id: string;
+export enum IGender {
+  MALE = "MALE",
+  FEMALE = "FEMALE",
+  OTHER = "OTHER",
 }
 
-export interface IPatient {
+export enum IBloodGroup {
+  "O+" = "O+",
+  "O-" = "O-",
+  "A+" = "A+",
+  "A-" = "A-",
+  "B+" = "B+",
+  "B-" = "B-",
+  "AB+" = "AB+",
+  "AB-" = "AB-",
+}
+
+export interface IEmployee {
   id: string;
 }
 
@@ -29,6 +45,7 @@ export interface IUser {
   createdByUserId: string | null;
   employeeProfile: IEmployee | null;
   patientProfile: IPatient | null;
+  branch?: IBranch;
   createdAt: string;
   updatedAt: string;
 }
