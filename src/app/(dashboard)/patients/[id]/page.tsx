@@ -1,5 +1,5 @@
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
-import { Medicine } from "@/features/medicine/components/Medicine";
+import { Patient } from "@/features/patient/components/Patient";
 
 const PatientDetailsPage = async ({
   params,
@@ -17,7 +17,7 @@ const PatientDetailsPage = async ({
           </h2>
         </CardTitle>
         <CardDescription className="pb-5">
-          <Medicine id={id} />
+          <Patient id={id} />
         </CardDescription>
       </Card>
     </div>

@@ -12,3 +12,15 @@ export const formatDate = (date: string | Date | undefined) => {
   if (!date) return "";
   return dayjs(date).fromNow();
 };
+
+export function getAgeFromISO(isoString: string): number {
+  if (!isoString) return 0;
+
+  const birthDate = dayjs(isoString);
+  if (!birthDate.isValid()) return 0;
+
+  const today = dayjs();
+  const age = today.diff(birthDate, "year");
+
+  return age;
+}
