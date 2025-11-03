@@ -1,5 +1,5 @@
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
-import { MedicineForm } from "@/features/medicine/components/MedicineForm";
+import { PatientForm } from "@/features/patient/components/PatientForm";
 
 const CreatePatientPage = () => {
   return (
@@ -9,7 +9,7 @@ const CreatePatientPage = () => {
           <h2 className="font-work-sans font-medium text-lg">Create Patient</h2>
         </CardTitle>
         <CardDescription>
-          <MedicineForm />
+          <PatientForm />
         </CardDescription>
       </Card>
     </div>

@@ -220,13 +220,13 @@ export const PatientTable = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem asChild>
-              <Link href={`patient/${row?.original?.id}`}>
+              <Link href={`patients/${row?.original?.id}`}>
                 <EyeIcon className="text-inherit" />
                 Preview
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link href={`patient/${row?.original?.id}/edit`}>
+              <Link href={`patients/${row?.original?.id}/edit`}>
                 <Pencil className="text-inherit" />
                 Edit
               </Link>
@@ -273,7 +273,7 @@ export const PatientTable = () => {
         }}
         renderActions={() => (
           <Button variant="outline" size="sm" asChild>
-            <Link href="/patient/create">
+            <Link href="/patients/create">
               <PlusCircle /> Add New
             </Link>
           </Button>

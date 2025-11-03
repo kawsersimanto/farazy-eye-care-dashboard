@@ -9,6 +9,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { useState } from "react";
 import { Control } from "react-hook-form";
@@ -19,6 +20,7 @@ interface PasswordProps {
   label?: string;
   placeholder?: string;
   disabled?: boolean;
+  className?: string;
 }
 
 export const Password = ({
@@ -27,6 +29,7 @@ export const Password = ({
   label = "Password",
   placeholder = "Enter your password",
   disabled = false,
+  className,
 }: PasswordProps) => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -47,7 +50,7 @@ export const Password = ({
                 type={showPassword ? "text" : "password"}
                 placeholder={placeholder}
                 {...field}
-                className="h-auto py-2.5 px-4 pr-12"
+                className={cn("h-auto py-2.5 px-4 pr-12", className)}
                 disabled={disabled}
               />
             </FormControl>
