@@ -128,8 +128,6 @@ export const ROLE_MENU_CONFIG: Record<IRole, string[]> = {
     "departments",
     "medicine",
     "payments",
-    "patients",
-    "doctors",
     "users",
   ],
   [IRole.ADMIN]: [
@@ -147,6 +145,7 @@ export const ROLE_MENU_CONFIG: Record<IRole, string[]> = {
     "doctors",
     "medicine",
     "payments",
+    "patients",
     "users",
   ],
   [IRole.DOCTOR]: [

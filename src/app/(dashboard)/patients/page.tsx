@@ -1,7 +1,7 @@
-import { MedicineTable } from "@/features/medicine/components/MedicineTable";
+import { PatientTable } from "@/features/patient/components/PatientTable";
 
 const PatientPage = () => {
-  return <MedicineTable />;
+  return <PatientTable />;
 };
 
 export default PatientPage;

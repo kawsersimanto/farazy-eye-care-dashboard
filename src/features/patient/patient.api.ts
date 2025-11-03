@@ -1,19 +1,19 @@
 import { baseApi } from "@/redux/api/baseApi";
 import { ApiResponse } from "@/types/api";
-import { IRole } from "../user/user.interface";
+import { IRole, IUser } from "../user/user.interface";
 import { IPatient } from "./patient.interface";
 
 export const patientApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getPatients: builder.query<
-      ApiResponse<IPatient[]>,
+      ApiResponse<IUser[], true>,
       { branchId: string; role?: string }
     >({
       query: ({ branchId, role = IRole.PATIENT }) => ({
         url: "/users",
         params: { branchId, role },
       }),
-      providesTags: ["patient"],
+      providesTags: ["users"],
     }),
     getPatientById: builder.query<ApiResponse<IPatient>, string>({
       query: (id) => `/patient/${id}`,
