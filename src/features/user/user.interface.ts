@@ -3,6 +3,7 @@ import { IPatient } from "../patient/patient.interface";
 
 export enum IRole {
   SUPER_ADMIN = "SUPER_ADMIN",
+  BRANCH_ADMIN = "BRANCH_ADMIN",
   ADMIN = "ADMIN",
   EMPLOYEE = "EMPLOYEE",
   DOCTOR = "DOCTOR",

@@ -141,6 +141,14 @@ export const ROLE_MENU_CONFIG: Record<IRole, string[]> = {
     "payments",
     "users",
   ],
+  [IRole.BRANCH_ADMIN]: [
+    "dashboard",
+    "departments",
+    "doctors",
+    "medicine",
+    "payments",
+    "users",
+  ],
   [IRole.DOCTOR]: [
     "dashboard",
     "appointments",
