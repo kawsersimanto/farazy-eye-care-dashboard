@@ -25,4 +25,14 @@ export const patientSchema = z.object({
   branchId: z.string().min(1, "Branch ID is required"),
 });
 
+export const updatePatientSchema = patientSchema.extend({
+  password: z
+    .string()
+    .refine((v) => v.length === 0 || v.length >= 8, {
+      message: "Password must be at least 8 characters",
+    })
+    .optional(),
+});
+
+export type UpdatePatientFormValue = z.infer<typeof updatePatientSchema>;
 export type PatientFormValue = z.infer<typeof patientSchema>;

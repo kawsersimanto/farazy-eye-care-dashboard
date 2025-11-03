@@ -1,5 +1,5 @@
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
-import { MedicineEdit } from "@/features/medicine/components/MedicineEdit";
+import { PatientEditForm } from "@/features/patient/components/PatientEditForm";
 
 const PatientEditPage = async ({
   params,
@@ -15,7 +15,7 @@ const PatientEditPage = async ({
           <h2 className="font-work-sans font-medium text-lg">Edit Patient</h2>
         </CardTitle>
         <CardDescription>
-          <MedicineEdit id={id} />
+          <PatientEditForm id={id} />
         </CardDescription>
       </Card>
     </div>
