@@ -1,6 +1,7 @@
 import { IRole } from "@/features/user/user.interface";
 import { SidebarMenuItem } from "@/types/sidebar";
 import {
+  Accessibility,
   BriefcaseMedical,
   Calendar,
   CircleDollarSign,
@@ -37,18 +38,6 @@ export const ALL_MENU_ITEMS: Record<string, SidebarMenuItem> = {
       { title: "Add New", url: "/department/create" },
     ],
   },
-  doctors: {
-    title: "Doctors",
-    icon: Stethoscope,
-    url: "#",
-    items: [
-      { title: "All Doctors", url: "/doctors" },
-      { title: "Add New", url: "/doctors/create" },
-      { title: "Schedule", url: "/doctors/schedules" },
-      { title: "Specialization", url: "/doctors/specializations" },
-      { title: "Leave Requests", url: "/doctors/leave-requests" },
-    ],
-  },
   medicine: {
     title: "Medicine",
     icon: Syringe,
@@ -67,6 +56,27 @@ export const ALL_MENU_ITEMS: Record<string, SidebarMenuItem> = {
     items: [
       { title: "All Payments", url: "/payments" },
       { title: "Add New", url: "/payments/create" },
+    ],
+  },
+  doctors: {
+    title: "Doctors",
+    icon: Stethoscope,
+    url: "#",
+    items: [
+      { title: "All Doctors", url: "/doctors" },
+      { title: "Add New", url: "/doctors/create" },
+      { title: "Schedule", url: "/doctors/schedules" },
+      { title: "Specialization", url: "/doctors/specializations" },
+      { title: "Leave Requests", url: "/doctors/leave-requests" },
+    ],
+  },
+  patients: {
+    title: "Patients",
+    icon: Accessibility,
+    url: "#",
+    items: [
+      { title: "All Patients", url: "/patients" },
+      { title: "Add New", url: "/patients/create" },
     ],
   },
   users: {
@@ -116,9 +126,10 @@ export const ROLE_MENU_CONFIG: Record<IRole, string[]> = {
     "dashboard",
     "branches",
     "departments",
-    "doctors",
     "medicine",
     "payments",
+    "patients",
+    "doctors",
     "users",
   ],
   [IRole.ADMIN]: [
