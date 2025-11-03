@@ -68,7 +68,7 @@ export const useAuth = (): UseAuthReturn => {
         dispatch(setUser(decodedUser as IUser));
 
         saveToken(token);
-        router.push("/dashboard");
+        router.push("/");
       } catch (error) {
         throw new Error(extractErrorMessage(error, "Login failed"));
       }
