@@ -19,7 +19,11 @@ export const employeeApi = baseApi.injectEndpoints({
       providesTags: ["users"],
     }),
     createEmployee: builder.mutation<IUser, Partial<IUser>>({
-      query: (body) => ({ url: "/users", method: "POST", body }),
+      query: (body) => ({
+        url: "/users/create-employee",
+        method: "POST",
+        body,
+      }),
       invalidatesTags: ["users"],
     }),
     updateEmployee: builder.mutation<IUser, Partial<IUser> & { id: string }>({
