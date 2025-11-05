@@ -49,7 +49,7 @@ export const PatientTable = () => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [updateUserFn, { isLoading: isUpdatingUser }] = useUpdateUserMutation();
-  const { data } = useGetPatientsQuery({ branchId });
+  const { data } = useGetPatientsQuery({ branchId, page, limit });
   const [deleteUserFn, { isLoading: isDeletingUser }] = useDeleteUserMutation();
 
   const patients = data?.data?.data || [];
