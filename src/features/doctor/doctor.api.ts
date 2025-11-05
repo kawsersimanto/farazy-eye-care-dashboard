@@ -19,7 +19,7 @@ export const doctorApi = baseApi.injectEndpoints({
       providesTags: ["users"],
     }),
     createDoctor: builder.mutation<IUser, Partial<IUser>>({
-      query: (body) => ({ url: "/users", method: "POST", body }),
+      query: (body) => ({ url: "/users/create-doctor", method: "POST", body }),
       invalidatesTags: ["users"],
     }),
     updateDoctor: builder.mutation<IUser, Partial<IUser> & { id: string }>({
