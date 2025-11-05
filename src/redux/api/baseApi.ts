@@ -17,6 +17,7 @@ export const baseApi = createApi({
     },
   }),
   tagTypes: [
+    "doctor",
     "patient",
     "medicine",
     "medicine-category",
