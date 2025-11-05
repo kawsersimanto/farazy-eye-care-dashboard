@@ -1,5 +1,6 @@
 import { IBranch } from "../branch/branch.interface";
 import { IDoctor } from "../doctor/doctor.interface";
+import { IEmployeeProfile } from "../employee/employee.interface";
 import { IPatient } from "../patient/patient.interface";
 
 export enum IRole {
@@ -28,10 +29,6 @@ export enum IBloodGroup {
   "AB-" = "AB-",
 }
 
-export interface IEmployee {
-  id: string;
-}
-
 export interface IUser {
   id: string;
   name: string;
@@ -45,7 +42,7 @@ export interface IUser {
   role: IRole;
   branchId: string | null;
   createdByUserId: string | null;
-  employeeProfile: IEmployee | null;
+  employeeProfile: IEmployeeProfile | null;
   patientProfile: IPatient | null;
   doctorProfile: IDoctor | null;
   branch?: IBranch;

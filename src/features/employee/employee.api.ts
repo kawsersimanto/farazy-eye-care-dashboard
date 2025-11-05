@@ -1,34 +1,38 @@
 import { baseApi } from "@/redux/api/baseApi";
-import { ApiResponse } from "@/types/api";
-import { IEmployee } from "./employee.interface";
+import { ApiParams, ApiResponse } from "@/types/api";
+import { IRole, IUser } from "../user/user.interface";
 
 export const employeeApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getEmployees: builder.query<ApiResponse<IEmployee[]>, void>({
-      query: () => "/employee",
-      providesTags: ["employee"],
+    getEmployees: builder.query<
+      ApiResponse<IUser[], true>,
+      Partial<ApiParams & { branchId: string; role?: string }>
+    >({
+      query: ({ branchId, role = IRole.EMPLOYEE, page = 1, limit = 10 }) => ({
+        url: "/users",
+        params: { branchId, role, page, limit },
+      }),
+      providesTags: ["users"],
     }),
-    getEmployeeById: builder.query<ApiResponse<IEmployee>, string>({
-      query: (id) => `/employee/${id}`,
-      providesTags: ["employee"],
+    getEmployeeById: builder.query<ApiResponse<IUser>, string>({
+      query: (id) => `/users/${id}`,
+      providesTags: ["users"],
     }),
-    createEmployee: builder.mutation<IEmployee, Partial<IEmployee>>({
-      query: (body) => ({ url: "/employee", method: "POST", body }),
-      invalidatesTags: ["employee"],
+    createEmployee: builder.mutation<IUser, Partial<IUser>>({
+      query: (body) => ({ url: "/users", method: "POST", body }),
+      invalidatesTags: ["users"],
     }),
-    updateEmployee: builder.mutation<IEmployee, Partial<IEmployee> & { id: string }>(
-      {
-        query: ({ id, ...body }) => ({
-          url: `/employee/${id}`,
-          method: "PUT",
-          body,
-        }),
-        invalidatesTags: ["employee"],
-      }
-    ),
+    updateEmployee: builder.mutation<IUser, Partial<IUser> & { id: string }>({
+      query: ({ id, ...body }) => ({
+        url: `/users/${id}`,
+        method: "PUT",
+        body,
+      }),
+      invalidatesTags: ["users"],
+    }),
     deleteEmployee: builder.mutation<{ success: boolean; id: string }, string>({
-      query: (id) => ({ url: `/employee/${id}`, method: "DELETE" }),
-      invalidatesTags: ["employee"],
+      query: (id) => ({ url: `/users/${id}`, method: "DELETE" }),
+      invalidatesTags: ["users"],
     }),
   }),
 });
