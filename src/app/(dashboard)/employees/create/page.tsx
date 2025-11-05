@@ -1,12 +1,14 @@
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { DoctorForm } from "@/features/doctor/components/DoctorForm";
 
-const CreateDoctorPage = () => {
+const CreatePage = () => {
   return (
     <div>
       <Card className="max-w-4xl mx-auto px-10">
         <CardTitle className="flex items-center gap-3">
-          <h2 className="font-work-sans font-medium text-lg">Create Doctor</h2>
+          <h2 className="font-work-sans font-medium text-lg">
+            Create Employee
+          </h2>
         </CardTitle>
         <CardDescription>
           <DoctorForm />
@@ -16,4 +18,4 @@ const CreateDoctorPage = () => {
   );
 };
 
-export default CreateDoctorPage;
+export default CreatePage;

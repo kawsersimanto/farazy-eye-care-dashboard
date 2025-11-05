@@ -1,7 +1,7 @@
 import { EmployeeTable } from "@/features/employee/components/EmployeeTable";
 
-const EmployeePage = () => {
+const ViewPage = () => {
   return <EmployeeTable />;
 };
 
-export default EmployeePage;
+export default ViewPage;

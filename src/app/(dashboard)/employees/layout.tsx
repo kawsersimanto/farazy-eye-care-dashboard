@@ -1,6 +1,6 @@
 import { Breadcrumbs } from "@/components/breadcrumbs/Breadcrumbs";
 
-const DoctorsLayout = ({
+const Layout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -13,4 +13,4 @@ const DoctorsLayout = ({
   );
 };
 
-export default DoctorsLayout;
+export default Layout;
