@@ -1,5 +1,7 @@
+import { DoctorTable } from "@/features/doctor/components/DoctorTable";
+
 const DoctorPage = () => {
-  return <>Doctor</>;
+  return <DoctorTable />;
 };
 
 export default DoctorPage;

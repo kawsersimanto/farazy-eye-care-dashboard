@@ -1,7 +1,6 @@
 import { baseApi } from "@/redux/api/baseApi";
 import { ApiResponse } from "@/types/api";
 import { IRole, IUser } from "../user/user.interface";
-import { IDoctor } from "./doctor.interface";
 
 export const doctorApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -9,31 +8,31 @@ export const doctorApi = baseApi.injectEndpoints({
       ApiResponse<IUser[], true>,
       { branchId: string; role?: string }
     >({
-      query: ({ branchId, role = IRole.PATIENT }) => ({
+      query: ({ branchId, role = IRole.DOCTOR }) => ({
         url: "/users",
         params: { branchId, role },
       }),
       providesTags: ["users"],
     }),
-    getDoctorById: builder.query<ApiResponse<IDoctor>, string>({
-      query: (id) => `/doctor/${id}`,
-      providesTags: ["doctor"],
+    getDoctorById: builder.query<ApiResponse<IUser>, string>({
+      query: (id) => `/users/${id}`,
+      providesTags: ["users"],
     }),
-    createDoctor: builder.mutation<IDoctor, Partial<IDoctor>>({
-      query: (body) => ({ url: "/doctor", method: "POST", body }),
-      invalidatesTags: ["doctor"],
+    createDoctor: builder.mutation<IUser, Partial<IUser>>({
+      query: (body) => ({ url: "/users", method: "POST", body }),
+      invalidatesTags: ["users"],
     }),
-    updateDoctor: builder.mutation<IDoctor, Partial<IDoctor> & { id: string }>({
+    updateDoctor: builder.mutation<IUser, Partial<IUser> & { id: string }>({
       query: ({ id, ...body }) => ({
-        url: `/doctor/${id}`,
+        url: `/users/${id}`,
         method: "PUT",
         body,
       }),
-      invalidatesTags: ["doctor"],
+      invalidatesTags: ["users"],
     }),
     deleteDoctor: builder.mutation<{ success: boolean; id: string }, string>({
-      query: (id) => ({ url: `/doctor/${id}`, method: "DELETE" }),
-      invalidatesTags: ["doctor"],
+      query: (id) => ({ url: `/users/${id}`, method: "DELETE" }),
+      invalidatesTags: ["users"],
     }),
   }),
 });
