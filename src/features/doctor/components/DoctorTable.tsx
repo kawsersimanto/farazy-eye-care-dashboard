@@ -33,7 +33,6 @@ import {
   Ban,
   EyeIcon,
   MoreHorizontal,
-  Pencil,
   PlusCircle,
   Trash,
   Unlock,
@@ -256,12 +255,6 @@ export const DoctorTable = () => {
               <Link href={`doctors/${row?.original?.id}`}>
                 <EyeIcon className="text-inherit" />
                 Preview
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link href={`doctors/${row?.original?.id}/edit`}>
-                <Pencil className="text-inherit" />
-                Edit
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem

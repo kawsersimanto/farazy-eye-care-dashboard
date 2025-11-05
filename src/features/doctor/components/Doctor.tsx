@@ -52,9 +52,6 @@ export const Doctor = ({ id }: { id: string }) => {
           <Badge variant={doctorProfile?.isAvailable ? "default" : "secondary"}>
             {doctorProfile?.isAvailable ? "Available" : "Unavailable"}
           </Badge>
-          <Badge variant={doctorData?.isActive ? "default" : "secondary"}>
-            {doctorData?.isActive ? "Active" : "Inactive"}
-          </Badge>
         </div>
       </div>
 
