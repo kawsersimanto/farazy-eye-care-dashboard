@@ -2,12 +2,12 @@ export interface IDoctor {
   id: string;
   userId: string;
   branchId: string;
-  about: string | null;
-  registrationNo: string | null;
-  yearsExperience: number;
-  consultationFee: number | null;
+  about?: string;
+  registrationNo?: string;
+  yearsExperience?: number;
+  consultationFee?: number;
   isAvailable: boolean;
-  title: string | null;
+  title?: string;
   degrees: string[];
   qualifications: string[];
   createdAt: string;
