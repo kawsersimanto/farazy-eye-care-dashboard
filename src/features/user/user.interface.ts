@@ -1,4 +1,5 @@
 import { IBranch } from "../branch/branch.interface";
+import { IDoctor } from "../doctor/doctor.interface";
 import { IPatient } from "../patient/patient.interface";
 
 export enum IRole {
@@ -46,6 +47,7 @@ export interface IUser {
   createdByUserId: string | null;
   employeeProfile: IEmployee | null;
   patientProfile: IPatient | null;
+  doctorProfile: IDoctor | null;
   branch?: IBranch;
   createdAt: string;
   updatedAt: string;

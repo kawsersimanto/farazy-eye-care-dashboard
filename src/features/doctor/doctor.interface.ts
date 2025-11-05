@@ -1,6 +1,4 @@
-import { IUser } from "../user/user.interface";
-
-export interface IDoctorProfile {
+export interface IDoctor {
   id: string;
   userId: string;
   branchId: string;
@@ -14,8 +12,4 @@ export interface IDoctorProfile {
   qualifications: string[];
   createdAt: string;
   updatedAt: string;
-}
-
-export interface IDoctor extends IUser {
-  doctorProfile: IDoctorProfile;
 }
