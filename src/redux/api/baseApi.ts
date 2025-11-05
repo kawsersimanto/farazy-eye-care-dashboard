@@ -17,6 +17,7 @@ export const baseApi = createApi({
     },
   }),
   tagTypes: [
+    "employee",
     "doctor",
     "patient",
     "medicine",
