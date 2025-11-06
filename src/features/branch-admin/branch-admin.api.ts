@@ -20,13 +20,17 @@ export const branchAdminApi = baseApi.injectEndpoints({
       }),
       providesTags: ["users"],
     }),
-    getBranchAdminById: builder.query<ApiResponse<IBranchAdmin>, string>({
-      query: (id) => `/branch-admin/${id}`,
-      providesTags: ["branch-admin"],
+    getBranchAdminById: builder.query<ApiResponse<IUser>, string>({
+      query: (id) => `/users/${id}`,
+      providesTags: ["users"],
     }),
-    createBranchAdmin: builder.mutation<IBranchAdmin, Partial<IBranchAdmin>>({
-      query: (body) => ({ url: "/branch-admin", method: "POST", body }),
-      invalidatesTags: ["branch-admin"],
+    createBranchAdmin: builder.mutation<IUser, Partial<IUser>>({
+      query: (body) => ({
+        url: "/users/create-branch-admin",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["users"],
     }),
     updateBranchAdmin: builder.mutation<
       IBranchAdmin,

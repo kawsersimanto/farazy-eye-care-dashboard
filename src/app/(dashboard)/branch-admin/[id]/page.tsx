@@ -1,5 +1,5 @@
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
-import { Employee } from "@/features/employee/components/Employee";
+import { BranchAdmin } from "@/features/branch-admin/components/BranchAdmin";
 
 const DetailsPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
@@ -8,10 +8,12 @@ const DetailsPage = async ({ params }: { params: Promise<{ id: string }> }) => {
     <div>
       <Card className="max-w-4xl mx-auto px-10">
         <CardTitle className="flex items-center gap-3">
-          <h2 className="font-work-sans font-medium text-lg">View Employee</h2>
+          <h2 className="font-work-sans font-medium text-lg">
+            View Branch Admin
+          </h2>
         </CardTitle>
         <CardDescription>
-          <Employee id={id} />
+          <BranchAdmin id={id} />
         </CardDescription>
       </Card>
     </div>

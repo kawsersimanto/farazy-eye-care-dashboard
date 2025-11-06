@@ -1,5 +1,5 @@
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
-import { EmployeeForm } from "@/features/employee/components/EmployeeForm";
+import { BranchAdminForm } from "@/features/branch-admin/components/BranchAdminForm";
 
 const CreatePage = () => {
   return (
@@ -7,11 +7,11 @@ const CreatePage = () => {
       <Card className="max-w-4xl mx-auto px-10">
         <CardTitle className="flex items-center gap-3">
           <h2 className="font-work-sans font-medium text-lg">
-            Create Employee
+            Create Branch Admin
           </h2>
         </CardTitle>
         <CardDescription>
-          <EmployeeForm />
+          <BranchAdminForm />
         </CardDescription>
       </Card>
     </div>

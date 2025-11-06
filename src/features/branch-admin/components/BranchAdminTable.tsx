@@ -201,7 +201,7 @@ export const BranchAdminTable = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem asChild>
-              <Link href={`users/${row?.original?.id}`}>
+              <Link href={`/branch-admin/${row?.original?.id}`}>
                 <EyeIcon className="text-inherit" />
                 Preview
               </Link>
