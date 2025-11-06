@@ -1,12 +1,24 @@
 import { baseApi } from "@/redux/api/baseApi";
-import { ApiResponse } from "@/types/api";
+import { ApiParams, ApiResponse } from "@/types/api";
+import { IRole, IUser } from "../user/user.interface";
 import { IBranchAdmin } from "./branch-admin.interface";
 
 export const branchAdminApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getBranchAdmins: builder.query<ApiResponse<IBranchAdmin[]>, void>({
-      query: () => "/branch-admin",
-      providesTags: ["branch-admin"],
+    getBranchAdmins: builder.query<
+      ApiResponse<IUser[], true>,
+      Partial<ApiParams & { branchId: string; role?: string }>
+    >({
+      query: ({
+        branchId,
+        role = IRole.BRANCH_ADMIN,
+        page = 1,
+        limit = 10,
+      }) => ({
+        url: "/users",
+        params: { branchId, role, page, limit },
+      }),
+      providesTags: ["users"],
     }),
     getBranchAdminById: builder.query<ApiResponse<IBranchAdmin>, string>({
       query: (id) => `/branch-admin/${id}`,
@@ -16,17 +28,21 @@ export const branchAdminApi = baseApi.injectEndpoints({
       query: (body) => ({ url: "/branch-admin", method: "POST", body }),
       invalidatesTags: ["branch-admin"],
     }),
-    updateBranchAdmin: builder.mutation<IBranchAdmin, Partial<IBranchAdmin> & { id: string }>(
-      {
-        query: ({ id, ...body }) => ({
-          url: `/branch-admin/${id}`,
-          method: "PUT",
-          body,
-        }),
-        invalidatesTags: ["branch-admin"],
-      }
-    ),
-    deleteBranchAdmin: builder.mutation<{ success: boolean; id: string }, string>({
+    updateBranchAdmin: builder.mutation<
+      IBranchAdmin,
+      Partial<IBranchAdmin> & { id: string }
+    >({
+      query: ({ id, ...body }) => ({
+        url: `/branch-admin/${id}`,
+        method: "PUT",
+        body,
+      }),
+      invalidatesTags: ["branch-admin"],
+    }),
+    deleteBranchAdmin: builder.mutation<
+      { success: boolean; id: string },
+      string
+    >({
       query: (id) => ({ url: `/branch-admin/${id}`, method: "DELETE" }),
       invalidatesTags: ["branch-admin"],
     }),

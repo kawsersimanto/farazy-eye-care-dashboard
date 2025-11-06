@@ -1,7 +1,7 @@
-import { EmployeeTable } from "@/features/employee/components/EmployeeTable";
+import { BranchAdminTable } from "@/features/branch-admin/components/BranchAdminTable";
 
 const ViewPage = () => {
-  return <EmployeeTable />;
+  return <BranchAdminTable />;
 };
 
 export default ViewPage;
