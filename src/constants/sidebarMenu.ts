@@ -4,14 +4,14 @@ import {
   Accessibility,
   BriefcaseMedical,
   Calendar,
-  CircleDollarSign,
   Clock,
+  Contact,
   FileText,
   Hospital,
-  IdCardLanyard,
   LayoutDashboard,
   Stethoscope,
   Syringe,
+  UserLock,
   Users,
 } from "lucide-react";
 
@@ -50,15 +50,15 @@ export const ALL_MENU_ITEMS: Record<string, SidebarMenuItem> = {
       { title: "Categories", url: "/medicine/categories" },
     ],
   },
-  payments: {
-    title: "Payments",
-    icon: CircleDollarSign,
-    url: "#",
-    items: [
-      { title: "All Payments", url: "/payments" },
-      { title: "Add New", url: "/payments/create" },
-    ],
-  },
+  // payments: {
+  //   title: "Payments",
+  //   icon: CircleDollarSign,
+  //   url: "#",
+  //   items: [
+  //     { title: "All Payments", url: "/payments" },
+  //     { title: "Add New", url: "/payments/create" },
+  //   ],
+  // },
   doctors: {
     title: "Doctors",
     icon: Stethoscope,
@@ -71,9 +71,18 @@ export const ALL_MENU_ITEMS: Record<string, SidebarMenuItem> = {
       { title: "Leave Requests", url: "/doctors/leave-requests" },
     ],
   },
+  branchAdmins: {
+    title: "Branch Admin",
+    icon: UserLock,
+    url: "#",
+    items: [
+      { title: "All Branch Admin", url: "/branch-admin" },
+      { title: "Add New", url: "/branch-admin/create" },
+    ],
+  },
   employees: {
     title: "Employees",
-    icon: IdCardLanyard,
+    icon: Contact,
     url: "#",
     items: [
       { title: "All Employees", url: "/employees" },
@@ -137,7 +146,7 @@ export const ROLE_MENU_CONFIG: Record<IRole, string[]> = {
     "branches",
     "departments",
     "medicine",
-    "payments",
+    // "payments",
     "users",
   ],
   [IRole.ADMIN]: [
@@ -147,7 +156,8 @@ export const ROLE_MENU_CONFIG: Record<IRole, string[]> = {
     "doctors",
     "medicine",
     "employees",
-    "payments",
+    "branchAdmins",
+    // "payments",
     "users",
   ],
   [IRole.BRANCH_ADMIN]: [
@@ -155,7 +165,8 @@ export const ROLE_MENU_CONFIG: Record<IRole, string[]> = {
     "departments",
     "doctors",
     "medicine",
-    "payments",
+    "branchAdmins",
+    // "payments",
     "employees",
     "patients",
     "users",
