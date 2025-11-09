@@ -20,7 +20,6 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
-import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useSidebarMenu } from "@/hooks/useSidebarMenu";
 import { cn } from "@/lib/utils";
 import { ChevronDown, ChevronRight } from "lucide-react";
@@ -31,7 +30,6 @@ import { useState } from "react";
 
 export const AppSidebar = () => {
   const [openItems, setOpenItems] = useState<string[]>(["Analytics"]);
-  const { user } = useAuth();
   const pathname = usePathname();
   const sidebarMenu = useSidebarMenu();
 
@@ -156,7 +154,7 @@ export const AppSidebar = () => {
 
       {/* User */}
       <SidebarFooter className="md:px-5 px-1">
-        <AppUser user={user} />
+        <AppUser />
       </SidebarFooter>
     </Sidebar>
   );

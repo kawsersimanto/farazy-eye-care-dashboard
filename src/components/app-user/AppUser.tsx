@@ -25,17 +25,17 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { useAuth } from "@/features/auth/hooks/useAuth";
-import { IUser } from "@/features/user/user.interface";
+import { Spinner } from "../ui/spinner";
 
-export const AppUser = ({ user }: { user: IUser | null }) => {
+export const AppUser = () => {
   const { isMobile } = useSidebar();
-  const { handleLogout, isLoading } = useAuth();
+  const { profile: user, handleLogout, isLoading } = useAuth();
 
   return (
     <SidebarMenu>
       <SidebarMenuItem>
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
+          <DropdownMenuTrigger asChild disabled={isLoading}>
             <SidebarMenuButton
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
@@ -52,9 +52,9 @@ export const AppUser = ({ user }: { user: IUser | null }) => {
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">
-                  {user?.name || "Name Not Set"}
+                  {isLoading ? <Spinner /> : user?.name || "Name Not Set"}
                 </span>
-                <span className="truncate text-xs">{user?.email}</span>
+                <span className="truncate text-xs">{user?.email || "-"}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
