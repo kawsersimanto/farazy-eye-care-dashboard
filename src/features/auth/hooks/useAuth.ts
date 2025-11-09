@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import {
   useChangePasswordMutation,
   useForgotPasswordMutation,
+  useGetProfileQuery,
   useLoginMutation,
   useLogoutMutation,
   useResetPasswordMutation,
@@ -44,12 +45,22 @@ export const useAuth = (): UseAuthReturn => {
   const [forgotPassword, { isLoading: forgotPasswordLoading }] =
     useForgotPasswordMutation();
 
+  const { data: profileData, isLoading: profileLoading } = useGetProfileQuery(
+    "",
+    {
+      skip: !token,
+    }
+  );
+
+  const profile = profileData?.data || null;
+
   const isLoading =
     loginLoading ||
     logoutLoading ||
     changePasswordLoading ||
     resetPasswordLoading ||
-    forgotPasswordLoading;
+    forgotPasswordLoading ||
+    profileLoading;
 
   // ---- LOGIN ----
   const handleLogin = useCallback(
@@ -181,6 +192,7 @@ export const useAuth = (): UseAuthReturn => {
     user,
     token,
     email,
+    profile,
     isLoading,
     isAuthenticated: Boolean(token),
     handleLogin,

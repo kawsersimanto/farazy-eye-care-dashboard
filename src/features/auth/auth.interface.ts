@@ -40,6 +40,7 @@ export interface UseAuthReturn {
   email: string | null;
   isLoading: boolean;
   isAuthenticated: boolean;
+  profile: IUser | null;
   handleLogin: (credentials: LoginCredentials) => Promise<void>;
   handleLogout: () => Promise<void>;
   handleChangePassword: (

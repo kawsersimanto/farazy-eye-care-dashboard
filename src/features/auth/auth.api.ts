@@ -1,5 +1,6 @@
 import { baseApi } from "@/redux/api/baseApi";
 import { ApiResponse } from "@/types/api";
+import { IUser } from "../user/user.interface";
 import { AuthResponse } from "./auth.interface";
 
 export const authApi = baseApi.injectEndpoints({
@@ -11,6 +12,10 @@ export const authApi = baseApi.injectEndpoints({
         body,
       }),
       invalidatesTags: ["auth"],
+    }),
+    getProfile: builder.query<ApiResponse<IUser>, string>({
+      query: () => `/users/profile`,
+      providesTags: ["auth"],
     }),
     logout: builder.mutation({
       query: () => ({
@@ -60,6 +65,7 @@ export const authApi = baseApi.injectEndpoints({
 export const {
   useLoginMutation,
   useRegisterMutation,
+  useGetProfileQuery,
   useLogoutMutation,
   useChangePasswordMutation,
   useForgotPasswordMutation,

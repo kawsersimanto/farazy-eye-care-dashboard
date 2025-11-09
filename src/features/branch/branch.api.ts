@@ -10,6 +10,7 @@ export const branchApi = baseApi.injectEndpoints({
     }),
     getBranchById: builder.query<ApiResponse<IBranch>, string>({
       query: (id) => `/branch/${id}`,
+      providesTags: ["branch"],
     }),
     createBranch: builder.mutation<IBranch, Partial<IBranch>>({
       query: (body) => ({ url: "/branch", method: "POST", body }),
