@@ -20,6 +20,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useSidebarMenu } from "@/hooks/useSidebarMenu";
 import { cn } from "@/lib/utils";
 import { ChevronDown, ChevronRight } from "lucide-react";
@@ -30,6 +31,7 @@ import { useState } from "react";
 
 export const AppSidebar = () => {
   const [openItems, setOpenItems] = useState<string[]>(["Analytics"]);
+  const { user } = useAuth();
   const pathname = usePathname();
   const sidebarMenu = useSidebarMenu();
 
@@ -39,12 +41,6 @@ export const AppSidebar = () => {
         ? prev.filter((item) => item !== title)
         : [...prev, title]
     );
-  };
-
-  const user = {
-    name: "Farazy Admin",
-    email: "admin@farazy-eye-care.com",
-    avatar: "/logo.webp",
   };
 
   return (

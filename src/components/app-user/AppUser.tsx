@@ -25,16 +25,9 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { useAuth } from "@/features/auth/hooks/useAuth";
+import { IUser } from "@/features/user/user.interface";
 
-export const AppUser = ({
-  user,
-}: {
-  user: {
-    name: string;
-    email: string;
-    avatar: string;
-  };
-}) => {
+export const AppUser = ({ user }: { user: IUser | null }) => {
   const { isMobile } = useSidebar();
   const { handleLogout, isLoading } = useAuth();
 
@@ -49,17 +42,19 @@ export const AppUser = ({
             >
               <Avatar className="h-8 w-8 rounded-lg border border-border">
                 <AvatarImage
-                  src={user.avatar}
-                  alt={user.name}
+                  src={user?.profileImageUrl || "placeholder.png"}
+                  alt={user?.name}
                   className="object-contain"
                 />
                 <AvatarFallback className="rounded-lg bg-primary text-white">
-                  CN
+                  {user?.name?.slice(0, 2)}
                 </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{user.name}</span>
-                <span className="truncate text-xs">{user.email}</span>
+                <span className="truncate font-medium">
+                  {user?.name || "Name Not Set"}
+                </span>
+                <span className="truncate text-xs">{user?.email}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
@@ -74,8 +69,8 @@ export const AppUser = ({
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg border border-border">
                   <AvatarImage
-                    src={user.avatar}
-                    alt={user.name}
+                    src={user?.profileImageUrl || "placeholder.png"}
+                    alt={user?.name}
                     className="object-contain"
                   />
                   <AvatarFallback className="rounded-lg bg-primary text-white">
@@ -83,8 +78,10 @@ export const AppUser = ({
                   </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">{user.name}</span>
-                  <span className="truncate text-xs">{user.email}</span>
+                  <span className="truncate font-medium">
+                    {user?.name || "Name Not Set"}
+                  </span>
+                  <span className="truncate text-xs">{user?.email}</span>
                 </div>
               </div>
             </DropdownMenuLabel>
