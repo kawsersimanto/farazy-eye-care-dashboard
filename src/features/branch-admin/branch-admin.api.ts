@@ -7,7 +7,7 @@ export const branchAdminApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getBranchAdmins: builder.query<
       ApiResponse<IUser[], true>,
-      Partial<ApiParams & { branchId: string; role?: string }>
+      Partial<ApiParams & { branchId?: string; role?: string }>
     >({
       query: ({
         branchId,
@@ -16,7 +16,12 @@ export const branchAdminApi = baseApi.injectEndpoints({
         limit = 10,
       }) => ({
         url: "/users",
-        params: { branchId, role, page, limit },
+        params: {
+          ...(branchId && { branchId }),
+          role,
+          page,
+          limit,
+        },
       }),
       providesTags: ["users"],
     }),

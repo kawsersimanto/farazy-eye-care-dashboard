@@ -163,7 +163,15 @@ export const BranchAdminTable = () => {
         </Link>
       ),
     },
-
+    {
+      accessorKey: "branch.name",
+      header: "Branch Name",
+      cell: ({ row }) => (
+        <Badge variant="outline" className="bg-slate-200">
+          {row.original.branch?.name}
+        </Badge>
+      ),
+    },
     {
       accessorKey: "role",
       header: "Role",
