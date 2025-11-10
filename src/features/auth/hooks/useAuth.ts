@@ -168,8 +168,10 @@ export const useAuth = (): UseAuthReturn => {
     [hasRole]
   );
 
-  const isAdmin = useCallback(
-    (): boolean => hasRole([IRole.ADMIN, IRole.SUPER_ADMIN]),
+  const isAdmin = useCallback((): boolean => hasRole([IRole.ADMIN]), [hasRole]);
+
+  const isBranchAdmin = useCallback(
+    (): boolean => hasRole([IRole.BRANCH_ADMIN]),
     [hasRole]
   );
 
@@ -203,6 +205,7 @@ export const useAuth = (): UseAuthReturn => {
     getUserRole,
     hasRole,
     isSuperAdmin,
+    isBranchAdmin,
     isAdmin,
     isDoctor,
     isPatient,

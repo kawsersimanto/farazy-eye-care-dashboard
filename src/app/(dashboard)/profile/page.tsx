@@ -1,4 +1,5 @@
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
+import { Profile } from "@/features/user/components/Profile";
 
 const Page = () => {
   return (
@@ -9,7 +10,9 @@ const Page = () => {
             View Patient
           </h2>
         </CardTitle>
-        <CardDescription className="pb-5">Profile</CardDescription>
+        <CardDescription className="pb-5">
+          <Profile />
+        </CardDescription>
       </Card>
     </div>
   );

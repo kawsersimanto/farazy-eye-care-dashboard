@@ -54,6 +54,7 @@ export interface UseAuthReturn {
   hasRole: (requiredRoles: IRole[]) => boolean;
   isSuperAdmin: () => boolean;
   isAdmin: () => boolean;
+  isBranchAdmin: () => boolean;
   isDoctor: () => boolean;
   isPatient: () => boolean;
   isEmployee: () => boolean;
