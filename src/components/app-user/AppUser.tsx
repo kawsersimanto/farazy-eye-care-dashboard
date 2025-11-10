@@ -1,13 +1,5 @@
 "use client";
 
-import {
-  BadgeCheck,
-  Bell,
-  ChevronsUpDown,
-  LogOut,
-  Settings,
-} from "lucide-react";
-
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -25,6 +17,8 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { useAuth } from "@/features/auth/hooks/useAuth";
+import { BadgeCheck, ChevronsUpDown, LogOut, Settings } from "lucide-react";
+import Link from "next/link";
 import { Spinner } from "../ui/spinner";
 
 export const AppUser = () => {
@@ -87,18 +81,22 @@ export const AppUser = () => {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <BadgeCheck className="!text-inherit" />
-                Account
+              <DropdownMenuItem asChild>
+                <Link href="/profile">
+                  <BadgeCheck className="!text-inherit" />
+                  Account
+                </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Settings className="!text-inherit" />
-                Settings
+              <DropdownMenuItem asChild>
+                <Link href="/profile">
+                  <Settings className="!text-inherit" />
+                  Settings
+                </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              {/* <DropdownMenuItem>
                 <Bell className="!text-inherit" />
                 Notifications
-              </DropdownMenuItem>
+              </DropdownMenuItem> */}
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleLogout} disabled={isLoading}>
