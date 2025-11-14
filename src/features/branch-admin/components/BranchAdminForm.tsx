@@ -9,8 +9,15 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Spinner } from "@/components/ui/spinner";
-import { useAppSelector } from "@/redux/hook";
+import { useGetBranchesQuery } from "@/features/branch/branch.api";
 import { ApiResponse } from "@/types/api";
 import { handleMutationRequest } from "@/utils/handleMutationRequest";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,21 +31,21 @@ import {
 
 export const BranchAdminForm = () => {
   const router = useRouter();
-  const branchId = useAppSelector(
-    (state) => state.auth.user?.branchId
-  ) as string;
   const [createBranchAdminFn, { isLoading }] = useCreateBranchAdminMutation();
+  const { data: branches } = useGetBranchesQuery();
+
   const form = useForm<BranchAdminSchemaType>({
     resolver: zodResolver(BranchAdminSchema),
     defaultValues: {
       email: "",
+      branchId: "",
     },
   });
 
   const onSubmit = async (values: BranchAdminSchemaType) => {
     await handleMutationRequest(
       createBranchAdminFn,
-      { ...values, branchId },
+      { ...values, branchId: values.branchId },
       {
         loadingMessage: "Creating Branch Admin",
         successMessage: (res: ApiResponse<string>) => res?.message,
@@ -70,6 +77,33 @@ export const BranchAdminForm = () => {
             </FormItem>
           )}
         />
+
+        <FormField
+          control={form.control}
+          name="branchId"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Branch</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="ex. Bansree Branch" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {branches?.data?.map((branch) => (
+                    <SelectItem key={branch?.id} value={branch?.id}>
+                      {branch?.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <Button type="submit" disabled={isLoading}>
           {isLoading ? (
             <>
