@@ -79,7 +79,6 @@ export const DoctorProfileForm = () => {
 
   const onSubmit = async (values: doctorSchemaType) => {
     const payload = normalizePayload(createDoctorPayload(values));
-    console.log(payload);
     await handleMutationRequest(updateProfileFn, payload, {
       loadingMessage: "Updating Profile",
       successMessage: (res: ApiResponse<string>) => res?.message,

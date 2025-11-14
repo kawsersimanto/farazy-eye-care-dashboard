@@ -5,6 +5,7 @@ import { MedicineFormSkeleton } from "@/features/medicine/components/MedicineFor
 import { ReactNode } from "react";
 import { IRole } from "../user.interface";
 import { DoctorProfileForm } from "./DoctorProfileForm";
+import { EmployeeProfileForm } from "./EmployeeProfileForm";
 import { ProfileForm } from "./ProfileForm";
 
 export const Profile = () => {
@@ -19,7 +20,7 @@ export const Profile = () => {
     [IRole.BRANCH_ADMIN]: <ProfileForm />,
     [IRole.ADMIN]: "admin",
     [IRole.DOCTOR]: <DoctorProfileForm />,
-    [IRole.EMPLOYEE]: "isEmployee",
+    [IRole.EMPLOYEE]: <EmployeeProfileForm />,
     [IRole.PATIENT]: <div>Profile</div>,
     UNKNOWN: <div>Role not found</div>,
   };
