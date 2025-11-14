@@ -1,5 +1,8 @@
 import { baseApi } from "@/redux/api/baseApi";
 import { ApiResponse } from "@/types/api";
+import { IDoctor } from "../doctor/doctor.interface";
+import { IEmployeeProfile } from "../employee/employee.interface";
+import { IPatient } from "../patient/patient.interface";
 import { IUser } from "../user/user.interface";
 import { AuthResponse } from "./auth.interface";
 
@@ -17,6 +20,24 @@ export const authApi = baseApi.injectEndpoints({
       query: () => `/users/profile`,
       providesTags: ["auth"],
     }),
+
+    updateProfile: builder.mutation<
+      ApiResponse<IUser>,
+      {
+        user: Partial<IUser>;
+        doctorProfile?: Partial<IDoctor> | null;
+        employeeProfile?: Partial<IEmployeeProfile> | null;
+        patientProfile?: Partial<IPatient> | null;
+      }
+    >({
+      query: (body) => ({
+        url: `/users/profile`,
+        method: "PUT",
+        body,
+      }),
+      invalidatesTags: ["auth"],
+    }),
+
     logout: builder.mutation({
       query: () => ({
         url: "/auth/logout",
@@ -67,6 +88,7 @@ export const {
   useRegisterMutation,
   useGetProfileQuery,
   useLogoutMutation,
+  useUpdateProfileMutation,
   useChangePasswordMutation,
   useForgotPasswordMutation,
   useResetPasswordMutation,
