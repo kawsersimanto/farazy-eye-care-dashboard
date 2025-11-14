@@ -193,7 +193,9 @@ export const DoctorTable = () => {
       accessorKey: "doctorProfile.title",
       header: "Title",
       cell: ({ row }) => (
-        <span>{row.original.doctorProfile?.title || "-"}</span>
+        <Badge variant="outline">
+          {row.original.doctorProfile?.title || "-"}
+        </Badge>
       ),
       size: 120,
     },
