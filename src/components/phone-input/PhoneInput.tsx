@@ -199,3 +199,16 @@ const FlagComponent = ({ country, countryName }: RPNInput.FlagProps) => {
 };
 
 export { PhoneInput };
+
+export const formatPhoneToE164 = (phone: string | undefined) => {
+  if (!phone) return undefined;
+
+  if (phone.startsWith("+")) {
+    return phone;
+  }
+
+  const bangladeshCode = "880";
+  const cleanPhone = phone.replace(/\D/g, "");
+
+  return `+${bangladeshCode}${cleanPhone}`;
+};

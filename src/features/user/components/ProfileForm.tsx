@@ -1,6 +1,9 @@
 "use client";
 
-import { PhoneInput } from "@/components/phone-input/PhoneInput";
+import {
+  formatPhoneToE164,
+  PhoneInput,
+} from "@/components/phone-input/PhoneInput";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -48,7 +51,7 @@ export const ProfileForm = () => {
       form.reset({
         name: profile?.name || "",
         email: profile?.email || "",
-        phone: profile?.phone || "",
+        phone: formatPhoneToE164(profile?.phone) || "",
         profileImageUrl: profile?.profileImageUrl || "",
       });
     }
@@ -110,7 +113,7 @@ export const ProfileForm = () => {
               <FormLabel>Phone</FormLabel>
               <FormControl className="w-full">
                 <PhoneInput
-                  placeholder="ex. 15349123"
+                  placeholder="ex. +88015349123"
                   {...field}
                   defaultCountry="BD"
                 />

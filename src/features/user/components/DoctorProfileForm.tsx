@@ -1,6 +1,9 @@
 "use client";
 
-import { PhoneInput } from "@/components/phone-input/PhoneInput";
+import {
+  formatPhoneToE164,
+  PhoneInput,
+} from "@/components/phone-input/PhoneInput";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -62,7 +65,7 @@ export const DoctorProfileForm = () => {
       form.reset({
         name: profile?.name || "",
         email: profile?.email || "",
-        phone: profile?.phone || "",
+        phone: formatPhoneToE164(profile?.phone) || "",
         profileImageUrl: profile?.profileImageUrl || "",
         about: profile?.doctorProfile?.about || "",
         consultationFee: profile?.doctorProfile?.consultationFee || 0,
