@@ -177,7 +177,8 @@ export const ROLE_MENU_CONFIG: Record<IRole, string[]> = {
     "appointments",
     "doctorSchedule",
     "medicalRecords",
+    "patients",
   ],
   [IRole.PATIENT]: ["dashboard", "appointments", "medicalRecords"],
-  [IRole.EMPLOYEE]: ["dashboard", "employeeAttendance"],
+  [IRole.EMPLOYEE]: ["dashboard", "employeeAttendance", "patients"],
 };

@@ -1,5 +1,4 @@
 "use client";
-import { Password } from "@/components/password/Password";
 import { PhoneInput } from "@/components/phone-input/PhoneInput";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -26,7 +25,7 @@ import {
 } from "@/components/ui/select";
 import { Spinner } from "@/components/ui/spinner";
 import { useCreateUserMutation } from "@/features/user/user.api";
-import { IBloodGroup, IGender } from "@/features/user/user.interface";
+import { IGender } from "@/features/user/user.interface";
 import { cn } from "@/lib/utils";
 import { useAppSelector } from "@/redux/hook";
 import { ApiResponse } from "@/types/api";
@@ -37,27 +36,22 @@ import { Calendar as CalendarIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { shallowEqual } from "react-redux";
 import { PatientFormValue, patientSchema } from "../patient.schema";
 
 export const PatientForm = () => {
   const router = useRouter();
   const [createPatientFn, { isLoading }] = useCreateUserMutation();
-  const branchId = useAppSelector(
-    (state) => state.auth.user?.branchId,
-    shallowEqual
-  );
+  const branchId = useAppSelector((state) => state.auth.user?.branchId);
   const form = useForm<PatientFormValue>({
     resolver: zodResolver(patientSchema),
     defaultValues: {
       name: "",
       address: "",
-      bloodGroup: IBloodGroup["A+"],
+      bloodGroup: "A+",
       dateOfBirth: undefined,
       email: "",
       phone: "",
       emergencyPhone: undefined,
-      password: "12345678",
       gender: IGender.MALE,
       branchId: "",
     },
@@ -117,8 +111,6 @@ export const PatientForm = () => {
             </FormItem>
           )}
         />
-
-        <Password control={form.control} name="password" className="py-2" />
 
         <FormField
           control={form.control}
@@ -237,11 +229,14 @@ export const PatientForm = () => {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {Object.values(IBloodGroup).map((bloodGroup) => (
-                    <SelectItem key={bloodGroup} value={bloodGroup}>
-                      {bloodGroup}
-                    </SelectItem>
-                  ))}
+                  <SelectItem value="A+">A+</SelectItem>
+                  <SelectItem value="A-">A-</SelectItem>
+                  <SelectItem value="B+">B+</SelectItem>
+                  <SelectItem value="B-">B-</SelectItem>
+                  <SelectItem value="AB+">AB+</SelectItem>
+                  <SelectItem value="AB-">AB-</SelectItem>
+                  <SelectItem value="O+">O+</SelectItem>
+                  <SelectItem value="O-">O-</SelectItem>
                 </SelectContent>
               </Select>
 

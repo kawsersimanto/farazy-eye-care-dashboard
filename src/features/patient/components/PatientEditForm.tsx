@@ -1,5 +1,4 @@
 "use client";
-import { Password } from "@/components/password/Password";
 import { PhoneInput } from "@/components/phone-input/PhoneInput";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -29,19 +28,24 @@ import {
   useGetUserByIdQuery,
   useUpdateUserMutation,
 } from "@/features/user/user.api";
-import { IBloodGroup, IGender } from "@/features/user/user.interface";
+import { IGender } from "@/features/user/user.interface";
+import { createPatientPayload } from "@/features/user/user.utils";
 import { cn } from "@/lib/utils";
 import { useAppSelector } from "@/redux/hook";
 import { ApiResponse } from "@/types/api";
 import { handleMutationRequest } from "@/utils/handleMutationRequest";
+import { normalizePayload } from "@/utils/normalizePayload";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { shallowEqual } from "react-redux";
-import { UpdatePatientFormValue, updatePatientSchema } from "../patient.schema";
+import {
+  PatientFormValue,
+  UpdatePatientFormValue,
+  updatePatientSchema,
+} from "../patient.schema";
 import { PatientEditFormSkeleton } from "./PatientEditFormSkeleton";
 
 export const PatientEditForm = ({ id }: { id: string }) => {
@@ -49,22 +53,19 @@ export const PatientEditForm = ({ id }: { id: string }) => {
   const { data: patientData, isLoading: isLoadingPatient } =
     useGetUserByIdQuery(id);
   const patientProfile = patientData?.data?.patientProfile;
+
   const [updatePatientFn, { isLoading }] = useUpdateUserMutation();
-  const branchId = useAppSelector(
-    (state) => state.auth.user?.branchId,
-    shallowEqual
-  );
+  const branchId = useAppSelector((state) => state.auth.user?.branchId);
   const form = useForm<UpdatePatientFormValue>({
     resolver: zodResolver(updatePatientSchema),
     defaultValues: {
       name: "",
       address: "",
-      bloodGroup: IBloodGroup["A+"],
+      bloodGroup: "A+",
       dateOfBirth: undefined,
       email: "",
       phone: "",
       emergencyPhone: undefined,
-      password: "12345678",
       gender: IGender.MALE,
       branchId: "",
     },
@@ -74,25 +75,25 @@ export const PatientEditForm = ({ id }: { id: string }) => {
     if (patientData && patientProfile) {
       form.reset({
         name: patientData?.data?.name || "",
-        address: patientProfile?.address ?? undefined,
-        bloodGroup: patientProfile?.bloodGroup || IBloodGroup["A+"],
+        address: patientProfile?.address ?? "",
+        bloodGroup: patientProfile?.bloodGroup || "A+",
         dateOfBirth: patientProfile?.dateOfBirth
           ? new Date(patientProfile.dateOfBirth)
           : undefined,
         email: patientData?.data?.email || "",
         phone: patientData?.data?.phone || "",
-        emergencyPhone: patientProfile?.emergencyPhone ?? undefined,
-        password: "",
+        emergencyPhone: patientProfile?.emergencyPhone ?? "",
         gender: patientProfile?.gender || IGender.MALE,
         branchId: branchId || "",
       });
     }
   }, [form, branchId, patientData, patientProfile]);
 
-  const onSubmit = async (values: UpdatePatientFormValue) => {
+  const onSubmit = async (values: PatientFormValue) => {
+    const payload = normalizePayload(createPatientPayload(values));
     await handleMutationRequest(
       updatePatientFn,
-      { id, ...values },
+      { id, payload },
       {
         loadingMessage: "Updating Patient",
         successMessage: (res: ApiResponse<string>) => res?.message,
@@ -141,8 +142,6 @@ export const PatientEditForm = ({ id }: { id: string }) => {
             </FormItem>
           )}
         />
-
-        <Password control={form.control} name="password" className="py-2" />
 
         <FormField
           control={form.control}
@@ -228,7 +227,7 @@ export const PatientEditForm = ({ id }: { id: string }) => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Gender</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select onValueChange={field.onChange} value={field.value}>
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="Select a gender" />
@@ -261,11 +260,14 @@ export const PatientEditForm = ({ id }: { id: string }) => {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {Object.values(IBloodGroup).map((bloodGroup) => (
-                    <SelectItem key={bloodGroup} value={bloodGroup}>
-                      {bloodGroup}
-                    </SelectItem>
-                  ))}
+                  <SelectItem value="A+">A+</SelectItem>
+                  <SelectItem value="A-">A-</SelectItem>
+                  <SelectItem value="B+">B+</SelectItem>
+                  <SelectItem value="B-">B-</SelectItem>
+                  <SelectItem value="AB+">AB+</SelectItem>
+                  <SelectItem value="AB-">AB-</SelectItem>
+                  <SelectItem value="O+">O+</SelectItem>
+                  <SelectItem value="O-">O-</SelectItem>
                 </SelectContent>
               </Select>
 

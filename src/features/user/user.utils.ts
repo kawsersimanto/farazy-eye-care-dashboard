@@ -1,3 +1,4 @@
+import { PatientFormValue } from "../patient/patient.schema";
 import { doctorSchemaType } from "./schema/doctor.schema";
 import { employeeSchemaType } from "./schema/exployee.schema";
 
@@ -36,4 +37,23 @@ export const createEmployeePayload = (values: employeeSchemaType) => {
   };
 
   return { user, employeeProfile };
+};
+
+export const createPatientPayload = (values: PatientFormValue) => {
+  const user = {
+    name: values.name,
+    email: values.email,
+    phone: values.phone,
+  };
+
+  const patientProfile = {
+    address: values.address,
+    dateOfBirth: values.dateOfBirth,
+    email: values.email,
+    emergencyPhone: values.emergencyPhone,
+    gender: values.gender,
+    bloodGroup: values.bloodGroup,
+  };
+
+  return { user, patientProfile };
 };

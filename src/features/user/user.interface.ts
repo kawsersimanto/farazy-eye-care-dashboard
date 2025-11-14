@@ -18,16 +18,18 @@ export enum IGender {
   OTHER = "OTHER",
 }
 
-export enum IBloodGroup {
-  "O+" = "O+",
-  "O-" = "O-",
-  "A+" = "A+",
-  "A-" = "A-",
-  "B+" = "B+",
-  "B-" = "B-",
-  "AB+" = "AB+",
-  "AB-" = "AB-",
-}
+export const BLOOD_GROUPS = [
+  "O+",
+  "O-",
+  "A+",
+  "A-",
+  "B+",
+  "B-",
+  "AB+",
+  "AB-",
+] as const;
+
+export type IBloodGroup = (typeof BLOOD_GROUPS)[number];
 
 export interface IUser {
   id: string;
