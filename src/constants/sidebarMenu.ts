@@ -166,7 +166,7 @@ export const ROLE_MENU_CONFIG: Record<IRole, string[]> = {
     "departments",
     "doctors",
     "medicine",
-    "branchAdmins",
+    // "branchAdmins",
     // "payments",
     "employees",
     "patients",

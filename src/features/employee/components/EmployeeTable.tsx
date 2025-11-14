@@ -39,6 +39,7 @@ import {
   Trash,
   Unlock,
 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -123,9 +124,29 @@ export const EmployeeTable = () => {
       accessorKey: "name",
       header: "Name",
       size: 150,
-      cell: ({ row }) => (
-        <span className="text-sm">{row.original.name || "-"}</span>
-      ),
+      cell: ({ row }) => {
+        const imageUrl = row.original.profileImageUrl?.trim();
+        const isValidUrl =
+          imageUrl && (imageUrl.startsWith("http") || imageUrl.startsWith("/"));
+        const src = isValidUrl ? imageUrl : "/placeholder.png";
+
+        return (
+          <div className="flex items-center gap-2">
+            <Image
+              src={src}
+              alt={row.original.name || "Branch Logo"}
+              height={80}
+              width={80}
+              className="h-[50px] w-[50px] object-contain rounded-lg border-border border"
+              unoptimized
+              onError={(e) => {
+                e.currentTarget.src = "/placeholder.png";
+              }}
+            />
+            {row.original.name}
+          </div>
+        );
+      },
     },
     {
       accessorKey: "email",
