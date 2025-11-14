@@ -2,6 +2,7 @@ import { z } from "zod";
 import { profileSchema } from "./profile.schema";
 
 export const doctorSchema = profileSchema.extend({
+  title: z.string().optional(),
   about: z.string().optional(),
   registrationNo: z.string().optional(),
   yearsExperience: z.number().optional(),

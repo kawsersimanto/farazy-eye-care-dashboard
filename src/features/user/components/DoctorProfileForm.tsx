@@ -51,6 +51,7 @@ export const DoctorProfileForm = () => {
       email: "",
       phone: "",
       profileImageUrl: "",
+      title: "",
       about: "",
       consultationFee: 0,
       registrationNo: "",
@@ -67,6 +68,7 @@ export const DoctorProfileForm = () => {
         email: profile?.email || "",
         phone: formatPhoneToE164(profile?.phone) || "",
         profileImageUrl: profile?.profileImageUrl || "",
+        title: profile?.doctorProfile?.title || "",
         about: profile?.doctorProfile?.about || "",
         consultationFee: profile?.doctorProfile?.consultationFee || 0,
         registrationNo: profile?.doctorProfile?.registrationNo || "",
@@ -154,6 +156,25 @@ export const DoctorProfileForm = () => {
                   onImageChange={(url) => field.onChange(url)}
                   defaultImageUrl={field.value || ""}
                   maxSize={5}
+                />
+              </FormControl>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="title"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Title</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="ex. Senior Eye Doctor"
+                  type="text"
+                  {...field}
                 />
               </FormControl>
 
