@@ -1,5 +1,6 @@
 "use client";
 
+import { CopyableCell } from "@/components/copyable-cell/CopyableCell";
 import { DataTable } from "@/components/data-table/DataTable";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -141,26 +142,24 @@ export const BranchAdminTable = () => {
           </div>
         );
       },
-      size: 100,
+      size: 160,
     },
     {
       id: "phone",
       header: "Phone",
       cell: ({ row }) => (
-        <Badge variant="outline" asChild>
-          <Link href={`tel:${row.original.phone}`}>
-            {row.original.phone || "-"}
-          </Link>
-        </Badge>
+        <CopyableCell value={row.original.phone || "-"}>
+          {row.original.phone || "-"}
+        </CopyableCell>
       ),
     },
     {
       accessorKey: "email",
       header: "Email",
       cell: ({ row }) => (
-        <Link href={`mailto:${row.original.email}`}>
+        <CopyableCell value={row.original.email || "-"}>
           {row.original.email || "-"}
-        </Link>
+        </CopyableCell>
       ),
     },
     {
