@@ -88,15 +88,11 @@ export const AppUser = () => {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link href="/profile">
+                <Link href="/profile/settings">
                   <Settings className="!text-inherit" />
                   Settings
                 </Link>
               </DropdownMenuItem>
-              {/* <DropdownMenuItem>
-                <Bell className="!text-inherit" />
-                Notifications
-              </DropdownMenuItem> */}
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleLogout} disabled={isLoading}>

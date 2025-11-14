@@ -4,6 +4,8 @@ import { IRole, IUser } from "@/features/user/user.interface";
 import { useAppSelector } from "@/redux/hook";
 import { decodeToken } from "@/utils/tokenHandler";
 
+import { ApiResponse } from "@/types/api";
+import { handleMutationRequest } from "@/utils/handleMutationRequest";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
@@ -102,16 +104,14 @@ export const useAuth = (): UseAuthReturn => {
   // ---- CHANGE PASSWORD ----
   const handleChangePassword = useCallback(
     async ({ oldPassword, newPassword }: ChangePasswordCredentials) => {
-      try {
-        await changePassword({
-          oldPassword,
-          newPassword,
-        }).unwrap();
-      } catch (error) {
-        throw new Error(
-          extractErrorMessage(error, "Failed to change password")
-        );
-      }
+      await handleMutationRequest(
+        changePassword,
+        { oldPassword, newPassword },
+        {
+          loadingMessage: "Updating Password...",
+          successMessage: (res: ApiResponse<string>) => res?.message,
+        }
+      );
     },
     [changePassword]
   );
@@ -119,17 +119,16 @@ export const useAuth = (): UseAuthReturn => {
   // ---- RESET PASSWORD ----
   const handleResetPassword = useCallback(
     async ({ password }: ResetPasswordCredentials) => {
-      try {
-        await resetPassword({
-          password,
-        }).unwrap();
-
-        router.push("/login");
-      } catch (error) {
-        throw new Error(extractErrorMessage(error, "Failed to reset password"));
-      }
+      await handleMutationRequest(
+        resetPassword,
+        { password },
+        {
+          loadingMessage: "Resetting Password...",
+          successMessage: (res: ApiResponse<string>) => res?.message,
+        }
+      );
     },
-    [resetPassword, router]
+    [resetPassword]
   );
 
   // ---- FORGOT PASSWORD ----
