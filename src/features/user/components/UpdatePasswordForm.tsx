@@ -49,17 +49,6 @@ export const UpdatePasswordForm = () => {
           className="py-2 text-sm"
         />
 
-        <div>
-          <Button
-            type="button"
-            variant="link"
-            className="p-0 h-auto"
-            onClick={() => handleForgotPassword({ email: email || "" })}
-          >
-            Forgot your password?
-          </Button>
-        </div>
-
         <Button type="submit" disabled={isLoading}>
           {isLoading ? (
             <>
@@ -69,6 +58,15 @@ export const UpdatePasswordForm = () => {
           ) : (
             "Update Password"
           )}
+        </Button>
+
+        <Button
+          type="button"
+          variant="link"
+          className=""
+          onClick={() => handleForgotPassword({ email: email || "" })}
+        >
+          Forgot your password?
         </Button>
       </form>
     </Form>
