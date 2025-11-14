@@ -12,6 +12,13 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
+import {
+  TagsInput,
+  TagsInputInput,
+  TagsInputItem,
+  TagsInputList,
+} from "@/components/ui/tags-input";
+import { Textarea } from "@/components/ui/textarea";
 import { UploadImage } from "@/components/upload-image/UploadImage";
 import { useUpdateProfileMutation } from "@/features/auth/auth.api";
 import { useAuth } from "@/features/auth/hooks/useAuth";
@@ -25,7 +32,8 @@ import { normalizePayload } from "@/utils/normalizePayload";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { profileSchema, profileSchemaType } from "../schema/profile.schema";
+import { doctorSchema, doctorSchemaType } from "../schema/doctor.schema";
+import { createDoctorPayload } from "../user.utils";
 
 export const DoctorProfileForm = () => {
   const { profile } = useAuth();
@@ -33,13 +41,19 @@ export const DoctorProfileForm = () => {
   const uploadMutation = useUploadSingleImageMutation();
   const deleteMutation = useDeleteImageByUrlMutation();
 
-  const form = useForm<profileSchemaType>({
-    resolver: zodResolver(profileSchema),
+  const form = useForm<doctorSchemaType>({
+    resolver: zodResolver(doctorSchema),
     defaultValues: {
       name: "",
       email: "",
       phone: "",
       profileImageUrl: "",
+      about: "",
+      consultationFee: 0,
+      registrationNo: "",
+      yearsExperience: 0,
+      degrees: [],
+      qualifications: [],
     },
   });
 
@@ -50,19 +64,23 @@ export const DoctorProfileForm = () => {
         email: profile?.email || "",
         phone: profile?.phone || "",
         profileImageUrl: profile?.profileImageUrl || "",
+        about: profile?.doctorProfile?.about || "",
+        consultationFee: profile?.doctorProfile?.consultationFee || 0,
+        registrationNo: profile?.doctorProfile?.registrationNo || "",
+        yearsExperience: profile?.doctorProfile?.yearsExperience || 0,
+        degrees: profile?.doctorProfile?.degrees || [],
+        qualifications: profile?.doctorProfile?.qualifications || [],
       });
     }
   }, [form, profile]);
 
-  const onSubmit = async (values: profileSchemaType) => {
-    await handleMutationRequest(
-      updateProfileFn,
-      { user: normalizePayload(values) },
-      {
-        loadingMessage: "Updating Profile",
-        successMessage: (res: ApiResponse<string>) => res?.message,
-      }
-    );
+  const onSubmit = async (values: doctorSchemaType) => {
+    const payload = normalizePayload(createDoctorPayload(values));
+    console.log(payload);
+    await handleMutationRequest(updateProfileFn, payload, {
+      loadingMessage: "Updating Profile",
+      successMessage: (res: ApiResponse<string>) => res?.message,
+    });
   };
 
   return (
@@ -137,6 +155,142 @@ export const DoctorProfileForm = () => {
                 />
               </FormControl>
 
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="about"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>About</FormLabel>
+              <FormControl>
+                <Textarea
+                  placeholder="ex. Senior Consultant, Ophthalmology"
+                  className="resize-none"
+                  {...field}
+                />
+              </FormControl>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="registrationNo"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Registration No.</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="ex. MBBS2300482DHK"
+                  type="text"
+                  {...field}
+                />
+              </FormControl>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="yearsExperience"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Years of Experience</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="ex. 2"
+                  type="number"
+                  {...field}
+                  onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                />
+              </FormControl>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="consultationFee"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Consultation Fee</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="ex. 1200"
+                  type="number"
+                  {...field}
+                  onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                />
+              </FormControl>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="qualifications"
+          render={({ field }) => (
+            <FormItem className="flex flex-col items-start">
+              <FormLabel>Qualifications</FormLabel>
+              <FormControl className="w-full">
+                <TagsInput
+                  value={field.value || []}
+                  onValueChange={field.onChange}
+                  max={6}
+                  editable
+                  addOnPaste
+                >
+                  <TagsInputList className="bg-transparent">
+                    {(field.value || []).map((trick) => (
+                      <TagsInputItem key={trick} value={trick}>
+                        {trick}
+                      </TagsInputItem>
+                    ))}
+                    <TagsInputInput placeholder="ex. MBBS, MS (Eye)" />
+                  </TagsInputList>
+                </TagsInput>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="degrees"
+          render={({ field }) => (
+            <FormItem className="flex flex-col items-start">
+              <FormLabel>Degrees</FormLabel>
+              <FormControl className="w-full">
+                <TagsInput
+                  value={field.value || []}
+                  onValueChange={field.onChange}
+                  max={6}
+                  editable
+                  addOnPaste
+                >
+                  <TagsInputList className="bg-transparent">
+                    {(field.value || []).map((trick) => (
+                      <TagsInputItem key={trick} value={trick}>
+                        {trick}
+                      </TagsInputItem>
+                    ))}
+                    <TagsInputInput placeholder="ex. LASIK Surgery, Cataract Specialist" />
+                  </TagsInputList>
+                </TagsInput>
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}
