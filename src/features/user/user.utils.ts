@@ -15,6 +15,7 @@ export const createDoctorPayload = (values: doctorSchemaType) => {
     registrationNo: values.registrationNo,
     yearsExperience: values.yearsExperience,
     consultationFee: values.consultationFee,
+    title: values.title,
     degrees: values.degrees,
     qualifications: values.qualifications,
   };
