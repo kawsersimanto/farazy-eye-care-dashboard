@@ -18,10 +18,10 @@ export const Profile = () => {
   const roleComponents: Record<IRole | "UNKNOWN", ReactNode> = {
     [IRole.SUPER_ADMIN]: <ProfileForm />,
     [IRole.BRANCH_ADMIN]: <ProfileForm />,
-    [IRole.ADMIN]: "admin",
+    [IRole.ADMIN]: <ProfileForm />,
     [IRole.DOCTOR]: <DoctorProfileForm />,
     [IRole.EMPLOYEE]: <EmployeeProfileForm />,
-    [IRole.PATIENT]: <div>Profile</div>,
+    [IRole.PATIENT]: <ProfileForm />,
     UNKNOWN: <div>Role not found</div>,
   };
 
