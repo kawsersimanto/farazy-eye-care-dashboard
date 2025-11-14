@@ -33,8 +33,6 @@ export const ProfileForm = () => {
   const uploadMutation = useUploadSingleImageMutation();
   const deleteMutation = useDeleteImageByUrlMutation();
 
-  console.log(profile);
-
   const form = useForm<profileSchemaType>({
     resolver: zodResolver(profileSchema),
     defaultValues: {

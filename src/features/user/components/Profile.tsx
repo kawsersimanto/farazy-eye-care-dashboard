@@ -4,6 +4,7 @@ import { useAuth } from "@/features/auth/hooks/useAuth";
 import { MedicineFormSkeleton } from "@/features/medicine/components/MedicineFormSkeleton";
 import { ReactNode } from "react";
 import { IRole } from "../user.interface";
+import { DoctorProfileForm } from "./DoctorProfileForm";
 import { ProfileForm } from "./ProfileForm";
 
 export const Profile = () => {
@@ -17,7 +18,7 @@ export const Profile = () => {
     [IRole.SUPER_ADMIN]: <ProfileForm />,
     [IRole.BRANCH_ADMIN]: <ProfileForm />,
     [IRole.ADMIN]: "admin",
-    [IRole.DOCTOR]: "isDoctor",
+    [IRole.DOCTOR]: <DoctorProfileForm />,
     [IRole.EMPLOYEE]: "isEmployee",
     [IRole.PATIENT]: <div>Profile</div>,
     UNKNOWN: <div>Role not found</div>,
