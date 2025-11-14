@@ -1,24 +1,27 @@
 "use client";
 
 import { useAuth } from "@/features/auth/hooks/useAuth";
+import { MedicineFormSkeleton } from "@/features/medicine/components/MedicineFormSkeleton";
+import { ReactNode } from "react";
+import { IRole } from "../user.interface";
 import { ProfileForm } from "./ProfileForm";
 
 export const Profile = () => {
-  const {
-    profile,
-    isSuperAdmin,
-    isBranchAdmin,
-    isAdmin,
-    isDoctor,
-    isEmployee,
-  } = useAuth();
+  const { isLoading, getUserRole } = useAuth();
 
-  if (isSuperAdmin()) return " Super admin";
-  if (isAdmin()) return "admin";
-  if (isBranchAdmin()) return <ProfileForm />;
-  if (isDoctor()) return "isDoctor";
-  if (isEmployee()) return "isEmployee";
+  if (isLoading) return <MedicineFormSkeleton />;
 
-  console.log(profile);
-  return <div>Profile</div>;
+  const role = getUserRole() ?? "UNKNOWN";
+
+  const roleComponents: Record<IRole | "UNKNOWN", ReactNode> = {
+    [IRole.SUPER_ADMIN]: <ProfileForm />,
+    [IRole.BRANCH_ADMIN]: <ProfileForm />,
+    [IRole.ADMIN]: "admin",
+    [IRole.DOCTOR]: "isDoctor",
+    [IRole.EMPLOYEE]: "isEmployee",
+    [IRole.PATIENT]: <div>Profile</div>,
+    UNKNOWN: <div>Role not found</div>,
+  };
+
+  return roleComponents[role];
 };
