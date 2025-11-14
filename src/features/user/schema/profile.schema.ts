@@ -9,10 +9,10 @@ export const profileSchema = z.object({
 
 export const updatePasswordSchema = z
   .object({
-    oldPassword: z.string().min(1, "Current password is required"),
+    oldPassword: z.string().min(8, "Current password is required"),
     newPassword: z
       .string()
-      .min(6, "New password must be at least 6 characters"),
+      .min(8, "New password must be at least 6 characters"),
     confirmPassword: z.string(),
   })
   .refine((data) => data.newPassword === data.confirmPassword, {
@@ -20,5 +20,16 @@ export const updatePasswordSchema = z
     path: ["confirmPassword"],
   });
 
+export const resetPasswordSchema = z
+  .object({
+    password: z.string().min(8, "Password is required"),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
+
 export type profileSchemaType = z.infer<typeof profileSchema>;
 export type updatePasswordSchemaType = z.infer<typeof updatePasswordSchema>;
+export type resetPasswordSchemaType = z.infer<typeof resetPasswordSchema>;

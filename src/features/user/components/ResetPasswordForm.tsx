@@ -7,24 +7,22 @@ import { useAuth } from "@/features/auth/hooks/useAuth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import {
-  updatePasswordSchema,
-  updatePasswordSchemaType,
+  resetPasswordSchema,
+  resetPasswordSchemaType,
 } from "../schema/profile.schema";
 
-export const UpdatePasswordForm = () => {
-  const { handleChangePassword, handleForgotPassword, isLoading, email } =
-    useAuth();
-  const form = useForm<updatePasswordSchemaType>({
-    resolver: zodResolver(updatePasswordSchema),
+export const ResetPasswordForm = () => {
+  const { handleResetPassword, isLoading } = useAuth();
+  const form = useForm<resetPasswordSchemaType>({
+    resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
+      password: "",
       confirmPassword: "",
-      newPassword: "",
-      oldPassword: "",
     },
   });
 
-  const onSubmit = (values: updatePasswordSchemaType) => {
-    handleChangePassword(values);
+  const onSubmit = (values: resetPasswordSchemaType) => {
+    handleResetPassword(values);
   };
 
   return (
@@ -32,14 +30,8 @@ export const UpdatePasswordForm = () => {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 py-5">
         <Password
           control={form.control}
-          name="oldPassword"
-          label="Current Password"
-          className="py-2 text-sm"
-        />
-        <Password
-          control={form.control}
-          name="newPassword"
-          label="New Password"
+          name="password"
+          label="Reset Password"
           className="py-2 text-sm"
         />
         <Password
@@ -48,26 +40,14 @@ export const UpdatePasswordForm = () => {
           label="Confirm Password"
           className="py-2 text-sm"
         />
-
-        <div>
-          <Button
-            type="button"
-            variant="link"
-            className="p-0 h-auto"
-            onClick={() => handleForgotPassword({ email: email || "" })}
-          >
-            Forgot your password?
-          </Button>
-        </div>
-
         <Button type="submit" disabled={isLoading}>
           {isLoading ? (
             <>
               <Spinner />
-              Updating Password...
+              Resetting Password...
             </>
           ) : (
-            "Update Password"
+            "Reset Password"
           )}
         </Button>
       </form>

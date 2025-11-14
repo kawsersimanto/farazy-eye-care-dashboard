@@ -134,16 +134,14 @@ export const useAuth = (): UseAuthReturn => {
   // ---- FORGOT PASSWORD ----
   const handleForgotPassword = useCallback(
     async ({ email }: ForgotPasswordCredentials) => {
-      try {
-        await forgotPassword({ email }).unwrap();
-      } catch (error) {
-        throw new Error(
-          extractErrorMessage(
-            error,
-            "Failed to process forgot password request"
-          )
-        );
-      }
+      await handleMutationRequest(
+        forgotPassword,
+        { email },
+        {
+          loadingMessage: "Resetting Password...",
+          successMessage: (res: ApiResponse<string>) => res?.message,
+        }
+      );
     },
     [forgotPassword]
   );
