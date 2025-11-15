@@ -19,26 +19,40 @@ import {
 } from "@/components/ui/select";
 import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
+import { useAppSelector } from "@/redux/hook";
 import { ApiResponse } from "@/types/api";
 import { handleMutationRequest } from "@/utils/handleMutationRequest";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useCreateDepartmentMutation } from "../department.api";
 import { DepartmentFormValues, DepartmentSchema } from "../department.schema";
 
 export const DepartmentForm = () => {
   const router = useRouter();
+  const branchId = useAppSelector(
+    (state) => state?.auth?.user?.branchId
+  ) as string;
   const [createDepartmentFn, { isLoading }] = useCreateDepartmentMutation();
   const form = useForm<DepartmentFormValues>({
     resolver: zodResolver(DepartmentSchema),
     defaultValues: {
       name: "",
       alias: "",
+      branchId: "",
       description: "",
       isActive: true,
     },
   });
+
+  useEffect(() => {
+    if (branchId) {
+      form.reset({
+        branchId: branchId || "",
+      });
+    }
+  }, [form, branchId]);
 
   const onSubmit = async (values: DepartmentFormValues) => {
     await handleMutationRequest(createDepartmentFn, values, {
@@ -61,6 +75,24 @@ export const DepartmentForm = () => {
               <FormLabel>Name</FormLabel>
               <FormControl>
                 <Input placeholder="ex. Ophthalmology" type="text" {...field} />
+              </FormControl>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="branchId"
+          render={({ field }) => (
+            <FormItem hidden>
+              <FormLabel>Branch ID</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="ex. 68fb9d0ed112e3588028e639"
+                  type="text"
+                  {...field}
+                />
               </FormControl>
 
               <FormMessage />
