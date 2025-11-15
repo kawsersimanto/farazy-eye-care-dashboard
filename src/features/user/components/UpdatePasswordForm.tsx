@@ -12,8 +12,7 @@ import {
 } from "../schema/profile.schema";
 
 export const UpdatePasswordForm = () => {
-  const { handleChangePassword, handleForgotPassword, isLoading, email } =
-    useAuth();
+  const { handleChangePassword, isLoading } = useAuth();
   const form = useForm<updatePasswordSchemaType>({
     resolver: zodResolver(updatePasswordSchema),
     defaultValues: {
@@ -58,15 +57,6 @@ export const UpdatePasswordForm = () => {
           ) : (
             "Update Password"
           )}
-        </Button>
-
-        <Button
-          type="button"
-          variant="link"
-          className=""
-          onClick={() => handleForgotPassword({ email: email || "" })}
-        >
-          Forgot your password?
         </Button>
       </form>
     </Form>

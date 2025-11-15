@@ -1,5 +1,4 @@
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
-import { ResetPasswordForm } from "./ResetPasswordForm";
 import { UpdatePasswordForm } from "./UpdatePasswordForm";
 
 export const Settings = () => {
@@ -13,7 +12,7 @@ export const Settings = () => {
           <UpdatePasswordForm />
         </CardDescription>
       </Card>
-      <Card className="px-10">
+      {/* <Card className="px-10">
         <CardTitle className="flex items-center gap-3">
           <h2 className="font-work-sans font-medium text-lg">
             Manage Password
@@ -22,7 +21,7 @@ export const Settings = () => {
         <CardDescription className="pb-5">
           <ResetPasswordForm />
         </CardDescription>
-      </Card>
+      </Card> */}
     </div>
   );
 };
