@@ -66,9 +66,6 @@ export const ALL_MENU_ITEMS: Record<string, SidebarMenuItem> = {
     items: [
       { title: "All Doctors", url: "/doctors" },
       { title: "Add New", url: "/doctors/create" },
-      { title: "Schedule", url: "/doctors/schedules" },
-      { title: "Specialization", url: "/doctors/specializations" },
-      { title: "Leave Requests", url: "/doctors/leave-requests" },
     ],
   },
   branchAdmins: {
@@ -124,7 +121,11 @@ export const ALL_MENU_ITEMS: Record<string, SidebarMenuItem> = {
   doctorSchedule: {
     title: "My Schedule",
     icon: Calendar,
-    url: "/doctor/schedule",
+    url: "#",
+    items: [
+      { title: "All Schedules", url: "/schedules" },
+      { title: "Add New", url: "/schedules/create" },
+    ],
   },
   employeeAttendance: {
     title: "Attendance",
