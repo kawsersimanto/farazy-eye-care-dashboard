@@ -22,23 +22,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { z } from "zod";
-
-const formSchema = z.object({
-  doctorId: z.string().min(1),
-  dayOfWeek: z.string(),
-  startTime: z.string(),
-  endTime: z.string(),
-  slotMinutes: z.number(),
-  maxPatients: z.number(),
-  isActive: z.boolean(),
-});
+import { ScheduleSchema, ScheduleSchemaType } from "../schedule.schema";
 
 export const ScheduleForm = () => {
   const { profile } = useAuth();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<ScheduleSchemaType>({
+    resolver: zodResolver(ScheduleSchema),
     defaultValues: {
       doctorId: "",
       dayOfWeek: "SUN",
@@ -58,7 +48,7 @@ export const ScheduleForm = () => {
     }
   }, [form, profile]);
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: ScheduleSchemaType) {
     try {
       console.log(values);
       toast(
