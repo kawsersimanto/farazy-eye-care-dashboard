@@ -1,5 +1,5 @@
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
-import { Employee } from "@/features/employee/components/Employee";
+import { Schedule } from "@/features/schedule/components/Schedule";
 
 const DetailsPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
@@ -11,7 +11,7 @@ const DetailsPage = async ({ params }: { params: Promise<{ id: string }> }) => {
           <h2 className="font-work-sans font-medium text-lg">View Schedule</h2>
         </CardTitle>
         <CardDescription>
-          <Employee id={id} />
+          <Schedule id={id} />
         </CardDescription>
       </Card>
     </div>
