@@ -95,6 +95,12 @@ export const ALL_MENU_ITEMS: Record<string, SidebarMenuItem> = {
       { title: "Add New", url: "/patients/create" },
     ],
   },
+  patient: {
+    title: "Patient",
+    icon: Accessibility,
+    url: "#",
+    items: [{ title: "Find Patient", url: "/patient/search" }],
+  },
   users: {
     title: "Users",
     icon: Users,
@@ -178,7 +184,7 @@ export const ROLE_MENU_CONFIG: Record<IRole, string[]> = {
     "appointments",
     "doctorSchedule",
     "medicalRecords",
-    "patients",
+    "patient",
   ],
   [IRole.PATIENT]: ["dashboard", "appointments", "medicalRecords"],
   [IRole.EMPLOYEE]: ["dashboard", "employeeAttendance", "patients"],
