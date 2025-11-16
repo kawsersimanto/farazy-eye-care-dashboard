@@ -44,6 +44,8 @@ export const EmployeeProfileForm = () => {
       email: "",
       phone: "",
       profileImageUrl: "",
+      nidFrontUrl: "",
+      nidBackUrl: "",
       department: "",
       position: "",
       salary: 0,
@@ -57,6 +59,8 @@ export const EmployeeProfileForm = () => {
         email: profile?.email || "",
         phone: formatPhoneToE164(profile?.phone) || "",
         profileImageUrl: profile?.profileImageUrl || "",
+        nidFrontUrl: profile?.nidFrontUrl || "",
+        nidBackUrl: profile?.nidBackUrl || "",
         department: profile?.employeeProfile?.department || "",
         position: profile?.employeeProfile?.position || "",
         salary: profile?.employeeProfile?.salary || 0,
@@ -149,6 +153,50 @@ export const EmployeeProfileForm = () => {
             </FormItem>
           )}
         />
+
+        <div className="grid grid-cols-2 gap-4">
+          <FormField
+            control={form.control}
+            name="nidFrontUrl"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>NID Front Side</FormLabel>
+                <FormControl>
+                  <UploadImage
+                    uploadMutation={uploadMutation}
+                    deleteMutation={deleteMutation}
+                    onImageChange={(url) => field.onChange(url)}
+                    defaultImageUrl={field.value || ""}
+                    maxSize={5}
+                  />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="nidBackUrl"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>NID Front Side</FormLabel>
+                <FormControl>
+                  <UploadImage
+                    uploadMutation={uploadMutation}
+                    deleteMutation={deleteMutation}
+                    onImageChange={(url) => field.onChange(url)}
+                    defaultImageUrl={field.value || ""}
+                    maxSize={5}
+                  />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
         <FormField
           control={form.control}

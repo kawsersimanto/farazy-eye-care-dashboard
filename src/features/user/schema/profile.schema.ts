@@ -4,9 +4,9 @@ export const profileSchema = z.object({
   name: z.string().min(1, "Name is required"),
   email: z.string().email("Invalid email"),
   phone: z.string("Phone number must be string").optional(),
-  profileImageUrl: z.string().optional(),
-  nidFrontUrl: z.string().optional(),
-  nidBackUrl: z.string().optional(),
+  profileImageUrl: z.string().nullable().optional(),
+  nidFrontUrl: z.string().nullable().optional(),
+  nidBackUrl: z.string().nullable().optional(),
 });
 
 export const updatePasswordSchema = z
