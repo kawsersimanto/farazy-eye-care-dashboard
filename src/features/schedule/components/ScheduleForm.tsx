@@ -16,16 +16,23 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Spinner } from "@/components/ui/spinner";
 import { TimePicker } from "@/components/ui/time-picker";
 import { useAuth } from "@/features/auth/hooks/useAuth";
+import { ApiResponse } from "@/types/api";
+import { handleMutationRequest } from "@/utils/handleMutationRequest";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+import { useCreateScheduleMutation } from "../schedule.api";
 import { ScheduleSchema, ScheduleSchemaType } from "../schedule.schema";
+import { ScheduleFormSkeleton } from "./ScheduleFormSkeleton";
 
 export const ScheduleForm = () => {
-  const { profile } = useAuth();
+  const router = useRouter();
+  const { profile, isLoading: isLoadingProfile } = useAuth();
+  const [createScheduleFn, { isLoading }] = useCreateScheduleMutation();
 
   const form = useForm<ScheduleSchemaType>({
     resolver: zodResolver(ScheduleSchema),
@@ -48,19 +55,17 @@ export const ScheduleForm = () => {
     }
   }, [form, profile]);
 
-  function onSubmit(values: ScheduleSchemaType) {
-    try {
-      console.log(values);
-      toast(
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(values, null, 2)}</code>
-        </pre>
-      );
-    } catch (error) {
-      console.error("Form submission error", error);
-      toast.error("Failed to submit the form. Please try again.");
-    }
-  }
+  const onSubmit = async (values: ScheduleSchemaType) => {
+    await handleMutationRequest(createScheduleFn, values, {
+      loadingMessage: "Creating Schedule",
+      successMessage: (res: ApiResponse<string>) => res?.message,
+      onSuccess: () => {
+        router.push("/schedules");
+      },
+    });
+  };
+
+  if (isLoadingProfile) return <ScheduleFormSkeleton />;
 
   return (
     <Form {...form}>
@@ -196,7 +201,16 @@ export const ScheduleForm = () => {
           )}
         />
 
-        <Button type="submit">Submit</Button>
+        <Button type="submit" disabled={isLoading}>
+          {isLoading ? (
+            <>
+              <Spinner />
+              Submitting
+            </>
+          ) : (
+            "Submit"
+          )}
+        </Button>
       </form>
     </Form>
   );
