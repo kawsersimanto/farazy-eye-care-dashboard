@@ -8,7 +8,9 @@ const DetailsPage = async ({ params }: { params: Promise<{ id: string }> }) => {
     <div>
       <Card className="max-w-4xl mx-auto px-10">
         <CardTitle className="flex items-center gap-3">
-          <h2 className="font-work-sans font-medium text-lg">View Schedule</h2>
+          <h2 className="font-work-sans font-medium text-lg sr-only">
+            View Schedule
+          </h2>
         </CardTitle>
         <CardDescription>
           <Schedule id={id} />
