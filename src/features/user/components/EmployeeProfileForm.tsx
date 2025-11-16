@@ -154,7 +154,7 @@ export const EmployeeProfileForm = () => {
           )}
         />
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4 items-start justify-start">
           <FormField
             control={form.control}
             name="nidFrontUrl"
