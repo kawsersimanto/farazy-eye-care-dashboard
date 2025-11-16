@@ -1,4 +1,5 @@
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
+import { ScheduleForm } from "@/features/schedule/components/ScheduleForm";
 
 const CreatePage = () => {
   return (
@@ -9,7 +10,9 @@ const CreatePage = () => {
             Create Schedule
           </h2>
         </CardTitle>
-        <CardDescription>Schedule Form</CardDescription>
+        <CardDescription>
+          <ScheduleForm />
+        </CardDescription>
       </Card>
     </div>
   );
