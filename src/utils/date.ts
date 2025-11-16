@@ -46,7 +46,17 @@ export const getDayName = (dayOfWeek: string) => {
 
 export const formatTime = (time: string) => {
   if (!time) return "";
-  const parsed = dayjs(time, "HH:mm", true);
-  if (!parsed.isValid()) return time;
+
+  // Try parsing with seconds first (HH:mm:ss), then without (HH:mm)
+  let parsed = dayjs(time, "HH:mm:ss", true);
+
+  if (!parsed.isValid()) {
+    parsed = dayjs(time, "HH:mm", true);
+  }
+
+  if (!parsed.isValid()) {
+    return time; // Return original if neither format matches
+  }
+
   return parsed.format("hh:mm A");
 };

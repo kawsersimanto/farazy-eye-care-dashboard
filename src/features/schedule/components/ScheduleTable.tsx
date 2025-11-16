@@ -45,7 +45,9 @@ import { ISchedule } from "../schedule.interface";
 export const ScheduleTable = () => {
   const { profile } = useAuth();
   const id = profile?.id as string;
-  const { data, refetch } = useGetDoctorScheduleByIdQuery(id);
+  const { data } = useGetDoctorScheduleByIdQuery(id, {
+    skip: !id,
+  });
 
   const schedules = data?.data || [];
 
@@ -93,7 +95,6 @@ export const ScheduleTable = () => {
 
     setDeleteDialogOpen(false);
     setScheduleToDelete(null);
-    refetch();
   };
 
   const columns: ColumnDef<ISchedule>[] = [
