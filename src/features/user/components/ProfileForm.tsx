@@ -43,6 +43,8 @@ export const ProfileForm = () => {
       email: "",
       phone: "",
       profileImageUrl: "",
+      nidFrontUrl: "",
+      nidBackUrl: "",
     },
   });
 
@@ -53,6 +55,8 @@ export const ProfileForm = () => {
         email: profile?.email || "",
         phone: formatPhoneToE164(profile?.phone) || "",
         profileImageUrl: profile?.profileImageUrl || "",
+        nidFrontUrl: profile?.nidFrontUrl || "",
+        nidBackUrl: profile?.nidBackUrl || "",
       });
     }
   }, [form, profile]);
@@ -144,6 +148,50 @@ export const ProfileForm = () => {
             </FormItem>
           )}
         />
+
+        <div className="grid grid-cols-2 gap-4">
+          <FormField
+            control={form.control}
+            name="nidFrontUrl"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>NID Front Side</FormLabel>
+                <FormControl>
+                  <UploadImage
+                    uploadMutation={uploadMutation}
+                    deleteMutation={deleteMutation}
+                    onImageChange={(url) => field.onChange(url)}
+                    defaultImageUrl={field.value || ""}
+                    maxSize={5}
+                  />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="nidBackUrl"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>NID Front Side</FormLabel>
+                <FormControl>
+                  <UploadImage
+                    uploadMutation={uploadMutation}
+                    deleteMutation={deleteMutation}
+                    onImageChange={(url) => field.onChange(url)}
+                    defaultImageUrl={field.value || ""}
+                    maxSize={5}
+                  />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
         <Button type="submit" disabled={isLoading}>
           {isLoading ? (

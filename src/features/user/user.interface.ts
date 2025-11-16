@@ -40,6 +40,8 @@ export interface IUser {
   emailVerified: boolean;
   phoneVerified: boolean;
   profileImageUrl: string | null;
+  nidFrontUrl: string | null;
+  nidBackUrl: string | null;
   isActive: boolean;
   role: IRole;
   branchId: string | null;
