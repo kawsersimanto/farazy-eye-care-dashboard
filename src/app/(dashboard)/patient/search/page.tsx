@@ -1,5 +1,7 @@
+import { FindPatient } from "@/features/patient/components/FindPatient";
+
 const Page = () => {
-  return <div>Patient Search Page</div>;
+  return <FindPatient />;
 };
 
 export default Page;
