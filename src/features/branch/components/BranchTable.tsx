@@ -1,5 +1,6 @@
 "use client";
 
+import { CopyableCell } from "@/components/copyable-cell/CopyableCell";
 import { DataTable } from "@/components/data-table/DataTable";
 import {
   AlertDialog,
@@ -160,10 +161,20 @@ export const BranchTable = () => {
     {
       accessorKey: "email",
       header: "Email",
+      cell: ({ row }) => (
+        <CopyableCell value={row.original.email || "-"}>
+          {row.original.email || "-"}
+        </CopyableCell>
+      ),
     },
     {
       accessorKey: "phone",
       header: "Phone",
+      cell: ({ row }) => (
+        <CopyableCell value={row.original.phone || "-"}>
+          {row.original.phone || "-"}
+        </CopyableCell>
+      ),
     },
     {
       accessorKey: "city",

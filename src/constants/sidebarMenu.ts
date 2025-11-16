@@ -145,7 +145,7 @@ export const ROLE_MENU_CONFIG: Record<IRole, string[]> = {
   [IRole.SUPER_ADMIN]: [
     "dashboard",
     "branches",
-    "departments",
+    // "departments",
     "branchAdmins",
     "medicine",
     // "payments",
@@ -154,13 +154,13 @@ export const ROLE_MENU_CONFIG: Record<IRole, string[]> = {
   [IRole.ADMIN]: [
     "dashboard",
     "branches",
-    "departments",
+    // "departments",
     "doctors",
     "medicine",
     "employees",
     "branchAdmins",
     // "payments",
-    "users",
+    // "users",
   ],
   [IRole.BRANCH_ADMIN]: [
     "dashboard",
@@ -171,7 +171,7 @@ export const ROLE_MENU_CONFIG: Record<IRole, string[]> = {
     // "payments",
     "employees",
     "patients",
-    "users",
+    // "users",
   ],
   [IRole.DOCTOR]: [
     "dashboard",
