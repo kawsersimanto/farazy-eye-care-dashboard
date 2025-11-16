@@ -2,6 +2,7 @@ import { IBranch } from "../branch/branch.interface";
 import { IDoctor } from "../doctor/doctor.interface";
 import { IEmployeeProfile } from "../employee/employee.interface";
 import { IPatient } from "../patient/patient.interface";
+import { ISchedule } from "../schedule/schedule.interface";
 
 export enum IRole {
   SUPER_ADMIN = "SUPER_ADMIN",
@@ -49,6 +50,8 @@ export interface IUser {
   employeeProfile: IEmployeeProfile | null;
   patientProfile: IPatient | null;
   doctorProfile: IDoctor | null;
+  specializations: null;
+  schedules: ISchedule[] | null;
   branch?: IBranch;
   createdAt: string;
   updatedAt: string;
