@@ -5,29 +5,34 @@ import { ISchedule } from "./schedule.interface";
 export const scheduleApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getSchedules: builder.query<ApiResponse<ISchedule[]>, void>({
-      query: () => "/schedule",
+      query: () => "/doctor-schedule/",
       providesTags: ["schedule"],
     }),
     getScheduleById: builder.query<ApiResponse<ISchedule>, string>({
-      query: (id) => `/schedule/${id}`,
+      query: (id) => `/doctor-schedule/${id}`,
+      providesTags: ["schedule"],
+    }),
+    getDoctorScheduleById: builder.query<ApiResponse<ISchedule[]>, string>({
+      query: (id) => `/doctor-schedule/doctor/${id}`,
       providesTags: ["schedule"],
     }),
     createSchedule: builder.mutation<ISchedule, Partial<ISchedule>>({
-      query: (body) => ({ url: "/schedule", method: "POST", body }),
+      query: (body) => ({ url: "/doctor-schedule", method: "POST", body }),
       invalidatesTags: ["schedule"],
     }),
-    updateSchedule: builder.mutation<ISchedule, Partial<ISchedule> & { id: string }>(
-      {
-        query: ({ id, ...body }) => ({
-          url: `/schedule/${id}`,
-          method: "PUT",
-          body,
-        }),
-        invalidatesTags: ["schedule"],
-      }
-    ),
+    updateSchedule: builder.mutation<
+      ISchedule,
+      Partial<ISchedule> & { id: string }
+    >({
+      query: ({ id, ...body }) => ({
+        url: `/doctor-schedule/${id}`,
+        method: "PUT",
+        body,
+      }),
+      invalidatesTags: ["schedule"],
+    }),
     deleteSchedule: builder.mutation<{ success: boolean; id: string }, string>({
-      query: (id) => ({ url: `/schedule/${id}`, method: "DELETE" }),
+      query: (id) => ({ url: `/doctor-schedule/${id}`, method: "DELETE" }),
       invalidatesTags: ["schedule"],
     }),
   }),
@@ -36,6 +41,7 @@ export const scheduleApi = baseApi.injectEndpoints({
 export const {
   useGetSchedulesQuery,
   useGetScheduleByIdQuery,
+  useGetDoctorScheduleByIdQuery,
   useCreateScheduleMutation,
   useUpdateScheduleMutation,
   useDeleteScheduleMutation,

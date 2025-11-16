@@ -1,5 +1,7 @@
+import { ScheduleTable } from "@/features/schedule/components/ScheduleTable";
+
 const Page = () => {
-  return "Schedule Table";
+  return <ScheduleTable />;
 };
 
 export default Page;
