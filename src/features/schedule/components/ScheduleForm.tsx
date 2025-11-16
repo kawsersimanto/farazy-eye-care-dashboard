@@ -118,41 +118,43 @@ export const ScheduleForm = () => {
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="startTime"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Start Time</FormLabel>
-              <FormControl>
-                <TimePicker field={field} />
-              </FormControl>
+        <div className="grid grid-cols-2 gap-4">
+          <FormField
+            control={form.control}
+            name="startTime"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Start Time</FormLabel>
+                <FormControl>
+                  <TimePicker field={field} />
+                </FormControl>
 
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={form.control}
-          name="endTime"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>End Time</FormLabel>
-              <FormControl>
-                <TimePicker field={field} />
-              </FormControl>
+          <FormField
+            control={form.control}
+            name="endTime"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>End Time</FormLabel>
+                <FormControl>
+                  <TimePicker field={field} />
+                </FormControl>
 
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
         <FormField
           control={form.control}
           name="slotMinutes"
           render={({ field }) => (
-            <FormItem>
+            <FormItem hidden>
               <FormLabel>Slot Minutes</FormLabel>
               <FormControl>
                 <Input placeholder="ex. 10" type="number" {...field} />
@@ -167,7 +169,7 @@ export const ScheduleForm = () => {
           control={form.control}
           name="maxPatients"
           render={({ field }) => (
-            <FormItem>
+            <FormItem hidden>
               <FormLabel>Max Patients</FormLabel>
               <FormControl>
                 <Input placeholder="ex. 50" type="number" {...field} />
