@@ -12,7 +12,7 @@ export const imageApi = baseApi.injectEndpoints({
           body: file,
         };
       },
-      invalidatesTags: ["images"],
+      // invalidatesTags: ["images"],
     }),
 
     // Multiple image upload
@@ -24,7 +24,7 @@ export const imageApi = baseApi.injectEndpoints({
           body: files,
         };
       },
-      invalidatesTags: ["images"],
+      // invalidatesTags: ["images"],
     }),
 
     // Delete single image by URL
@@ -34,7 +34,7 @@ export const imageApi = baseApi.injectEndpoints({
         method: "DELETE",
         body: { url },
       }),
-      invalidatesTags: ["images"],
+      // invalidatesTags: ["images"],
     }),
 
     // Bulk delete images by URLs
@@ -44,7 +44,7 @@ export const imageApi = baseApi.injectEndpoints({
         method: "DELETE",
         body: { urls },
       }),
-      invalidatesTags: ["images"],
+      // invalidatesTags: ["images"],
     }),
   }),
 });

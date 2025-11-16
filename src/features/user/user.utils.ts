@@ -8,6 +8,8 @@ export const createDoctorPayload = (values: doctorSchemaType) => {
     email: values.email,
     phone: values.phone,
     profileImageUrl: values.profileImageUrl,
+    nidFrontUrl: values.nidFrontUrl,
+    nidBackUrl: values.nidBackUrl,
   };
 
   const doctorProfile = {
@@ -29,6 +31,8 @@ export const createEmployeePayload = (values: employeeSchemaType) => {
     email: values.email,
     phone: values.phone,
     profileImageUrl: values.profileImageUrl,
+    nidFrontUrl: values.nidFrontUrl,
+    nidBackUrl: values.nidBackUrl,
   };
 
   const employeeProfile = {

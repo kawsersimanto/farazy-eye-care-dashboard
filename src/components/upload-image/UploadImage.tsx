@@ -279,7 +279,7 @@ export const UploadImage = ({
               </p>
             </div>
 
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" type="button">
               <ImageIcon />
               Browse Files
             </Button>
