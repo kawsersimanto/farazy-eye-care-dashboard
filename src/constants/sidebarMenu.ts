@@ -121,6 +121,7 @@ export const ALL_MENU_ITEMS: Record<string, SidebarMenuItem> = {
   },
   medicalRecords: {
     title: "Medical Records",
+
     icon: FileText,
     url: "/medical-records",
   },
