@@ -5,21 +5,21 @@ import { IAppointment } from "./appointment.interface";
 export const appointmentApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAppointments: builder.query<
-      ApiResponse<IAppointment[]>,
+      ApiResponse<IAppointment[], true>,
       ApiParams & { date?: string; doctorId?: string; branchId?: string }
     >({
       query: ({ page, limit, searchTerm, date, branchId, doctorId }) => ({
-        url: "/appointment",
+        url: "/appointments",
         params: { page, limit, searchTerm, date, branchId, doctorId },
       }),
       providesTags: ["appointment"],
     }),
     getAppointmentById: builder.query<ApiResponse<IAppointment>, string>({
-      query: (id) => `/appointment/${id}`,
+      query: (id) => `/appointments/${id}`,
       providesTags: ["appointment"],
     }),
     createAppointment: builder.mutation<IAppointment, Partial<IAppointment>>({
-      query: (body) => ({ url: "/appointment", method: "POST", body }),
+      query: (body) => ({ url: "/appointments", method: "POST", body }),
       invalidatesTags: ["appointment"],
     }),
     updateAppointment: builder.mutation<
@@ -27,7 +27,7 @@ export const appointmentApi = baseApi.injectEndpoints({
       Partial<IAppointment> & { id: string }
     >({
       query: ({ id, ...body }) => ({
-        url: `/appointment/${id}`,
+        url: `/appointments/${id}`,
         method: "PUT",
         body,
       }),
@@ -37,7 +37,7 @@ export const appointmentApi = baseApi.injectEndpoints({
       { success: boolean; id: string },
       string
     >({
-      query: (id) => ({ url: `/appointment/${id}`, method: "DELETE" }),
+      query: (id) => ({ url: `/appointments/${id}`, method: "DELETE" }),
       invalidatesTags: ["appointment"],
     }),
   }),

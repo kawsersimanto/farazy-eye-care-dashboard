@@ -1,7 +1,7 @@
-import { MedicineTable } from "@/features/medicine/components/MedicineTable";
+import { AppointmentTable } from "@/features/appointment/components/AppointmentTable";
 
 const Page = () => {
-  return <MedicineTable />;
+  return <AppointmentTable />;
 };
 
 export default Page;

@@ -1,9 +1,13 @@
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import relativeTime from "dayjs/plugin/relativeTime";
+import timezone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
 
 dayjs.extend(customParseFormat);
 dayjs.extend(relativeTime);
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 /**
  * Returns a relative time string for a date
@@ -59,4 +63,8 @@ export const formatTime = (time: string) => {
   }
 
   return parsed.format("hh:mm A");
+};
+
+export const getTodayISO = (): string => {
+  return dayjs().tz("Asia/Dhaka").toISOString();
 };
