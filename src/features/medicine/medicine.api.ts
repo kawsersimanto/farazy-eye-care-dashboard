@@ -1,11 +1,17 @@
 import { baseApi } from "@/redux/api/baseApi";
-import { ApiResponse } from "@/types/api";
+import { ApiParams, ApiResponse } from "@/types/api";
 import { IMedicine } from "./medicine.interface";
 
 export const medicineApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getMedicines: builder.query<ApiResponse<IMedicine[], true>, void>({
-      query: () => "/medicine",
+    getMedicines: builder.query<
+      ApiResponse<IMedicine[], true>,
+      Partial<ApiParams>
+    >({
+      query: ({ page, limit, searchTerm }) => ({
+        url: "/medicine",
+        params: { page, limit, searchTerm },
+      }),
       providesTags: ["medicine"],
     }),
     getMedicineById: builder.query<ApiResponse<IMedicine>, string>({

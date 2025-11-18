@@ -68,3 +68,48 @@ export const formatTime = (time: string) => {
 export const getTodayISO = (): string => {
   return dayjs().tz("Asia/Dhaka").toISOString();
 };
+
+export const formatScheduleDays = (dayCodes: string[]) => {
+  if (!dayCodes || dayCodes.length === 0) return "";
+
+  // Convert: MON → Monday (or keep as MON if you want)
+  const names = dayCodes.map((code) => getDayName(code));
+
+  // If only one — return as is
+  if (names.length === 1) return names[0];
+
+  // Extract last item
+  const last = names[names.length - 1];
+
+  // Join rest with commas
+  const rest = names.slice(0, -1).join(", ");
+
+  return `${rest} & ${last}`;
+};
+
+export const formatScheduleWithTime = (
+  schedules: {
+    dayOfWeek: string;
+    startTime: string;
+    endTime: string;
+  }[]
+) => {
+  if (!schedules || schedules.length === 0) return "";
+
+  const items = schedules.map((s) => {
+    const dayName = getDayName(s.dayOfWeek);
+    const start = formatTime(s.startTime);
+    const end = formatTime(s.endTime);
+    return `${dayName} (${start} - ${end})`;
+  });
+
+  // If only one item
+  if (items.length === 1) return items[0];
+
+  // If two items → A & B
+  if (items.length === 2) return `${items[0]} & ${items[1]}`;
+
+  // If 3+ items → A, B, C & D
+  const last = items.pop(); // remove last element
+  return `${items.join(", ")} & ${last}`;
+};

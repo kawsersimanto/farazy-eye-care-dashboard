@@ -1,17 +1,17 @@
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
-import { EmployeeForm } from "@/features/employee/components/EmployeeForm";
+import { PrescriptionForm } from "@/features/prescription/components/PrescriptionForm";
 
 const CreatePage = () => {
   return (
     <div>
-      <Card className="max-w-4xl mx-auto px-10">
-        <CardTitle className="flex items-center gap-3">
+      <Card className="max-w-7xl mx-auto px-10">
+        <CardTitle className="flex items-center gap-3 sr-only">
           <h2 className="font-work-sans font-medium text-lg">
-            Create Employee
+            Create Prescription
           </h2>
         </CardTitle>
         <CardDescription>
-          <EmployeeForm />
+          <PrescriptionForm />
         </CardDescription>
       </Card>
     </div>

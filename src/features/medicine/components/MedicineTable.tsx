@@ -18,6 +18,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useDebounce } from "@/hooks/useDebounce";
 import { ApiResponse } from "@/types/api";
 import { handleMutationRequest } from "@/utils/handleMutationRequest";
 import { multiSelectFilterFn } from "@/utils/table";
@@ -43,9 +44,15 @@ import { IMedicine } from "../medicine.interface";
 export const MedicineTable = () => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
+  const [searchInput, setSearchInput] = useState("");
+  const debouncedSearch = useDebounce(searchInput, 500);
   const [updateMedicineFn, { isLoading: isUpdatingMedicine }] =
     useUpdateMedicineMutation();
-  const { data } = useGetMedicinesQuery();
+  const { data } = useGetMedicinesQuery({
+    page,
+    limit,
+    searchTerm: debouncedSearch,
+  });
   const [deleteMedicineFn, { isLoading: isDeletingMedicine }] =
     useDeleteMedicineMutation();
 
@@ -57,6 +64,11 @@ export const MedicineTable = () => {
   const [medicineToDelete, setMedicineToDelete] = useState<IMedicine | null>(
     null
   );
+
+  const handleSearch = (query: string) => {
+    setSearchInput(query);
+    setPage(1);
+  };
 
   const handleDeleteMany = (rows: IMedicine[], ids: string[]) => {
     console.log("Deleting:", ids, rows);
@@ -262,6 +274,9 @@ export const MedicineTable = () => {
         limit={limit}
         totalPages={totalPages}
         onPageChange={setPage}
+        searchMode="server"
+        searchQuery={searchInput}
+        onSearch={handleSearch}
         onDeleteSelected={handleDeleteMany}
         onPageSizeChange={(newLimit) => {
           setLimit(newLimit);
