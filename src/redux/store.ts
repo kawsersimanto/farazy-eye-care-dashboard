@@ -1,6 +1,7 @@
 import { authReducer } from "@/features/auth/store/auth.slice";
 import { userReducer } from "@/features/user/store/user.slice";
 import { baseApi } from "@/redux/api/baseApi";
+import { prescriptionReducer } from "@/features/prescription/store/prescription.slice";
 import { appointmentReducer } from "@/features/appointment/store/appointment.slice";
 import { specializationReducer } from "@/features/specialization/store/specialization.slice";
 import { scheduleReducer } from "@/features/schedule/store/schedule.slice";
@@ -36,6 +37,7 @@ const persistConfig = {
 };
 
 const rootReducer = combineReducers({
+  prescription: prescriptionReducer,
   appointment: appointmentReducer,
   specialization: specializationReducer,
   schedule: scheduleReducer,
