@@ -119,6 +119,15 @@ export const ALL_MENU_ITEMS: Record<string, SidebarMenuItem> = {
       { title: "Book Appointment", url: "/appointments/create" },
     ],
   },
+  prescription: {
+    title: "Prescription",
+    icon: Calendar,
+    url: "#",
+    items: [
+      { title: "All Prescriptions", url: "/prescription" },
+      { title: "Add Prescription", url: "/prescription/create" },
+    ],
+  },
   medicalRecords: {
     title: "Medical Records",
 
@@ -184,6 +193,7 @@ export const ROLE_MENU_CONFIG: Record<IRole, string[]> = {
     "dashboard",
     "appointments",
     "doctorSchedule",
+    "prescription",
     "medicalRecords",
     "patient",
   ],

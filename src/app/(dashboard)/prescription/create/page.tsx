@@ -1,0 +1,21 @@
+import { Card, CardDescription, CardTitle } from "@/components/ui/card";
+import { EmployeeForm } from "@/features/employee/components/EmployeeForm";
+
+const CreatePage = () => {
+  return (
+    <div>
+      <Card className="max-w-4xl mx-auto px-10">
+        <CardTitle className="flex items-center gap-3">
+          <h2 className="font-work-sans font-medium text-lg">
+            Create Employee
+          </h2>
+        </CardTitle>
+        <CardDescription>
+          <EmployeeForm />
+        </CardDescription>
+      </Card>
+    </div>
+  );
+};
+
+export default CreatePage;
