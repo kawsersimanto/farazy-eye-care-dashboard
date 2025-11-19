@@ -21,7 +21,6 @@ import { IUser } from "@/features/user/user.interface";
 import { useDebounce } from "@/hooks/useDebounce";
 import { cn } from "@/lib/utils";
 import { useAppSelector } from "@/redux/hook";
-import { getAgeFromISO } from "@/utils/date";
 import { Check, Search } from "lucide-react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
@@ -34,11 +33,6 @@ export const PrescriptionPatient = () => {
   const [searchInput, setSearchInput] = useState("");
   const debouncedSearch = useDebounce(searchInput, 500);
   const selectedPatient = useAppSelector((state) => state.prescription.patient);
-  // const { data } = useGetPatientsQuery({
-  //   limit: 50,
-  //   page,
-  //   searchTerm: debouncedSearch,
-  // });
 
   const { data } = useGetAppointmentsQuery({
     limit: 50,
@@ -47,7 +41,6 @@ export const PrescriptionPatient = () => {
   });
 
   const users = data?.data?.data;
-  console.log(users);
 
   const handleSearch = (query: string) => {
     setSearchInput(query);
@@ -55,9 +48,7 @@ export const PrescriptionPatient = () => {
   };
 
   const handleSelectPatient = (user: IAppointment & Partial<IUser>) => {
-    const age = user.patientProfile?.dateOfBirth
-      ? getAgeFromISO(user.patientProfile.dateOfBirth)
-      : 18;
+    const age = user?.age ? user?.age : 18;
 
     dispatch(
       setSelectedPatient({
