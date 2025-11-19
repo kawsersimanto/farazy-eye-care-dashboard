@@ -1,7 +1,14 @@
 "use client";
 
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group";
+import { Label } from "@/components/ui/label";
 import { useGetMedicinesQuery } from "@/features/medicine/medicine.api";
 import { useDebounce } from "@/hooks/useDebounce";
+import { SearchIcon } from "lucide-react";
 import { useState } from "react";
 import { PrescriptionMedicineCard } from "./PrescriptionMedicineCard";
 
@@ -11,7 +18,7 @@ export const PrescriptionMedicine = () => {
   const debouncedSearch = useDebounce(searchInput, 500);
   const { data: medicineData } = useGetMedicinesQuery({
     page,
-    limit: 50,
+    limit: 10,
     searchTerm: debouncedSearch,
   });
   const medicines = medicineData?.data?.data || [];
@@ -21,14 +28,25 @@ export const PrescriptionMedicine = () => {
     setPage(1);
   };
 
-  console.log({ handleSearch });
-
-  console.log(medicines);
   return (
-    <div className="grid grid-cols-2 gap-2">
-      {medicines?.map((medicine, id) => (
-        <PrescriptionMedicineCard key={id} medicine={medicine} />
-      ))}
+    <div className="flex flex-col gap-2">
+      <div>
+        <Label className="mb-2">Search Patient</Label>
+        <InputGroup>
+          <InputGroupInput
+            placeholder="ex. Renova"
+            onChange={(e) => handleSearch(e.target.value)}
+          />
+          <InputGroupAddon>
+            <SearchIcon />
+          </InputGroupAddon>
+        </InputGroup>
+      </div>
+      <div className="grid grid-cols-2 gap-2">
+        {medicines?.map((medicine, id) => (
+          <PrescriptionMedicineCard key={id} medicine={medicine} />
+        ))}
+      </div>
     </div>
   );
 };
