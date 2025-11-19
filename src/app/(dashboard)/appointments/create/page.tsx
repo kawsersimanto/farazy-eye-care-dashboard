@@ -1,5 +1,5 @@
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
-import { MedicineForm } from "@/features/medicine/components/MedicineForm";
+import { AppointmentForm } from "@/features/appointment/components/AppointmentForm";
 
 const Page = () => {
   return (
@@ -11,7 +11,7 @@ const Page = () => {
           </h2>
         </CardTitle>
         <CardDescription>
-          <MedicineForm />
+          <AppointmentForm />
         </CardDescription>
       </Card>
     </div>
