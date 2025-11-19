@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useGetMedicinesQuery } from "@/features/medicine/medicine.api";
@@ -35,10 +34,6 @@ export const PrescriptionForm = () => {
   const handleSearch = (query: string) => {
     setSearchInput(query);
     setPage(1);
-  };
-
-  const handleDownloadPDF = async () => {
-    console.log("Hello");
   };
 
   return (
@@ -90,12 +85,18 @@ export const PrescriptionForm = () => {
           </div>
         </div>
 
+        <Separator className="my-10" />
+
+        {/* Patient Info */}
+        <div>
+          <div>Hello</div>
+        </div>
+
         {/* <div className="grid grid-cols-2 gap-4">
         <div>Hello</div>
         <div>asdf</div>
       </div> */}
       </div>
-      <Button onClick={handleDownloadPDF}>Print</Button>
     </>
   );
 };

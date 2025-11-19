@@ -437,4 +437,8 @@
     margin: 0;
     padding: 0;
   }
+
+  [data-printable] {
+    visibility: visible;
+  }
 }
