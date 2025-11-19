@@ -52,7 +52,9 @@ export const PrescriptionForm = () => {
       oe: "",
       postSegment: "",
       var: "",
-      medicine: [{ name: "", description: "" }],
+      medicine: [
+        { name: "", dosage: "", mealTiming: "", duration: "", instruction: "" },
+      ],
     },
   });
 
@@ -101,7 +103,6 @@ export const PrescriptionForm = () => {
                           {...field}
                         />
                       </FormControl>
-
                       <FormMessage />
                     </FormItem>
                   )}
@@ -120,7 +121,6 @@ export const PrescriptionForm = () => {
                           {...field}
                         />
                       </FormControl>
-
                       <FormMessage />
                     </FormItem>
                   )}
@@ -139,7 +139,6 @@ export const PrescriptionForm = () => {
                           {...field}
                         />
                       </FormControl>
-
                       <FormMessage />
                     </FormItem>
                   )}
@@ -158,7 +157,6 @@ export const PrescriptionForm = () => {
                           {...field}
                         />
                       </FormControl>
-
                       <FormMessage />
                     </FormItem>
                   )}
@@ -177,7 +175,6 @@ export const PrescriptionForm = () => {
                           {...field}
                         />
                       </FormControl>
-
                       <FormMessage />
                     </FormItem>
                   )}
@@ -186,21 +183,24 @@ export const PrescriptionForm = () => {
 
               <div className="py-10">
                 <div className="flex flex-col gap-2">
-                  <FormLabel className="mb-4">Features</FormLabel>
-                  <div className="border-dashed border border-border rounded-2xl px-4 pt-5 pb-3 flex flex-col gap-2">
+                  <FormLabel className="mb-4">Rx</FormLabel>
+                  <div className="flex flex-col gap-2">
                     <div className="flex flex-col gap-4">
                       {fields.map((field, index) => (
-                        <div key={field.id} className="flex gap-4">
-                          <div className="grow">
+                        <div
+                          key={field.id}
+                          className="space-y-3 border rounded-lg p-4"
+                        >
+                          <div className="grid grid-cols-2 gap-4">
                             <FormField
                               control={form.control}
                               name={`medicine.${index}.name`}
                               render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel>Name</FormLabel>
+                                  <FormLabel>Medicine Name</FormLabel>
                                   <FormControl>
                                     <Input
-                                      placeholder="Unlimited Team Members"
+                                      placeholder="e.g., Paracetamol"
                                       type="text"
                                       {...field}
                                     />
@@ -209,17 +209,15 @@ export const PrescriptionForm = () => {
                                 </FormItem>
                               )}
                             />
-                          </div>
-                          <div className="grow">
                             <FormField
                               control={form.control}
-                              name={`medicine.${index}.description`}
+                              name={`medicine.${index}.dosage`}
                               render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel>Description</FormLabel>
+                                  <FormLabel>Dosage</FormLabel>
                                   <FormControl>
                                     <Input
-                                      placeholder="Invite unlimited members"
+                                      placeholder="e.g., 500mg"
                                       type="text"
                                       {...field}
                                     />
@@ -229,18 +227,72 @@ export const PrescriptionForm = () => {
                               )}
                             />
                           </div>
+
+                          <div className="grid grid-cols-2 gap-4">
+                            <FormField
+                              control={form.control}
+                              name={`medicine.${index}.mealTiming`}
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Meal Timing</FormLabel>
+                                  <FormControl>
+                                    <Input
+                                      placeholder="e.g., After food"
+                                      type="text"
+                                      {...field}
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={form.control}
+                              name={`medicine.${index}.duration`}
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Duration</FormLabel>
+                                  <FormControl>
+                                    <Input
+                                      placeholder="e.g., 5 days"
+                                      type="text"
+                                      {...field}
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                          </div>
+
+                          <FormField
+                            control={form.control}
+                            name={`medicine.${index}.instruction`}
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Instruction</FormLabel>
+                                <FormControl>
+                                  <Input
+                                    placeholder="e.g., Take 1 tablet twice daily"
+                                    type="text"
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+
                           {fields.length > 1 && (
-                            <div className="flex items-end">
-                              <Button
-                                type="button"
-                                variant="outline"
-                                size="sm"
-                                onClick={() => remove(index)}
-                                className="py-[17px]"
-                              >
-                                <X className="" />
-                              </Button>
-                            </div>
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="sm"
+                              onClick={() => remove(index)}
+                              className="w-full"
+                            >
+                              <X className="mr-2 h-4 w-4" /> Remove Medicine
+                            </Button>
                           )}
                         </div>
                       ))}
@@ -250,9 +302,17 @@ export const PrescriptionForm = () => {
                       type="button"
                       variant="link"
                       className="!p-0 !m-0 self-start"
-                      onClick={() => append({ name: "", description: "" })}
+                      onClick={() =>
+                        append({
+                          name: "",
+                          dosage: "",
+                          mealTiming: "",
+                          duration: "",
+                          instruction: "",
+                        })
+                      }
                     >
-                      <Plus /> Add New Feature
+                      <Plus /> Add Medicine
                     </Button>
                   </div>
                 </div>

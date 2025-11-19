@@ -9,11 +9,14 @@ export const PrescriptionSchema = z.object({
   medicine: z
     .array(
       z.object({
-        name: z.string().min(1, "Feature name is required"),
-        description: z.string().min(1, "Feature description is required"),
+        name: z.string().min(1, "Medicine name is required"),
+        dosage: z.string().min(1, "Dosage is required"),
+        mealTiming: z.string().optional(),
+        duration: z.string().optional(),
+        instruction: z.string().optional(),
       })
     )
-    .min(1, "At least one feature is required"),
+    .min(1, "At least one medicine is required"),
 });
 
 export type PrescriptionSchemaType = z.infer<typeof PrescriptionSchema>;
