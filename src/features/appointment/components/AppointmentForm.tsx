@@ -27,12 +27,15 @@ import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useGetDoctorScheduleByIdQuery } from "@/features/schedule/schedule.api";
 import { cn } from "@/lib/utils";
+import { ApiResponse } from "@/types/api";
+import { handleMutationRequest } from "@/utils/handleMutationRequest";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+import { useCreateAppointmentMutation } from "../appointment.api";
 import {
   AppointmentSchema,
   AppointmentSchemaType,
@@ -40,11 +43,13 @@ import {
 import { useAppointmentSchedule } from "../hooks/useAppointmentSchedule";
 
 export const AppointmentForm = () => {
+  const router = useRouter();
   const { profile } = useAuth();
   const id = profile?.id as string;
   const { data: scheduleData } = useGetDoctorScheduleByIdQuery(id, {
     skip: !id,
   });
+  const [createAppointmentFn] = useCreateAppointmentMutation();
 
   const { isDateDisabled } = useAppointmentSchedule(scheduleData);
 
@@ -71,17 +76,19 @@ export const AppointmentForm = () => {
     });
   }, [form, profile]);
 
-  const onSubmit = (values: AppointmentSchemaType) => {
-    try {
-      toast(
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(values, null, 2)}</code>
-        </pre>
-      );
-    } catch (error) {
-      console.error("Form submission error", error);
-      toast.error("Failed to submit the form. Please try again.");
-    }
+  const onSubmit = async (values: AppointmentSchemaType) => {
+    const payload = {
+      ...values,
+      scheduledAt: values.scheduledAt.toISOString(),
+    };
+
+    await handleMutationRequest(createAppointmentFn, payload, {
+      loadingMessage: "Creating Schedule",
+      successMessage: (res: ApiResponse<string>) => res?.message,
+      onSuccess: () => {
+        router.push("/appointments");
+      },
+    });
   };
 
   return (
@@ -185,7 +192,12 @@ export const AppointmentForm = () => {
             <FormItem>
               <FormLabel>Age</FormLabel>
               <FormControl>
-                <Input placeholder="ex. 23" type="number" {...field} />
+                <Input
+                  placeholder="ex. 23"
+                  type="number"
+                  {...field}
+                  onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                />
               </FormControl>
 
               <FormMessage />
