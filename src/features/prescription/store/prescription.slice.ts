@@ -84,7 +84,13 @@ export const prescriptionSlice = createSlice({
     },
     addMedicine: (state, action: PayloadAction<Medicine>) => {
       if (state.formData) {
-        state.formData.medicine.push(action.payload);
+        const medicineExists = state.formData.medicine.some(
+          (med) => med.name.toLowerCase() === action.payload.name.toLowerCase()
+        );
+
+        if (!medicineExists) {
+          state.formData.medicine.push(action.payload);
+        }
       }
     },
     removeMedicine: (state, action: PayloadAction<number>) => {

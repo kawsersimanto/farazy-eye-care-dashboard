@@ -26,16 +26,14 @@ import {
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
-import { useGetMedicinesQuery } from "@/features/medicine/medicine.api";
 import { useGetUserByIdQuery } from "@/features/user/user.api";
-import { useDebounce } from "@/hooks/useDebounce";
 import { cn } from "@/lib/utils";
 import { useAppSelector } from "@/redux/hook";
 import { getAgeFromISO } from "@/utils/date";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { CalendarIcon, Plus, Trash } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import {
@@ -46,27 +44,9 @@ import { PrescriptionConsultant } from "./PrescriptionConsultant";
 import { PrescriptionHeader } from "./PrescriptionHeader";
 
 export const PrescriptionForm = () => {
-  const [page, setPage] = useState(1);
-  const [searchInput, setSearchInput] = useState("");
-  const debouncedSearch = useDebounce(searchInput, 500);
-  const { data: medicineData } = useGetMedicinesQuery({
-    page,
-    limit: 50,
-    searchTerm: debouncedSearch,
-  });
-
   const { data: patientData } = useGetUserByIdQuery("6917665d84030b43c9ed6a36");
   const patient = patientData?.data;
   const selectedPatient = useAppSelector((state) => state.prescription.patient);
-
-  const medicines = medicineData?.data?.data || [];
-
-  const handleSearch = (query: string) => {
-    setSearchInput(query);
-    setPage(1);
-  };
-
-  console.log(medicines, handleSearch);
 
   const form = useForm<PrescriptionSchemaType>({
     resolver: zodResolver(PrescriptionSchema),

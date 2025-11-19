@@ -64,7 +64,7 @@ export const PrescriptionPatient = () => {
   };
 
   return (
-    <>
+    <div>
       <Label className="mb-2">Search Patient</Label>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
@@ -109,6 +109,6 @@ export const PrescriptionPatient = () => {
           </Command>
         </PopoverContent>
       </Popover>
-    </>
+    </div>
   );
 };
