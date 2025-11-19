@@ -9,9 +9,15 @@ export const patientApi = baseApi.injectEndpoints({
       ApiResponse<IUser[], true>,
       Partial<ApiParams & { branchId: string; role?: string }>
     >({
-      query: ({ branchId, role = IRole.PATIENT, page = 1, limit = 10 }) => ({
+      query: ({
+        branchId,
+        role = IRole.PATIENT,
+        page = 1,
+        limit = 10,
+        searchTerm,
+      }) => ({
         url: "/users",
-        params: { branchId, role, page, limit },
+        params: { branchId, role, page, limit, searchTerm },
       }),
       providesTags: ["users"],
     }),

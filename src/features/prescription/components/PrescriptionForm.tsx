@@ -30,6 +30,7 @@ import { useGetMedicinesQuery } from "@/features/medicine/medicine.api";
 import { useGetUserByIdQuery } from "@/features/user/user.api";
 import { useDebounce } from "@/hooks/useDebounce";
 import { cn } from "@/lib/utils";
+import { useAppSelector } from "@/redux/hook";
 import { getAgeFromISO } from "@/utils/date";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
@@ -56,6 +57,7 @@ export const PrescriptionForm = () => {
 
   const { data: patientData } = useGetUserByIdQuery("6917665d84030b43c9ed6a36");
   const patient = patientData?.data;
+  const selectedPatient = useAppSelector((state) => state.prescription.patient);
 
   const medicines = medicineData?.data?.data || [];
 
@@ -90,8 +92,31 @@ export const PrescriptionForm = () => {
     name: "medicine",
   });
 
+  // Populate form with selected patient data
   useEffect(() => {
-    if (patient) {
+    if (selectedPatient) {
+      form.reset({
+        name: selectedPatient.name,
+        age: selectedPatient.age,
+        gender: selectedPatient.gender,
+        phone: selectedPatient.phone,
+        prescribeDate: new Date(),
+        antSegment: "",
+        cc: "",
+        oe: "",
+        postSegment: "",
+        var: "",
+        medicine: [
+          {
+            name: "",
+            dosage: "",
+            mealTiming: "",
+            duration: "",
+            instruction: "",
+          },
+        ],
+      });
+    } else if (patient) {
       form.reset({
         name: patient?.name || "",
         age: patient?.patientProfile?.dateOfBirth
@@ -99,9 +124,24 @@ export const PrescriptionForm = () => {
           : 18,
         gender: patient?.patientProfile?.gender || "MALE",
         phone: patient?.phone || "",
+        prescribeDate: new Date(),
+        antSegment: "",
+        cc: "",
+        oe: "",
+        postSegment: "",
+        var: "",
+        medicine: [
+          {
+            name: "",
+            dosage: "",
+            mealTiming: "",
+            duration: "",
+            instruction: "",
+          },
+        ],
       });
     }
-  }, [form, patient]);
+  }, [selectedPatient, patient, form]);
 
   function onSubmit(values: PrescriptionSchemaType) {
     try {
