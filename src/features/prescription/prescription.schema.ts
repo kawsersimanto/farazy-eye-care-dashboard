@@ -1,6 +1,11 @@
 import { z } from "zod";
 
 export const PrescriptionSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  phone: z.string().min(1, "Phone is required"),
+  gender: z.string().min(1, "Gender is required"),
+  age: z.number("Age must be number"),
+  prescribeDate: z.date(),
   cc: z.string().optional(),
   oe: z.string().optional(),
   var: z.string().optional(),

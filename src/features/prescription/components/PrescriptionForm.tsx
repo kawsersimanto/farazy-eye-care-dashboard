@@ -1,6 +1,8 @@
 "use client";
 
+import { PhoneInput } from "@/components/phone-input/PhoneInput";
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Form,
   FormControl,
@@ -10,13 +12,29 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { useGetMedicinesQuery } from "@/features/medicine/medicine.api";
+import { useGetUserByIdQuery } from "@/features/user/user.api";
 import { useDebounce } from "@/hooks/useDebounce";
+import { cn } from "@/lib/utils";
+import { getAgeFromISO } from "@/utils/date";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Plus, X } from "lucide-react";
-import { useState } from "react";
+import { format } from "date-fns";
+import { CalendarIcon, Plus, X } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import {
@@ -25,7 +43,6 @@ import {
 } from "../prescription.schema";
 import { PrescriptionConsultant } from "./PrescriptionConsultant";
 import { PrescriptionHeader } from "./PrescriptionHeader";
-import { PrescriptionPatient } from "./PrescriptionPatient";
 
 export const PrescriptionForm = () => {
   const [page, setPage] = useState(1);
@@ -37,6 +54,9 @@ export const PrescriptionForm = () => {
     searchTerm: debouncedSearch,
   });
 
+  const { data: patientData } = useGetUserByIdQuery("6917665d84030b43c9ed6a36");
+  const patient = patientData?.data;
+
   const medicines = medicineData?.data?.data || [];
 
   const handleSearch = (query: string) => {
@@ -44,9 +64,16 @@ export const PrescriptionForm = () => {
     setPage(1);
   };
 
+  console.log(medicines, handleSearch);
+
   const form = useForm<PrescriptionSchemaType>({
     resolver: zodResolver(PrescriptionSchema),
     defaultValues: {
+      name: "",
+      age: 18,
+      gender: "MALE",
+      phone: "",
+      prescribeDate: new Date(),
       antSegment: "",
       cc: "",
       oe: "",
@@ -62,6 +89,19 @@ export const PrescriptionForm = () => {
     control: form.control,
     name: "medicine",
   });
+
+  useEffect(() => {
+    if (patient) {
+      form.reset({
+        name: patient?.name || "",
+        age: patient?.patientProfile?.dateOfBirth
+          ? getAgeFromISO(patient?.patientProfile?.dateOfBirth)
+          : 18,
+        gender: patient?.patientProfile?.gender || "MALE",
+        phone: patient?.phone || "",
+      });
+    }
+  }, [form, patient]);
 
   function onSubmit(values: PrescriptionSchemaType) {
     try {
@@ -84,10 +124,140 @@ export const PrescriptionForm = () => {
         <Separator className="my-5" />
         <PrescriptionConsultant />
         <Separator className="my-5" />
-        <PrescriptionPatient />
-        <Separator className="mt-5" />
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
+            <div className="flex gap-4">
+              <div className="grow">
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Name</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="ex. MD Abdul Salam"
+                          type="text"
+                          {...field}
+                        />
+                      </FormControl>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div className="grow">
+                <FormField
+                  control={form.control}
+                  name="phone"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col items-start">
+                      <FormLabel>Phone</FormLabel>
+                      <FormControl className="w-full">
+                        <PhoneInput
+                          placeholder="ex. 01234133351"
+                          {...field}
+                          defaultCountry="BD"
+                        />
+                      </FormControl>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div className="grow">
+                <FormField
+                  control={form.control}
+                  name="gender"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Gender</FormLabel>
+                      <Select
+                        onValueChange={(value) => {
+                          if (value) field.onChange(value);
+                        }}
+                        value={String(field.value || "")}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select Gender" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="MALE">Male</SelectItem>
+                          <SelectItem value="FEMALE">Female</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div className="grow">
+                <FormField
+                  control={form.control}
+                  name="age"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Age</FormLabel>
+                      <FormControl>
+                        <Input placeholder="ex. 18" type="" {...field} />
+                      </FormControl>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div className="grow">
+                <FormField
+                  control={form.control}
+                  name="prescribeDate"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col">
+                      <FormLabel>Date</FormLabel>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <FormControl>
+                            <Button
+                              variant={"outline"}
+                              className={cn(
+                                "w-full pl-3 text-left font-normal bg-transparent",
+                                !field.value && "text-muted-foreground"
+                              )}
+                            >
+                              {field.value ? (
+                                format(field.value, "PPP")
+                              ) : (
+                                <span>Pick a date</span>
+                              )}
+                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                            </Button>
+                          </FormControl>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                          <Calendar
+                            mode="single"
+                            selected={field.value}
+                            onSelect={field.onChange}
+                          />
+                        </PopoverContent>
+                      </Popover>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+
+            <Separator className="mt-5" />
             <div className="grid grid-cols-[1fr_2fr] gap-10">
               <div className="border-r border-border pe-10 space-y-5 py-10">
                 <FormField

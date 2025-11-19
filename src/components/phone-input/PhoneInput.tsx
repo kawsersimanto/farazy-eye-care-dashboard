@@ -40,8 +40,11 @@ const PhoneInput: React.ForwardRefExoticComponent<PhoneInputProps> =
           countrySelectComponent={CountrySelect}
           inputComponent={InputComponent}
           smartCaret={false}
-          value={value || undefined}
-          onChange={(value) => onChange?.(value || ("" as RPNInput.Value))}
+          value={value ? `+${value.replace(/^\+/, "")}` : undefined}
+          onChange={(value) => {
+            const cleaned = value ? value.replace(/^\+/, "") : "";
+            onChange?.(cleaned as RPNInput.Value);
+          }}
           {...props}
         />
       );

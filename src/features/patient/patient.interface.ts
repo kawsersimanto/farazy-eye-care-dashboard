@@ -5,6 +5,7 @@ export interface IPatient {
   userId: string;
   branchId: string;
   dateOfBirth: string;
+  age?: number;
   gender: IGender;
   address: string | null;
   emergencyPhone: string | null;
