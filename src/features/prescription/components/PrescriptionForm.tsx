@@ -82,7 +82,7 @@ export const PrescriptionForm = () => {
       postSegment: "",
       var: "",
       medicine: [
-        { name: "", dosage: "", mealTiming: "", duration: "", instruction: "" },
+        { name: "", timing: "", mealTiming: "", duration: "", instruction: "" },
       ],
     },
   });
@@ -109,7 +109,7 @@ export const PrescriptionForm = () => {
         medicine: [
           {
             name: "",
-            dosage: "",
+            timing: "",
             mealTiming: "",
             duration: "",
             instruction: "",
@@ -133,7 +133,7 @@ export const PrescriptionForm = () => {
         medicine: [
           {
             name: "",
-            dosage: "",
+            timing: "",
             mealTiming: "",
             duration: "",
             instruction: "",
@@ -394,113 +394,150 @@ export const PrescriptionForm = () => {
               <div className="py-10">
                 <div className="flex flex-col gap-2">
                   <FormLabel className="mb-4">Rx</FormLabel>
-                  <div className="flex flex-col gap-2">
-                    <div className="flex flex-col gap-4">
+                  <div className="flex flex-col gap-5">
+                    <div className="flex flex-col gap-6">
                       {fields.map((field, index) => (
                         <div key={field.id} className="">
-                          <div className="grid grid-cols-2 gap-4">
-                            <FormField
-                              control={form.control}
-                              name={`medicine.${index}.name`}
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel>Medicine Name</FormLabel>
-                                  <FormControl>
-                                    <Input
-                                      placeholder="e.g., Paracetamol"
-                                      type="text"
-                                      {...field}
-                                    />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                            <FormField
-                              control={form.control}
-                              name={`medicine.${index}.dosage`}
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel>Dosage</FormLabel>
-                                  <FormControl>
-                                    <Input
-                                      placeholder="e.g., 500mg"
-                                      type="text"
-                                      {...field}
-                                    />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                          </div>
+                          <div className="flex items-center gap-2">
+                            <div className="grid grid-cols-4 gap-x-1 gap-y-4 items-start">
+                              <FormField
+                                control={form.control}
+                                name={`medicine.${index}.name`}
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormLabel>Medicine Name</FormLabel>
+                                    <FormControl>
+                                      <Input
+                                        placeholder="ex. Paracetamol"
+                                        type="text"
+                                        {...field}
+                                      />
+                                    </FormControl>
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
+                              <FormField
+                                control={form.control}
+                                name={`medicine.${index}.timing`}
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormLabel>Timing</FormLabel>
+                                    <Select
+                                      onValueChange={(value) => {
+                                        if (value) field.onChange(value);
+                                      }}
+                                      value={String(field.value || "")}
+                                    >
+                                      <FormControl>
+                                        <SelectTrigger>
+                                          <SelectValue placeholder="ex. 1 + 0 + 1" />
+                                        </SelectTrigger>
+                                      </FormControl>
+                                      <SelectContent>
+                                        <SelectItem value="1 + 0 + 1">
+                                          1 + 0 + 1
+                                        </SelectItem>
+                                        <SelectItem value="1 + 1 + 1">
+                                          1 + 1 + 1
+                                        </SelectItem>
+                                        <SelectItem value="0 + 0 + 1">
+                                          0 + 0 + 1
+                                        </SelectItem>
+                                        <SelectItem value="1 + 0 + 0">
+                                          1 + 0 + 0
+                                        </SelectItem>
+                                        <SelectItem value="0 + 1 + 0">
+                                          0 + 1 + 0
+                                        </SelectItem>
+                                      </SelectContent>
+                                    </Select>
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
+                              <FormField
+                                control={form.control}
+                                name={`medicine.${index}.mealTiming`}
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormLabel>Meal Timing</FormLabel>
+                                    <Select
+                                      onValueChange={(value) => {
+                                        if (value) field.onChange(value);
+                                      }}
+                                      value={String(field.value || "")}
+                                    >
+                                      <FormControl>
+                                        <SelectTrigger>
+                                          <SelectValue placeholder="ex. খাবার আগে" />
+                                        </SelectTrigger>
+                                      </FormControl>
+                                      <SelectContent>
+                                        <SelectItem value="খাবার আগে">
+                                          খাবার আগে
+                                        </SelectItem>
+                                        <SelectItem value="খাবার পর">
+                                          খাবার পর
+                                        </SelectItem>
+                                      </SelectContent>
+                                    </Select>
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
+                              <FormField
+                                control={form.control}
+                                name={`medicine.${index}.duration`}
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormLabel>Duration</FormLabel>
+                                    <FormControl>
+                                      <Input
+                                        placeholder="ex. 5 days"
+                                        type="text"
+                                        {...field}
+                                      />
+                                    </FormControl>
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
 
-                          <div className="grid grid-cols-2 gap-4">
-                            <FormField
-                              control={form.control}
-                              name={`medicine.${index}.mealTiming`}
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel>Meal Timing</FormLabel>
-                                  <FormControl>
-                                    <Input
-                                      placeholder="e.g., After food"
-                                      type="text"
-                                      {...field}
-                                    />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                            <FormField
-                              control={form.control}
-                              name={`medicine.${index}.duration`}
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel>Duration</FormLabel>
-                                  <FormControl>
-                                    <Input
-                                      placeholder="e.g., 5 days"
-                                      type="text"
-                                      {...field}
-                                    />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                          </div>
-
-                          <FormField
-                            control={form.control}
-                            name={`medicine.${index}.instruction`}
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Instruction</FormLabel>
-                                <FormControl>
-                                  <Input
-                                    placeholder="e.g., Take 1 tablet twice daily"
-                                    type="text"
-                                    {...field}
+                              <div className="col-span-4">
+                                <div className="grow">
+                                  <FormField
+                                    control={form.control}
+                                    name={`medicine.${index}.instruction`}
+                                    render={({ field }) => (
+                                      <FormItem>
+                                        <FormLabel>Instruction</FormLabel>
+                                        <FormControl>
+                                          <Input
+                                            placeholder="ex. Take 1 tablet twice daily"
+                                            type="text"
+                                            {...field}
+                                          />
+                                        </FormControl>
+                                        <FormMessage />
+                                      </FormItem>
+                                    )}
                                   />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
+                                </div>
+                              </div>
+                            </div>
+                            {fields.length > 1 && (
+                              <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                onClick={() => remove(index)}
+                                className="!p-0 h-auto bg-transparent border-0 mt-7.5 ml-2.5 text-danger hover:text-danger"
+                              >
+                                <Trash className="h-4 w-4 !text-inherit" />
+                              </Button>
                             )}
-                          />
-
-                          {fields.length > 1 && (
-                            <Button
-                              type="button"
-                              variant="outline"
-                              size="sm"
-                              onClick={() => remove(index)}
-                              className="!p-0 h-auto bg-transparent border-0"
-                            >
-                              <Trash className="h-4 w-4" />
-                            </Button>
-                          )}
+                          </div>
                         </div>
                       ))}
                     </div>
@@ -512,7 +549,7 @@ export const PrescriptionForm = () => {
                       onClick={() =>
                         append({
                           name: "",
-                          dosage: "",
+                          timing: "",
                           mealTiming: "",
                           duration: "",
                           instruction: "",

@@ -15,7 +15,7 @@ export const PrescriptionSchema = z.object({
     .array(
       z.object({
         name: z.string().min(1, "Medicine name is required"),
-        dosage: z.string().min(1, "Dosage is required"),
+        timing: z.string().min(1, "Timing is required"),
         mealTiming: z.string().optional(),
         duration: z.string().optional(),
         instruction: z.string().optional(),
