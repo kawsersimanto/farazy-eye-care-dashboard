@@ -8,11 +8,14 @@ import {
 import { Label } from "@/components/ui/label";
 import { useGetMedicinesQuery } from "@/features/medicine/medicine.api";
 import { useDebounce } from "@/hooks/useDebounce";
+import { useAppDispatch } from "@/redux/hook";
 import { SearchIcon } from "lucide-react";
 import { useState } from "react";
+import { setSelectedMedicine } from "../store/prescription.slice";
 import { PrescriptionMedicineCard } from "./PrescriptionMedicineCard";
 
 export const PrescriptionMedicine = () => {
+  const dispatch = useAppDispatch();
   const [page, setPage] = useState(1);
   const [searchInput, setSearchInput] = useState("");
   const debouncedSearch = useDebounce(searchInput, 500);
@@ -44,7 +47,9 @@ export const PrescriptionMedicine = () => {
       </div>
       <div className="grid grid-cols-2 gap-2">
         {medicines?.map((medicine, id) => (
-          <PrescriptionMedicineCard key={id} medicine={medicine} />
+          <div key={id} onClick={() => dispatch(setSelectedMedicine(medicine))}>
+            <PrescriptionMedicineCard medicine={medicine} />
+          </div>
         ))}
       </div>
     </div>

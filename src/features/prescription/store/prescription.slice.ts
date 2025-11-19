@@ -1,3 +1,4 @@
+import { IMedicine } from "@/features/medicine/medicine.interface";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface SelectedPatient {
@@ -10,19 +11,23 @@ interface SelectedPatient {
 
 interface PrescriptionState {
   patient: SelectedPatient | null;
+  selectedMedicine: IMedicine | null;
 }
 
 const initialState: PrescriptionState = {
   patient: null,
+  selectedMedicine: null,
 };
 
 export const prescriptionSlice = createSlice({
   name: "prescription",
   initialState,
   reducers: {
-    // Patient actions
     setSelectedPatient: (state, action: PayloadAction<SelectedPatient>) => {
       state.patient = action.payload;
+    },
+    setSelectedMedicine: (state, action: PayloadAction<IMedicine | null>) => {
+      state.selectedMedicine = action.payload;
     },
     clearSelectedPatient: (state) => {
       state.patient = null;
@@ -30,7 +35,7 @@ export const prescriptionSlice = createSlice({
   },
 });
 
-export const { setSelectedPatient, clearSelectedPatient } =
+export const { setSelectedPatient, setSelectedMedicine, clearSelectedPatient } =
   prescriptionSlice.actions;
 
 export const prescriptionReducer = prescriptionSlice.reducer;

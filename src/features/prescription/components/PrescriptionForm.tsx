@@ -28,7 +28,7 @@ import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { useGetUserByIdQuery } from "@/features/user/user.api";
 import { cn } from "@/lib/utils";
-import { useAppSelector } from "@/redux/hook";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { getAgeFromISO } from "@/utils/date";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
@@ -40,13 +40,18 @@ import {
   PrescriptionSchema,
   PrescriptionSchemaType,
 } from "../prescription.schema";
+import { setSelectedMedicine } from "../store/prescription.slice";
 import { PrescriptionConsultant } from "./PrescriptionConsultant";
 import { PrescriptionHeader } from "./PrescriptionHeader";
 
 export const PrescriptionForm = () => {
+  const selectedMedicine = useAppSelector(
+    (state) => state.prescription.selectedMedicine
+  );
+  const dispatch = useAppDispatch();
+  const selectedPatient = useAppSelector((state) => state.prescription.patient);
   const { data: patientData } = useGetUserByIdQuery("6917665d84030b43c9ed6a36");
   const patient = patientData?.data;
-  const selectedPatient = useAppSelector((state) => state.prescription.patient);
 
   const form = useForm<PrescriptionSchemaType>({
     resolver: zodResolver(PrescriptionSchema),
@@ -67,12 +72,39 @@ export const PrescriptionForm = () => {
     },
   });
 
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, remove, update } = useFieldArray({
     control: form.control,
     name: "medicine",
   });
 
-  // Populate form with selected patient data
+  useEffect(() => {
+    if (selectedMedicine) {
+      const medicineData = {
+        name: selectedMedicine.name,
+        timing: "",
+        mealTiming: "",
+        duration: "",
+        instruction: "",
+      };
+
+      // Find the first empty medicine field
+      const firstEmptyIndex = fields.findIndex(
+        (field) => !field.name || field.name === ""
+      );
+
+      if (firstEmptyIndex !== -1) {
+        // Update the first empty field instead of appending
+        update(firstEmptyIndex, medicineData);
+      } else {
+        // If all fields are filled, then append a new one
+        append(medicineData);
+      }
+
+      // Clear the selected medicine after adding
+      dispatch(setSelectedMedicine(null));
+    }
+  }, [selectedMedicine, append, update, fields, dispatch]);
+
   useEffect(() => {
     if (selectedPatient) {
       form.reset({
