@@ -113,3 +113,7 @@ export const formatScheduleWithTime = (
   const last = items.pop(); // remove last element
   return `${items.join(", ")} & ${last}`;
 };
+
+export const formatTodayDate = (): string => {
+  return dayjs().tz("Asia/Dhaka").format("DD MMM, YYYY");
+};
