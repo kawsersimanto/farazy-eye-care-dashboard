@@ -42,6 +42,7 @@ import { IAppointment } from "../appointment.interface";
 export const AppointmentTable = () => {
   const { profile } = useAuth();
   const branchId = profile?.branchId ? profile?.branchId : "";
+  const doctorId = profile?.id ? profile?.id : "";
   const date = getTodayDateOnly();
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
@@ -53,6 +54,7 @@ export const AppointmentTable = () => {
     searchTerm: debouncedSearch,
     branchId,
     date,
+    doctorId,
   });
   const [updateAppointmentFn, { isLoading: isUpdatingAppointment }] =
     useUpdateAppointmentMutation();
@@ -131,7 +133,6 @@ export const AppointmentTable = () => {
       cell: ({ row }) => {
         return <div className="text-sm">{row.original.name}</div>;
       },
-      size: 200,
     },
     {
       accessorKey: "phone",
