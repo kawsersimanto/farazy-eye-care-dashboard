@@ -9,12 +9,14 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+import { Label } from "@/components/ui/label";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useGetPatientsQuery } from "@/features/patient/patient.api";
+import { useGetAppointmentsQuery } from "@/features/appointment/appointment.api";
+import { IAppointment } from "@/features/appointment/appointment.interface";
 import { IUser } from "@/features/user/user.interface";
 import { useDebounce } from "@/hooks/useDebounce";
 import { cn } from "@/lib/utils";
@@ -32,20 +34,27 @@ export const PrescriptionPatient = () => {
   const [searchInput, setSearchInput] = useState("");
   const debouncedSearch = useDebounce(searchInput, 500);
   const selectedPatient = useAppSelector((state) => state.prescription.patient);
-  const { data } = useGetPatientsQuery({
+  // const { data } = useGetPatientsQuery({
+  //   limit: 50,
+  //   page,
+  //   searchTerm: debouncedSearch,
+  // });
+
+  const { data } = useGetAppointmentsQuery({
     limit: 50,
     page,
     searchTerm: debouncedSearch,
   });
 
   const users = data?.data?.data;
+  console.log(users);
 
   const handleSearch = (query: string) => {
     setSearchInput(query);
     setPage(1);
   };
 
-  const handleSelectPatient = (user: IUser) => {
+  const handleSelectPatient = (user: IAppointment & Partial<IUser>) => {
     const age = user.patientProfile?.dateOfBirth
       ? getAgeFromISO(user.patientProfile.dateOfBirth)
       : 18;
@@ -65,6 +74,7 @@ export const PrescriptionPatient = () => {
 
   return (
     <>
+      <Label className="mb-2">Search Patient</Label>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
@@ -72,9 +82,8 @@ export const PrescriptionPatient = () => {
             role="combobox"
             className={cn("w-full justify-between bg-transparent")}
           >
-            {selectedPatient?.name || "Select Patient"}
+            {selectedPatient?.name || "ex. John Doe"}
             <Search className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-            {/* <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" /> */}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-full p-0">

@@ -15,7 +15,7 @@ const CreatePage = () => {
           <PrescriptionSettings />
         </CardDescription>
       </Card>
-      <Card className="px-10">
+      <Card className="px-5">
         <CardTitle className="flex items-center gap-3 sr-only">
           <h2 className="font-work-sans font-medium text-lg">
             Create Prescription

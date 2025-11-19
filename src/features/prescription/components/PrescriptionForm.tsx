@@ -34,7 +34,7 @@ import { useAppSelector } from "@/redux/hook";
 import { getAgeFromISO } from "@/utils/date";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
-import { CalendarIcon, Plus, X } from "lucide-react";
+import { CalendarIcon, Plus, Trash } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -298,7 +298,7 @@ export const PrescriptionForm = () => {
             </div>
 
             <Separator className="mt-5" />
-            <div className="grid grid-cols-[1fr_2fr] gap-10">
+            <div className="grid grid-cols-[1fr_3fr] gap-10">
               <div className="border-r border-border pe-10 space-y-5 py-10">
                 <FormField
                   control={form.control}
@@ -397,10 +397,7 @@ export const PrescriptionForm = () => {
                   <div className="flex flex-col gap-2">
                     <div className="flex flex-col gap-4">
                       {fields.map((field, index) => (
-                        <div
-                          key={field.id}
-                          className="space-y-3 border rounded-lg p-4"
-                        >
+                        <div key={field.id} className="">
                           <div className="grid grid-cols-2 gap-4">
                             <FormField
                               control={form.control}
@@ -499,9 +496,9 @@ export const PrescriptionForm = () => {
                               variant="outline"
                               size="sm"
                               onClick={() => remove(index)}
-                              className="w-full"
+                              className="!p-0 h-auto bg-transparent border-0"
                             >
-                              <X className="mr-2 h-4 w-4" /> Remove Medicine
+                              <Trash className="h-4 w-4" />
                             </Button>
                           )}
                         </div>
