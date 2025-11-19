@@ -8,6 +8,7 @@ export interface IAppointment {
   patientId: string | null;
   appointmentNo: string;
   scheduledAt: string;
+  age: number | null;
   notes: string;
   paymentStatus: "PENDING" | "PAID" | "FAILED";
   createdAt: string;

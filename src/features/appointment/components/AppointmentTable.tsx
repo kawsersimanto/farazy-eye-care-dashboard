@@ -1,5 +1,6 @@
 "use client";
 
+import { CopyableCell } from "@/components/copyable-cell/CopyableCell";
 import { DataTable } from "@/components/data-table/DataTable";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -10,12 +11,17 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useDebounce } from "@/hooks/useDebounce";
-import { ApiResponse } from "@/types/api";
-import { formatDate, getTodayISO } from "@/utils/date";
+import { formatDate, getTodayDateOnly } from "@/utils/date";
 import { handleMutationRequest } from "@/utils/handleMutationRequest";
-import { dateRangeFilterFn } from "@/utils/table";
 import { ColumnDef } from "@tanstack/react-table";
 import {
   Calendar,
@@ -24,20 +30,19 @@ import {
   MoreHorizontal,
   Phone,
   PlusCircle,
-  Trash,
 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import {
-  useDeleteAppointmentMutation,
   useGetAppointmentsQuery,
+  useUpdateAppointmentMutation,
 } from "../appointment.api";
 import { IAppointment } from "../appointment.interface";
 
 export const AppointmentTable = () => {
   const { profile } = useAuth();
   const branchId = profile?.branchId ? profile?.branchId : "";
-  const date = getTodayISO();
+  const date = getTodayDateOnly();
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [searchInput, setSearchInput] = useState("");
@@ -49,8 +54,8 @@ export const AppointmentTable = () => {
     branchId,
     date,
   });
-  const [deleteAppointmentFn, { isLoading: isDeletingAppointment }] =
-    useDeleteAppointmentMutation();
+  const [updateAppointmentFn, { isLoading: isUpdatingAppointment }] =
+    useUpdateAppointmentMutation();
 
   const appointments = data?.data?.data || [];
   const total = data?.data?.meta?.total ?? 0;
@@ -61,41 +66,36 @@ export const AppointmentTable = () => {
     setPage(1);
   };
 
-  const handleDelete = async (appointment: IAppointment) => {
-    console.log("delete appointment:", appointment.id);
-    await handleMutationRequest(deleteAppointmentFn, appointment?.id, {
-      loadingMessage: "Deleting Appointment",
-      successMessage: (res: ApiResponse<{ success: boolean; id: string }>) =>
-        res?.message,
-    });
+  const handlePaymentStatusChange = async (
+    appointment: IAppointment,
+    newStatus: "PENDING" | "PAID" | "FAILED"
+  ) => {
+    await handleMutationRequest(
+      updateAppointmentFn,
+      { id: appointment?.id, paymentStatus: newStatus },
+      {
+        loadingMessage: "Updating Payment Status",
+        successMessage: () => "Payment Status Updated Successfully!",
+      }
+    );
   };
 
   const handleDeleteMany = (rows: IAppointment[], ids: string[]) => {
     console.log("Deleting:", ids, rows);
   };
 
-  const getGenderLabel = (gender: string) => {
-    const genderMap: Record<string, string> = {
-      MALE: "Male",
-      FEMALE: "Female",
-      OTHER: "Other",
-    };
-    return genderMap[gender] || gender;
-  };
-
-  const getPaymentStatusVariant = (
-    status: "PENDING" | "PAID" | "FAILED"
-  ): "default" | "secondary" | "destructive" | "outline" => {
-    switch (status) {
-      case "PAID":
-        return "default";
-      case "PENDING":
-        return "secondary";
-      case "FAILED":
-        return "destructive";
-      default:
-        return "outline";
-    }
+  const handleGenderChange = async (
+    appointment: IAppointment,
+    newGender: "MALE" | "FEMALE"
+  ) => {
+    await handleMutationRequest(
+      updateAppointmentFn,
+      { id: appointment?.id, gender: newGender },
+      {
+        loadingMessage: "Updating Gender",
+        successMessage: () => "Gender Updated Successfully!",
+      }
+    );
   };
 
   const columns: ColumnDef<IAppointment>[] = [
@@ -121,11 +121,7 @@ export const AppointmentTable = () => {
       accessorKey: "appointmentNo",
       header: "Appointment #",
       cell: ({ row }) => {
-        return (
-          <div className="font-medium text-sm">
-            {row.original.appointmentNo}
-          </div>
-        );
+        return <div className="text-sm">{row.original.appointmentNo}</div>;
       },
       size: 120,
     },
@@ -133,7 +129,7 @@ export const AppointmentTable = () => {
       accessorKey: "name",
       header: "Patient Name",
       cell: ({ row }) => {
-        return <div className="text-sm font-medium">{row.original.name}</div>;
+        return <div className="text-sm">{row.original.name}</div>;
       },
       size: 200,
     },
@@ -144,7 +140,23 @@ export const AppointmentTable = () => {
         return (
           <div className="flex items-center gap-2">
             <Phone className="h-4 w-4 text-slate-400" />
-            <span className="text-sm">{row.original.phone}</span>
+            <CopyableCell value={row.original.phone || "-"} className="text-sm">
+              {row.original.phone || "-"}
+            </CopyableCell>
+          </div>
+        );
+      },
+      size: 150,
+    },
+    {
+      accessorKey: "age",
+      header: "Age",
+      cell: ({ row }) => {
+        return (
+          <div className="flex items-center gap-2">
+            <span className="text-sm">
+              {row.original.age ? row.original.age + " Years" : "-"}
+            </span>
           </div>
         );
       },
@@ -155,49 +167,89 @@ export const AppointmentTable = () => {
       header: "Gender",
       cell: ({ row }) => {
         return (
-          <Badge variant="outline">{getGenderLabel(row.original.gender)}</Badge>
+          <Select
+            value={row.original.gender}
+            onValueChange={(value) =>
+              handleGenderChange(row.original, value as "MALE" | "FEMALE")
+            }
+            disabled={isUpdatingAppointment}
+          >
+            <SelectTrigger className="w-[120px]">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="MALE">
+                <Badge variant="outline">Male</Badge>
+              </SelectItem>
+              <SelectItem value="FEMALE">
+                <Badge variant="outline">Female</Badge>
+              </SelectItem>
+            </SelectContent>
+          </Select>
         );
       },
-    },
-    {
-      accessorKey: "scheduledAt",
-      header: "Scheduled Date",
-      cell: ({ row }) => {
-        return (
-          <div className="flex items-center gap-2">
-            <Calendar className="h-4 w-4 text-slate-400" />
-            <span className="text-sm">
-              {formatDate(row.original.scheduledAt)}
-            </span>
-          </div>
-        );
-      },
-      meta: {
-        filterLabel: "Scheduled Date",
-        filterType: "dateRange",
-      },
-      filterFn: dateRangeFilterFn,
     },
     {
       accessorKey: "paymentStatus",
       header: "Payment Status",
       cell: ({ row }) => {
         return (
-          <Badge variant={getPaymentStatusVariant(row.original.paymentStatus)}>
-            {row.original.paymentStatus}
-          </Badge>
+          <Select
+            value={row.original.paymentStatus}
+            onValueChange={(value) =>
+              handlePaymentStatusChange(
+                row.original,
+                value as "PENDING" | "PAID" | "FAILED"
+              )
+            }
+            disabled={isUpdatingAppointment}
+          >
+            <SelectTrigger className="w-[130px]">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="PENDING">
+                <span className="flex items-center gap-2">
+                  <Badge variant="outline" className="bg-orange-50">
+                    PENDING
+                  </Badge>
+                </span>
+              </SelectItem>
+              <SelectItem value="PAID">
+                <span className="flex items-center gap-2">
+                  <Badge variant="secondary" className="border border-border">
+                    PAID
+                  </Badge>
+                </span>
+              </SelectItem>
+              <SelectItem value="FAILED">
+                <span className="flex items-center gap-2">
+                  <Badge
+                    variant="destructive"
+                    className="bg-red-100 border border-border text-foreground"
+                  >
+                    FAILED
+                  </Badge>
+                </span>
+              </SelectItem>
+            </SelectContent>
+          </Select>
         );
       },
     },
     {
-      accessorKey: "createdAt",
-      header: "Created At",
-      cell: ({ row }) => formatDate(row.original.createdAt),
-      meta: {
-        filterLabel: "Created Date",
-        filterType: "dateRange",
+      accessorKey: "scheduledAt",
+      header: "Scheduled At",
+      cell: ({ row }) => {
+        return (
+          <div className="flex items-center gap-2">
+            <Calendar className="h-4 w-4 text-slate-400" />
+            <span className="text-sm capitalize">
+              {formatDate(row.original.scheduledAt)}
+            </span>
+          </div>
+        );
       },
-      filterFn: dateRangeFilterFn,
     },
     {
       id: "actions",
@@ -220,13 +272,6 @@ export const AppointmentTable = () => {
                 <Edit className="text-inherit" />
                 Edit
               </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => handleDelete(row.original)}
-              disabled={isDeletingAppointment}
-            >
-              <Trash className="text-inherit" />
-              Delete
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

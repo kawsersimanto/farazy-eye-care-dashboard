@@ -69,6 +69,10 @@ export const getTodayISO = (): string => {
   return dayjs().tz("Asia/Dhaka").toISOString();
 };
 
+export const getTodayDateOnly = (): string => {
+  return dayjs().tz("Asia/Dhaka").format("YYYY-MM-DD");
+};
+
 export const formatScheduleDays = (dayCodes: string[]) => {
   if (!dayCodes || dayCodes.length === 0) return "";
 
