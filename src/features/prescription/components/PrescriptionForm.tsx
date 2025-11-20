@@ -182,8 +182,8 @@ export const PrescriptionForm = () => {
                   remove={remove}
                 />
                 <div className="pb-32 flex flex-col gap-4">
-                  <LeftEyeExamination form={form} />
                   <RightEyeExamination form={form} />
+                  <LeftEyeExamination form={form} />
                   <EyeExamination form={form} />
                 </div>
               </div>

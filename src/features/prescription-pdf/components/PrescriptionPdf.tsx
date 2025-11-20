@@ -268,59 +268,88 @@ export const PrescriptionPdf = ({
             </View>
             <View>
               <View style={PrescriptionPdfStyle.eyeExamination}>
+                {/* Column */}
                 <View style={PrescriptionPdfStyle.eyeColumn}>
                   <View style={PrescriptionPdfStyle.eyeCell}>
-                    <Text>asdsdf</Text>
+                    <Text style={PrescriptionPdfStyle.eyeCellHeading}>Eye</Text>
                   </View>
                   <View style={PrescriptionPdfStyle.eyeCell}>
-                    <Text>asdsdf</Text>
+                    <Text style={PrescriptionPdfStyle.eyeCellData}>RE</Text>
                   </View>
                   <View style={PrescriptionPdfStyle.eyeCellLast}>
-                    <Text>asdsdf</Text>
+                    <Text style={PrescriptionPdfStyle.eyeCellData}>LE</Text>
                   </View>
                 </View>
+
+                {/* Column 2 */}
                 <View style={PrescriptionPdfStyle.eyeColumn}>
                   <View style={PrescriptionPdfStyle.eyeCell}>
-                    <Text>asdsdf</Text>
+                    <Text style={PrescriptionPdfStyle.eyeCellHeading}>Sph</Text>
                   </View>
                   <View style={PrescriptionPdfStyle.eyeCell}>
-                    <Text>asdsdf</Text>
+                    <Text style={PrescriptionPdfStyle.eyeCellData}>
+                      {prescription?.rightEye?.sph}
+                    </Text>
                   </View>
                   <View style={PrescriptionPdfStyle.eyeCellLast}>
-                    <Text>asdsdf</Text>
+                    <Text style={PrescriptionPdfStyle.eyeCellData}>
+                      {prescription?.leftEye?.sph}
+                    </Text>
                   </View>
                 </View>
+
+                {/* Column 3 */}
                 <View style={PrescriptionPdfStyle.eyeColumn}>
                   <View style={PrescriptionPdfStyle.eyeCell}>
-                    <Text>asdsdf</Text>
+                    <Text style={PrescriptionPdfStyle.eyeCellHeading}>Cyl</Text>
                   </View>
                   <View style={PrescriptionPdfStyle.eyeCell}>
-                    <Text>asdsdf</Text>
+                    <Text style={PrescriptionPdfStyle.eyeCellData}>
+                      {prescription?.rightEye?.cyl}
+                    </Text>
                   </View>
                   <View style={PrescriptionPdfStyle.eyeCellLast}>
-                    <Text>asdsdf</Text>
+                    <Text style={PrescriptionPdfStyle.eyeCellData}>
+                      {prescription?.leftEye?.cyl}
+                    </Text>
                   </View>
                 </View>
+
+                {/* Column 4 */}
                 <View style={PrescriptionPdfStyle.eyeColumn}>
                   <View style={PrescriptionPdfStyle.eyeCell}>
-                    <Text>asdsdf</Text>
+                    <Text style={PrescriptionPdfStyle.eyeCellHeading}>
+                      Axis
+                    </Text>
                   </View>
                   <View style={PrescriptionPdfStyle.eyeCell}>
-                    <Text>asdsdf</Text>
+                    <Text style={PrescriptionPdfStyle.eyeCellData}>
+                      {prescription?.rightEye?.axis}
+                    </Text>
                   </View>
                   <View style={PrescriptionPdfStyle.eyeCellLast}>
-                    <Text>asdsdf</Text>
+                    <Text style={PrescriptionPdfStyle.eyeCellData}>
+                      {prescription?.leftEye?.axis}
+                    </Text>
                   </View>
                 </View>
+
+                {/* Column 5 */}
                 <View style={PrescriptionPdfStyle.eyeLastColumn}>
                   <View style={PrescriptionPdfStyle.eyeCell}>
-                    <Text>asdsdf</Text>
+                    <Text style={PrescriptionPdfStyle.eyeCellHeading}>
+                      BC VA
+                    </Text>
                   </View>
                   <View style={PrescriptionPdfStyle.eyeCell}>
-                    <Text>asdsdf</Text>
+                    <Text style={PrescriptionPdfStyle.eyeCellData}>
+                      {prescription?.rightEye?.bcva}
+                    </Text>
                   </View>
                   <View style={PrescriptionPdfStyle.eyeCellLast}>
-                    <Text>asdsdf</Text>
+                    <Text style={PrescriptionPdfStyle.eyeCellData}>
+                      {prescription?.leftEye?.bcva}
+                    </Text>
                   </View>
                 </View>
               </View>

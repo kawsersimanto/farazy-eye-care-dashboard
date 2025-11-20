@@ -236,10 +236,22 @@ export const PrescriptionPdfStyle = StyleSheet.create({
     paddingVertical: 4,
   },
   eyeCell: {
-    padding: 8,
+    paddingBottom: 4,
     borderBottom: "1px solid #e4e4e7",
   },
   eyeCellLast: {
-    padding: 8,
+    paddingBottom: 4,
+  },
+  eyeCellHeading: {
+    fontSize: 10,
+    fontWeight: 500,
+    textAlign: "center",
+  },
+  eyeCellData: {
+    fontSize: 10,
+    fontWeight: 500,
+    textAlign: "center",
+    paddingTop: 8,
+    paddingBottom: 4,
   },
 });
