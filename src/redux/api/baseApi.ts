@@ -17,6 +17,7 @@ export const baseApi = createApi({
     },
   }),
   tagTypes: [
+    "prescription-pdf",
     "prescription",
     "appointment",
     "specialization",
