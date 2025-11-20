@@ -12,7 +12,7 @@ import { useGetUserByIdQuery } from "@/features/user/user.api";
 import { IUser } from "@/features/user/user.interface";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { usePDF } from "@react-pdf/renderer";
+import { pdf } from "@react-pdf/renderer";
 import { useEffect, useMemo } from "react";
 import { useFieldArray, useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
@@ -91,51 +91,34 @@ export const PrescriptionForm = () => {
     control: form.control,
   });
 
-  const [instance, updateInstance] = usePDF({
-    document: (
-      <PrescriptionPdf
-        profile={profile as IUser}
-        prescription={formValues as PrescriptionSchemaType}
-        schedules={schedules}
-      />
-    ),
-  });
+  const handlePrint = async () => {
+    try {
+      const blob = await pdf(
+        <PrescriptionPdf
+          profile={profile as IUser}
+          prescription={formValues as PrescriptionSchemaType}
+          schedules={schedules}
+        />
+      ).toBlob();
 
-  useEffect(() => {
-    updateInstance(
-      <PrescriptionPdf
-        profile={profile as IUser}
-        prescription={formValues as PrescriptionSchemaType}
-        schedules={schedules}
-      />
-    );
-  }, [profile, formValues, schedules, updateInstance]);
+      const blobURL = URL.createObjectURL(blob);
 
-  const handlePrintPrescription = () => {
-    updateInstance(
-      <PrescriptionPdf
-        profile={profile as IUser}
-        prescription={formValues as PrescriptionSchemaType}
-        schedules={schedules}
-      />
-    );
+      // Create hidden iframe
+      const iframe = document.createElement("iframe");
+      iframe.style.display = "none";
+      iframe.src = blobURL;
 
-    if (!instance.url) {
-      toast.error("PDF not ready");
-      return;
+      document.body.appendChild(iframe);
+
+      iframe.onload = () => {
+        iframe.contentWindow?.focus();
+        iframe.contentWindow?.print();
+        URL.revokeObjectURL(blobURL);
+      };
+    } catch (error) {
+      console.error("PDF print error:", error);
+      toast.error("Failed to print. Try again.");
     }
-
-    const printWindow = window.open(instance.url);
-
-    if (!printWindow) {
-      toast.error("Please allow popups to print the prescription.");
-      return;
-    }
-
-    printWindow.onload = () => {
-      printWindow.focus();
-      printWindow.print();
-    };
   };
 
   function onSubmit(values: PrescriptionSchemaType) {
@@ -188,20 +171,15 @@ export const PrescriptionForm = () => {
               <Button type="submit" className="text-white">
                 Submit
               </Button>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => window.open(instance.url || "", "_blank")}
-                disabled={instance.loading}
-              >
-                Preview PDF
-              </Button>
-              <Button
+              {/* <Button
                 type="button"
                 variant="outline"
                 onClick={handlePrintPrescription}
                 disabled={instance.loading}
               >
+                Print Prescription
+              </Button> */}
+              <Button type="button" variant="outline" onClick={handlePrint}>
                 Print Prescription
               </Button>
             </div>

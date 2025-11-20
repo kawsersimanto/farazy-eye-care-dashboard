@@ -11,7 +11,7 @@ import { EyeExaminationProps } from "../prescription.interface";
 export const LeftEyeExamination = ({ form }: EyeExaminationProps) => (
   <div>
     <div className="flex items-center gap-2">
-      <div className="grid grid-cols-4 gap-x-1 gap-y-4 items-start">
+      <div className="grid grid-cols-4 gap-x-1 gap-y-4 items-start grow">
         <FormField
           control={form.control}
           name="leftEye.sph"
