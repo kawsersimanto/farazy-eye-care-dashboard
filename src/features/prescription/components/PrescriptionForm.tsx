@@ -32,15 +32,17 @@ import { MedicineList } from "./MedicineList";
 import { PatientInfoSection } from "./PatientInfoSection";
 import { PrescriptionConsultant } from "./PrescriptionConsultant";
 import { PrescriptionHeader } from "./PrescriptionHeader";
+import { PrescriptionSkeleton } from "./PrescriptionSkeleton";
 import { RightEyeExamination } from "./RightEyeExamination";
 
 export const PrescriptionForm = () => {
-  const { profile } = useAuth();
+  const { profile, isLoading: isLoadingProfile } = useAuth();
   const doctor = profile?.doctorProfile;
   const id = profile?.id as string;
-  const { data: scheduleData } = useGetDoctorScheduleByIdQuery(id, {
-    skip: !id,
-  });
+  const { data: scheduleData, isLoading: isLoadingSchedule } =
+    useGetDoctorScheduleByIdQuery(id, {
+      skip: !id,
+    });
   const schedules = useMemo(() => scheduleData?.data || [], [scheduleData]);
 
   const branch = profile?.branch;
@@ -49,7 +51,8 @@ export const PrescriptionForm = () => {
   );
   const dispatch = useAppDispatch();
   const selectedPatient = useAppSelector((state) => state.prescription.patient);
-  const { data: patientData } = useGetUserByIdQuery("6917665d84030b43c9ed6a36");
+  const { data: patientData, isLoading: isLoadingPatientData } =
+    useGetUserByIdQuery("6917665d84030b43c9ed6a36");
   const patient = patientData?.data;
 
   const [showEyeExamination, setShowEyeExamination] = useState(false);
@@ -185,6 +188,9 @@ export const PrescriptionForm = () => {
     }
   };
 
+  if (isLoadingSchedule || isLoadingProfile || isLoadingPatientData)
+    return <PrescriptionSkeleton />;
+
   return (
     <div>
       <div>
@@ -233,13 +239,33 @@ export const PrescriptionForm = () => {
               </div>
             </div>
             <div className="flex items-center gap-2 absolute bottom-5 right-5">
-              <Button type="submit" className="text-white">
+              <Button
+                disabled={
+                  isLoadingSchedule || isLoadingProfile || isLoadingPatientData
+                }
+                type="submit"
+                className="text-white"
+              >
                 Submit
               </Button>
-              <Button type="button" variant="outline" onClick={handlePreview}>
+              <Button
+                disabled={
+                  isLoadingSchedule || isLoadingProfile || isLoadingPatientData
+                }
+                type="button"
+                variant="outline"
+                onClick={handlePreview}
+              >
                 Preview PDF
               </Button>
-              <Button type="button" variant="outline" onClick={handlePrint}>
+              <Button
+                disabled={
+                  isLoadingSchedule || isLoadingProfile || isLoadingPatientData
+                }
+                type="button"
+                variant="outline"
+                onClick={handlePrint}
+              >
                 Print Prescription
               </Button>
             </div>

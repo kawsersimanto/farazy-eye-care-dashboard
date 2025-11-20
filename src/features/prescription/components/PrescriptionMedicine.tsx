@@ -13,13 +13,14 @@ import { SearchIcon } from "lucide-react";
 import { useState } from "react";
 import { setSelectedMedicine } from "../store/prescription.slice";
 import { PrescriptionMedicineCard } from "./PrescriptionMedicineCard";
+import { PrescriptionMedicineCardSkeleton } from "./PrescriptionMedicineCardSkeleton";
 
 export const PrescriptionMedicine = () => {
   const dispatch = useAppDispatch();
   const [page, setPage] = useState(1);
   const [searchInput, setSearchInput] = useState("");
   const debouncedSearch = useDebounce(searchInput, 500);
-  const { data: medicineData } = useGetMedicinesQuery({
+  const { data: medicineData, isLoading } = useGetMedicinesQuery({
     page,
     limit: 10,
     searchTerm: debouncedSearch,
@@ -46,11 +47,23 @@ export const PrescriptionMedicine = () => {
         </InputGroup>
       </div>
       <div className="grid grid-cols-2 gap-2">
-        {medicines?.map((medicine, id) => (
-          <div key={id} onClick={() => dispatch(setSelectedMedicine(medicine))}>
-            <PrescriptionMedicineCard medicine={medicine} />
-          </div>
-        ))}
+        {isLoading ? (
+          <>
+            <PrescriptionMedicineCardSkeleton />
+            <PrescriptionMedicineCardSkeleton />
+            <PrescriptionMedicineCardSkeleton />
+            <PrescriptionMedicineCardSkeleton />
+          </>
+        ) : (
+          medicines?.map((medicine, id) => (
+            <div
+              key={id}
+              onClick={() => dispatch(setSelectedMedicine(medicine))}
+            >
+              <PrescriptionMedicineCard medicine={medicine} />
+            </div>
+          ))
+        )}
       </div>
     </div>
   );
