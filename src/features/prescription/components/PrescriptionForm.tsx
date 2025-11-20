@@ -7,7 +7,7 @@ import { useGetUserByIdQuery } from "@/features/user/user.api";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useFieldArray, useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 import {
   PrescriptionSchema,
@@ -66,6 +66,12 @@ export const PrescriptionForm = () => {
   useEffect(() => {
     form.reset(getInitialFormValues(selectedPatient, patient));
   }, [selectedPatient, patient, form]);
+
+  const formValues = useWatch({
+    control: form.control,
+  });
+
+  console.log(formValues);
 
   function onSubmit(values: PrescriptionSchemaType) {
     try {
