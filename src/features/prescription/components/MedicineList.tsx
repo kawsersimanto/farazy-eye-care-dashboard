@@ -1,17 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "@/components/ui/button";
 import { FormLabel } from "@/components/ui/form";
 import { Plus } from "lucide-react";
-import { UseFormReturn } from "react-hook-form";
-import { PrescriptionSchemaType } from "../prescription.schema";
+import { MedicineListProps } from "../prescription.interface";
 import { MedicineField } from "./MedicineField";
-
-interface MedicineListProps {
-  form: UseFormReturn<PrescriptionSchemaType>;
-  fields: any[];
-  append: (value: any) => void;
-  remove: (index: number) => void;
-}
 
 export const MedicineList = ({
   form,

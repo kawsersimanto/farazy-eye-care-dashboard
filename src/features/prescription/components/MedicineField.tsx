@@ -15,17 +15,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Trash } from "lucide-react";
-import { UseFormReturn } from "react-hook-form";
 import { MEAL_TIMING_OPTIONS, TIMING_OPTIONS } from "../prescription.constants";
-import { PrescriptionSchemaType } from "../prescription.schema";
-
-interface MedicineFieldProps {
-  form: UseFormReturn<PrescriptionSchemaType>;
-  index: number;
-  fieldId: string;
-  onRemove: () => void;
-  canRemove: boolean;
-}
+import { MedicineFieldProps } from "../prescription.interface";
 
 export const MedicineField = ({
   form,

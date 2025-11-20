@@ -24,12 +24,7 @@ import {
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
-import { UseFormReturn } from "react-hook-form";
-import { PrescriptionSchemaType } from "../prescription.schema";
-
-interface PatientInfoSectionProps {
-  form: UseFormReturn<PrescriptionSchemaType>;
-}
+import { PatientInfoSectionProps } from "../prescription.interface";
 
 export const PatientInfoSection = ({ form }: PatientInfoSectionProps) => (
   <div className="flex gap-4">

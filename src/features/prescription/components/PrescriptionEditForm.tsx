@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useGetPrescriptionByIdQuery } from "../prescription.api";
+import { PrescriptionEditFormProps } from "../prescription.interface";
 import {
   PrescriptionSchema,
   PrescriptionSchemaType,
@@ -21,10 +22,6 @@ import { MedicineList } from "./MedicineList";
 import { PatientInfoSection } from "./PatientInfoSection";
 import { PrescriptionConsultant } from "./PrescriptionConsultant";
 import { PrescriptionHeader } from "./PrescriptionHeader";
-
-interface PrescriptionEditFormProps {
-  prescriptionId: string;
-}
 
 export const PrescriptionEditForm = ({
   prescriptionId,

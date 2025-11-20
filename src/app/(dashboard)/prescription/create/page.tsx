@@ -1,6 +1,6 @@
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { PrescriptionForm } from "@/features/prescription/components/PrescriptionForm";
-import { PrescriptionSettings } from "@/features/prescription/components/PrescriptionSettings";
+import { PrescriptionSidebar } from "@/features/prescription/components/PrescriptionSidebar";
 
 const CreatePage = () => {
   return (
@@ -12,7 +12,7 @@ const CreatePage = () => {
           </h2>
         </CardTitle>
         <CardDescription>
-          <PrescriptionSettings />
+          <PrescriptionSidebar />
         </CardDescription>
       </Card>
       <Card className="px-5">

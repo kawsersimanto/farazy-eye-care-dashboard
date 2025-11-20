@@ -1,7 +1,7 @@
 import { PrescriptionMedicine } from "./PrescriptionMedicine";
 import { PrescriptionPatient } from "./PrescriptionPatient";
 
-export const PrescriptionSettings = () => {
+export const PrescriptionSidebar = () => {
   return (
     <div className="flex flex-col gap-4">
       <PrescriptionPatient />

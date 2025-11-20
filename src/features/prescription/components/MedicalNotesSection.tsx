@@ -7,13 +7,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
-import { UseFormReturn } from "react-hook-form";
 import { MEDICAL_FIELDS } from "../prescription.constants";
-import { PrescriptionSchemaType } from "../prescription.schema";
-
-interface MedicalNotesSectionProps {
-  form: UseFormReturn<PrescriptionSchemaType>;
-}
+import { MedicalNotesSectionProps } from "../prescription.interface";
 
 export const MedicalNotesSection = ({ form }: MedicalNotesSectionProps) => (
   <div className="border-r border-border pe-10 space-y-5 py-10">

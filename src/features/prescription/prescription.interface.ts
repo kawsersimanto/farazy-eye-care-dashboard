@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { UseFormReturn } from "react-hook-form";
+import { PrescriptionSchemaType } from "./prescription.schema";
+
 export interface IPrescriptionMedicine {
   name: string;
   timing: string;
@@ -18,4 +22,31 @@ export interface IPrescription {
   antSegment: string;
   postSegment: string;
   medicine: IPrescriptionMedicine[];
+}
+
+export interface MedicalNotesSectionProps {
+  form: UseFormReturn<PrescriptionSchemaType>;
+}
+
+export interface MedicineFieldProps {
+  form: UseFormReturn<PrescriptionSchemaType>;
+  index: number;
+  fieldId: string;
+  onRemove: () => void;
+  canRemove: boolean;
+}
+
+export interface MedicineListProps {
+  form: UseFormReturn<PrescriptionSchemaType>;
+  fields: any[];
+  append: (value: any) => void;
+  remove: (index: number) => void;
+}
+
+export interface PatientInfoSectionProps {
+  form: UseFormReturn<PrescriptionSchemaType>;
+}
+
+export interface PrescriptionEditFormProps {
+  prescriptionId: string;
 }
