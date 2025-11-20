@@ -383,11 +383,23 @@ export const PrescriptionPdf = ({
                     </Text>
                   </View>
                 </View>
-                <View style={PrescriptionPdfStyle.eyeExaminationExtraRow}>
+                <View style={PrescriptionPdfStyle.eyeExaminationAdviceSection}>
                   <Text style={PrescriptionPdfStyle.label}>Advice:</Text>
-                  <Text style={PrescriptionPdfStyle.value}>
-                    {prescription?.advice || "-"}
-                  </Text>
+                  <View style={PrescriptionPdfStyle.eyeAdviceRow}>
+                    {prescription?.advice?.map((advice, id) => (
+                      <View key={id}>
+                        <View style={PrescriptionPdfStyle.listItem}>
+                          <Image
+                            src="/circle-small.png"
+                            style={PrescriptionPdfStyle.listIcon}
+                          />
+                          <Text style={PrescriptionPdfStyle.value}>
+                            {advice || "-"}
+                          </Text>
+                        </View>
+                      </View>
+                    ))}
+                  </View>
                 </View>
               </View>
             )}

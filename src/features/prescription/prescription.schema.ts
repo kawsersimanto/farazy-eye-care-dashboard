@@ -35,7 +35,7 @@ export const PrescriptionSchema = z.object({
   add: z.string().optional(),
   ipd: z.string().optional(),
   mm: z.string().optional(),
-  advice: z.string().optional(),
+  advice: z.array(z.string()).optional(),
 });
 
 export type PrescriptionSchemaType = z.infer<typeof PrescriptionSchema>;

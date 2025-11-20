@@ -267,7 +267,29 @@ export const PrescriptionPdfStyle = StyleSheet.create({
     justifyContent: "space-between",
   },
 
+  eyeExaminationAdviceSection: {
+    marginTop: 20,
+    flexDirection: "column",
+    gap: 4,
+  },
+
+  eyeAdviceRow: {
+    flexDirection: "column",
+    gap: 2,
+  },
+
   eyeExaminationTable: {
     marginTop: 40,
+  },
+
+  listItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 2,
+  },
+
+  listIcon: {
+    width: 8,
+    height: 8,
   },
 });

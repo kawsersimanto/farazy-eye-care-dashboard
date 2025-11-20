@@ -15,3 +15,14 @@ export const TIMING_OPTIONS = [
 ];
 
 export const MEAL_TIMING_OPTIONS = ["খাবার আগে", "খাবার পর"];
+
+export const ADVICE_OPTIONS = [
+  "Unifocal",
+  "Bifocal",
+  "Progressive",
+  "Reading Glasses",
+  "Distance Glasses",
+  "Anti-Glare",
+  "Blue Light Filter",
+  "UV Protection",
+];

@@ -24,6 +24,7 @@ import {
 } from "../prescription.schema";
 import { getInitialFormValues } from "../prescription.utils";
 import { setSelectedMedicine } from "../store/prescription.slice";
+import { AdviceSection } from "./AdviceSection";
 import { EyeExamination } from "./EyeExamination";
 import { LeftEyeExamination } from "./LeftEyeExamination";
 import { MedicalNotesSection } from "./MedicalNotesSection";
@@ -226,6 +227,7 @@ export const PrescriptionForm = () => {
                     <RightEyeExamination form={form} />
                     <LeftEyeExamination form={form} />
                     <EyeExamination form={form} />
+                    <AdviceSection form={form} />
                   </div>
                 )}
               </div>

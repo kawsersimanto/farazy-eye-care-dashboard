@@ -42,7 +42,7 @@ export const getInitialFormValues = (
     add: "",
     ipd: "",
     mm: "",
-    advice: "",
+    advice: [],
   };
 
   if (selectedPatient) {
