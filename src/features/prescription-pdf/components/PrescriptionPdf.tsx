@@ -1,4 +1,5 @@
-import { Document, Font, Page, Text, View } from "@react-pdf/renderer";
+/* eslint-disable jsx-a11y/alt-text */
+import { Document, Font, Image, Page, Text, View } from "@react-pdf/renderer";
 import { PrescriptionPdfStyle } from "./PrescriptionPdfStyle";
 
 Font.register({
@@ -56,9 +57,31 @@ Font.register({
 export const PrescriptionPdf = () => (
   <Document>
     <Page size="A4" style={PrescriptionPdfStyle.body}>
-      <View style={PrescriptionPdfStyle.section}>
-        <Text>Section #1</Text>
+      <View style={PrescriptionPdfStyle.headerContainer}>
+        <Image src="/logo.png" style={PrescriptionPdfStyle.logo} />
+
+        <View style={PrescriptionPdfStyle.contactContainer}>
+          <View style={PrescriptionPdfStyle.contactRow}>
+            <Image src="/map-pin.png" style={PrescriptionPdfStyle.icon} />
+            <Text style={PrescriptionPdfStyle.contactText}>
+              123 Main Street, Sector 7
+            </Text>
+          </View>
+
+          <View style={PrescriptionPdfStyle.contactRow}>
+            <Image src="/mail.png" style={PrescriptionPdfStyle.icon} />
+            <Text style={PrescriptionPdfStyle.contactText}>
+              info@hospital.com
+            </Text>
+          </View>
+
+          <View style={PrescriptionPdfStyle.contactRow}>
+            <Image src="/phone.png" style={PrescriptionPdfStyle.icon} />
+            <Text style={PrescriptionPdfStyle.contactText}>+8801700000000</Text>
+          </View>
+        </View>
       </View>
+
       <View style={PrescriptionPdfStyle.section}>
         <Text>Section #2</Text>
       </View>
