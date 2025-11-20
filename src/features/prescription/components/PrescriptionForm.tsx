@@ -3,7 +3,12 @@
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Separator } from "@/components/ui/separator";
+import { useAuth } from "@/features/auth/hooks/useAuth";
+import { IBranch } from "@/features/branch/branch.interface";
+import { IDoctor } from "@/features/doctor/doctor.interface";
+import { useGetDoctorScheduleByIdQuery } from "@/features/schedule/schedule.api";
 import { useGetUserByIdQuery } from "@/features/user/user.api";
+import { IUser } from "@/features/user/user.interface";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
@@ -22,6 +27,15 @@ import { PrescriptionConsultant } from "./PrescriptionConsultant";
 import { PrescriptionHeader } from "./PrescriptionHeader";
 
 export const PrescriptionForm = () => {
+  const { profile } = useAuth();
+  const doctor = profile?.doctorProfile;
+  const id = profile?.id as string;
+  const { data: scheduleData } = useGetDoctorScheduleByIdQuery(id, {
+    skip: !id,
+  });
+  const schedules = scheduleData?.data || [];
+
+  const branch = profile?.branch;
   const selectedMedicine = useAppSelector(
     (state) => state.prescription.selectedMedicine
   );
@@ -91,9 +105,13 @@ export const PrescriptionForm = () => {
   return (
     <>
       <div>
-        <PrescriptionHeader />
+        <PrescriptionHeader branch={branch as IBranch} />
         <Separator className="my-5" />
-        <PrescriptionConsultant />
+        <PrescriptionConsultant
+          profile={profile as IUser}
+          doctor={doctor as IDoctor}
+          schedules={schedules}
+        />
         <Separator className="my-5" />
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>

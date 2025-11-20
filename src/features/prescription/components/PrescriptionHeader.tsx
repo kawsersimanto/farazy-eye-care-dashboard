@@ -1,13 +1,10 @@
 "use client";
 
-import { useAuth } from "@/features/auth/hooks/useAuth";
+import { IBranch } from "@/features/branch/branch.interface";
 import { Mail, MapPin, Phone } from "lucide-react";
 import Image from "next/image";
 
-export const PrescriptionHeader = () => {
-  const { profile } = useAuth();
-  const branch = profile?.branch;
-
+export const PrescriptionHeader = ({ branch }: { branch: IBranch }) => {
   return (
     <div className="flex items-center justify-between">
       <Image

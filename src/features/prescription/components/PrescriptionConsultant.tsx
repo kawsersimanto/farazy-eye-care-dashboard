@@ -1,18 +1,19 @@
 "use client";
 
-import { useAuth } from "@/features/auth/hooks/useAuth";
-import { useGetDoctorScheduleByIdQuery } from "@/features/schedule/schedule.api";
+import { IDoctor } from "@/features/doctor/doctor.interface";
+import { ISchedule } from "@/features/schedule/schedule.interface";
+import { IUser } from "@/features/user/user.interface";
 import { formatScheduleWithTime } from "@/utils/date";
 
-export const PrescriptionConsultant = () => {
-  const { profile } = useAuth();
-  const doctor = profile?.doctorProfile;
-  const id = profile?.id as string;
-  const { data: scheduleData } = useGetDoctorScheduleByIdQuery(id, {
-    skip: !id,
-  });
-  const schedules = scheduleData?.data || [];
-
+export const PrescriptionConsultant = ({
+  profile,
+  doctor,
+  schedules,
+}: {
+  profile: IUser;
+  doctor: IDoctor;
+  schedules: ISchedule[];
+}) => {
   return (
     <div className="grid grid-cols-2 gap-4 items-center justify-between">
       <div>
