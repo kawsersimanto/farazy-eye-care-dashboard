@@ -24,7 +24,7 @@ export const MedicineField = ({
   onRemove,
   canRemove,
 }: MedicineFieldProps) => (
-  <div className="">
+  <div>
     <div className="flex items-center gap-2">
       <div className="grid grid-cols-4 gap-x-1 gap-y-4 items-start">
         <FormField

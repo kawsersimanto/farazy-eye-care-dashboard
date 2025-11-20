@@ -124,7 +124,7 @@ export const PrescriptionForm = () => {
   }
 
   return (
-    <>
+    <div>
       <div>
         <PrescriptionHeader branch={branch as IBranch} />
         <Separator className="my-5" />
@@ -148,36 +148,35 @@ export const PrescriptionForm = () => {
                 remove={remove}
               />
             </div>
-            <div>
-              <div className="flex gap-2">
+            <div className="flex items-center gap-2 absolute bottom-5 right-5">
+              <Button type="submit" className="text-white">
+                Submit
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => window.open(instance.url || "", "_blank")}
+                disabled={instance.loading}
+              >
+                {instance.loading ? "Generating..." : "Preview PDF"}
+              </Button>
+              <Link
+                href={instance.url || ""}
+                download="prescription.pdf"
+                style={{ textDecoration: "none" }}
+              >
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => window.open(instance.url || "", "_blank")}
                   disabled={instance.loading}
                 >
-                  {instance.loading ? "Generating..." : "Preview PDF"}
+                  {instance.loading ? "Generating..." : "Download PDF"}
                 </Button>
-
-                <Link
-                  href={instance.url || ""}
-                  download="prescription.pdf"
-                  style={{ textDecoration: "none" }}
-                >
-                  <Button
-                    type="button"
-                    variant="outline"
-                    disabled={instance.loading}
-                  >
-                    {instance.loading ? "Generating..." : "Download PDF"}
-                  </Button>
-                </Link>
-              </div>
-              <Button type="submit">Submit</Button>
+              </Link>
             </div>
           </form>
         </Form>
       </div>
-    </>
+    </div>
   );
 };

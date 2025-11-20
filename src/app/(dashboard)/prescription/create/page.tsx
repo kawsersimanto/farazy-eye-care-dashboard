@@ -15,7 +15,7 @@ const CreatePage = () => {
           <PrescriptionSidebar />
         </CardDescription>
       </Card>
-      <Card className="px-5">
+      <Card className="px-5 relative pb-0">
         <CardTitle className="flex items-center gap-3 sr-only">
           <h2 className="font-work-sans font-medium text-lg">
             Create Prescription
