@@ -57,6 +57,7 @@ Font.register({
 export const PrescriptionPdf = () => (
   <Document>
     <Page size="A4" style={PrescriptionPdfStyle.body}>
+      {/* header  */}
       <View style={PrescriptionPdfStyle.headerContainer}>
         <Image src="/logo.png" style={PrescriptionPdfStyle.logo} />
 
@@ -82,6 +83,7 @@ export const PrescriptionPdf = () => (
         </View>
       </View>
 
+      {/* doctor  */}
       <View style={PrescriptionPdfStyle.section}>
         <View style={PrescriptionPdfStyle.doctorContainer}>
           {/* LEFT SECTION */}
@@ -113,6 +115,30 @@ export const PrescriptionPdf = () => (
               </View>
             </View>
           </View>
+        </View>
+      </View>
+
+      <View style={PrescriptionPdfStyle.userSection}>
+        <View style={PrescriptionPdfStyle.userContainer}>
+          <Text>
+            <Text style={PrescriptionPdfStyle.label}>Name: </Text>
+            <Text style={PrescriptionPdfStyle.value}>MD. Joynal Ahmed</Text>
+          </Text>
+
+          <Text>
+            <Text style={PrescriptionPdfStyle.label}>Gender: </Text>
+            <Text style={PrescriptionPdfStyle.value}>Female</Text>
+          </Text>
+
+          <Text>
+            <Text style={PrescriptionPdfStyle.label}>Age: </Text>
+            <Text style={PrescriptionPdfStyle.value}>23</Text>
+          </Text>
+
+          <Text style={PrescriptionPdfStyle.dateText}>
+            <Text style={PrescriptionPdfStyle.label}>Date: </Text>
+            November 20th, 2025
+          </Text>
         </View>
       </View>
     </Page>

@@ -13,11 +13,7 @@ export const PrescriptionPdfStyle = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     width: "100%",
-    marginBottom: 16,
-    paddingTop: 20,
-    paddingLeft: 20,
-    paddingRight: 20,
-    paddingBottom: 20,
+    padding: 20,
     borderBottom: "1px solid #e4e4e7",
   },
 
@@ -52,9 +48,7 @@ export const PrescriptionPdfStyle = StyleSheet.create({
   },
 
   section: {
-    paddingLeft: 20,
-    paddingRight: 20,
-    paddingBottom: 20,
+    padding: 20,
     borderBottom: "1px solid #e4e4e7",
   },
 
@@ -62,7 +56,6 @@ export const PrescriptionPdfStyle = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    gap: 20,
     width: "100%",
   },
 
@@ -132,5 +125,41 @@ export const PrescriptionPdfStyle = StyleSheet.create({
     fontSize: 10,
     textAlign: "center",
     color: "#000",
+  },
+
+  // user section
+  userSection: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderBottom: "1px solid #e4e4e7",
+  },
+
+  userContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    gap: 6,
+  },
+  leftBlock: {
+    flexDirection: "column",
+    gap: 4,
+  },
+  rightBlock: {
+    justifyContent: "flex-start",
+    alignItems: "flex-end",
+  },
+  userItem: {
+    fontSize: 9,
+    color: "#000",
+  },
+  label: {
+    fontSize: 9,
+    fontWeight: 600,
+  },
+  value: {
+    fontSize: 9,
+    fontWeight: 400,
+  },
+  dateText: {
+    fontSize: 9,
   },
 });
