@@ -43,6 +43,7 @@ export const PrescriptionForm = () => {
   useEffect(() => {
     if (selectedMedicine) {
       const medicineData = {
+        id: selectedMedicine.id,
         name: selectedMedicine.name,
         timing: "",
         mealTiming: "",

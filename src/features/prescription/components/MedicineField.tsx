@@ -29,6 +29,20 @@ export const MedicineField = ({
       <div className="grid grid-cols-4 gap-x-1 gap-y-4 items-start">
         <FormField
           control={form.control}
+          name={`medicine.${index}.id`}
+          render={({ field }) => (
+            <FormItem hidden>
+              <FormLabel>Medicine Id</FormLabel>
+              <FormControl>
+                <Input placeholder="ex. Medicine ID" type="text" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
           name={`medicine.${index}.name`}
           render={({ field }) => (
             <FormItem>

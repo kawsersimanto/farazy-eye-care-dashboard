@@ -14,6 +14,7 @@ export const PrescriptionSchema = z.object({
   medicine: z
     .array(
       z.object({
+        id: z.string().min(1, "Medicine ID is required"),
         name: z.string().min(1, "Medicine name is required"),
         timing: z.string().min(1, "Timing is required"),
         mealTiming: z.string().optional(),

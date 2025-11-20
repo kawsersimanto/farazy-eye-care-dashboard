@@ -33,6 +33,7 @@ export const MedicineList = ({
           className="!p-0 !m-0 self-start"
           onClick={() =>
             append({
+              id: "",
               name: "",
               timing: "",
               mealTiming: "",
