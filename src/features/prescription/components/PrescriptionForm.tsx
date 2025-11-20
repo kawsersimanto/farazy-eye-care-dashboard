@@ -6,12 +6,15 @@ import { Separator } from "@/components/ui/separator";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { IBranch } from "@/features/branch/branch.interface";
 import { IDoctor } from "@/features/doctor/doctor.interface";
+import { PrescriptionPdf } from "@/features/prescription-pdf/components/PrescriptionPdf";
 import { useGetDoctorScheduleByIdQuery } from "@/features/schedule/schedule.api";
 import { useGetUserByIdQuery } from "@/features/user/user.api";
 import { IUser } from "@/features/user/user.interface";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
+import { usePDF } from "@react-pdf/renderer";
+import Link from "next/link";
+import { useEffect, useMemo } from "react";
 import { useFieldArray, useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 import {
@@ -33,7 +36,7 @@ export const PrescriptionForm = () => {
   const { data: scheduleData } = useGetDoctorScheduleByIdQuery(id, {
     skip: !id,
   });
-  const schedules = scheduleData?.data || [];
+  const schedules = useMemo(() => scheduleData?.data || [], [scheduleData]);
 
   const branch = profile?.branch;
   const selectedMedicine = useAppSelector(
@@ -86,7 +89,25 @@ export const PrescriptionForm = () => {
     control: form.control,
   });
 
-  console.log(formValues);
+  const [instance, updateInstance] = usePDF({
+    document: (
+      <PrescriptionPdf
+        profile={profile as IUser}
+        prescription={formValues as PrescriptionSchemaType}
+        schedules={schedules}
+      />
+    ),
+  });
+
+  useEffect(() => {
+    updateInstance(
+      <PrescriptionPdf
+        profile={profile as IUser}
+        prescription={formValues as PrescriptionSchemaType}
+        schedules={schedules}
+      />
+    );
+  }, [profile, formValues, schedules, updateInstance]);
 
   function onSubmit(values: PrescriptionSchemaType) {
     try {
@@ -127,8 +148,33 @@ export const PrescriptionForm = () => {
                 remove={remove}
               />
             </div>
+            <div>
+              <div className="flex gap-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => window.open(instance.url || "", "_blank")}
+                  disabled={instance.loading}
+                >
+                  {instance.loading ? "Generating..." : "Preview PDF"}
+                </Button>
 
-            <Button type="submit">Submit</Button>
+                <Link
+                  href={instance.url || ""}
+                  download="prescription.pdf"
+                  style={{ textDecoration: "none" }}
+                >
+                  <Button
+                    type="button"
+                    variant="outline"
+                    disabled={instance.loading}
+                  >
+                    {instance.loading ? "Generating..." : "Download PDF"}
+                  </Button>
+                </Link>
+              </div>
+              <Button type="submit">Submit</Button>
+            </div>
           </form>
         </Form>
       </div>

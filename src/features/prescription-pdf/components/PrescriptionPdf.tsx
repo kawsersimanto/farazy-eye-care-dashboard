@@ -1,5 +1,10 @@
 /* eslint-disable jsx-a11y/alt-text */
+import { PrescriptionSchemaType } from "@/features/prescription/prescription.schema";
+import { ISchedule } from "@/features/schedule/schedule.interface";
+import { IUser } from "@/features/user/user.interface";
+import { formatScheduleWithTime } from "@/utils/date";
 import { Document, Font, Image, Page, Text, View } from "@react-pdf/renderer";
+import { format } from "date-fns";
 import { PrescriptionPdfStyle } from "./PrescriptionPdfStyle";
 
 Font.register({
@@ -80,7 +85,15 @@ Font.register({
   ],
 });
 
-export const PrescriptionPdf = () => (
+export const PrescriptionPdf = ({
+  profile,
+  prescription,
+  schedules,
+}: {
+  profile: IUser;
+  prescription: PrescriptionSchemaType;
+  schedules: ISchedule[];
+}) => (
   <Document>
     <Page size="A4" style={PrescriptionPdfStyle.body}>
       {/* header  */}
@@ -90,21 +103,24 @@ export const PrescriptionPdf = () => (
         <View style={PrescriptionPdfStyle.contactContainer}>
           <View style={PrescriptionPdfStyle.contactRow}>
             <Image src="/map-pin.png" style={PrescriptionPdfStyle.icon} />
-            <Text style={PrescriptionPdfStyle.contactText}>
-              123 Main Street, Sector 7
-            </Text>
+            <View style={PrescriptionPdfStyle.contactText}>
+              <Text>{profile?.branch?.addressLine1}</Text>
+              <Text>{profile?.branch?.addressLine2}</Text>
+            </View>
           </View>
 
           <View style={PrescriptionPdfStyle.contactRow}>
             <Image src="/mail.png" style={PrescriptionPdfStyle.icon} />
             <Text style={PrescriptionPdfStyle.contactText}>
-              info@hospital.com
+              {profile?.branch?.email}
             </Text>
           </View>
 
           <View style={PrescriptionPdfStyle.contactRow}>
             <Image src="/phone.png" style={PrescriptionPdfStyle.icon} />
-            <Text style={PrescriptionPdfStyle.contactText}>+8801700000000</Text>
+            <Text style={PrescriptionPdfStyle.contactText}>
+              {profile?.branch?.phone}
+            </Text>
           </View>
         </View>
       </View>
@@ -114,13 +130,18 @@ export const PrescriptionPdf = () => (
         <View style={PrescriptionPdfStyle.doctorContainer}>
           {/* LEFT SECTION */}
           <View style={PrescriptionPdfStyle.left}>
-            <Text style={PrescriptionPdfStyle.doctorName}>Kamal Hasan</Text>
+            <Text style={PrescriptionPdfStyle.doctorName}>{profile?.name}</Text>
             <Text style={PrescriptionPdfStyle.doctorPosition}>
-              Senior Retina Doctor
+              {profile?.doctorProfile?.title}
             </Text>
-            <Text style={PrescriptionPdfStyle.doctorDegree}>MBBS, MS, EYE</Text>
             <Text style={PrescriptionPdfStyle.doctorSpecialty}>
-              Cataract, Eye
+              {profile?.doctorProfile?.qualifications?.join(", ")}
+            </Text>
+            <Text style={PrescriptionPdfStyle.doctorDegree}>
+              {profile?.doctorProfile?.degrees?.join(", ")}
+            </Text>
+            <Text style={PrescriptionPdfStyle.doctorDegree}>
+              {profile?.branch?.name} Branch
             </Text>
           </View>
 
@@ -135,8 +156,7 @@ export const PrescriptionPdf = () => (
 
               <View style={PrescriptionPdfStyle.consultBody}>
                 <Text style={PrescriptionPdfStyle.consultBodyText}>
-                  Monday (09:00 AM - 05:00 PM), Wednesday (10:00 PM - 12:30 AM)
-                  & Thursday (07:59 PM - 08:15 PM)
+                  {formatScheduleWithTime(schedules)}
                 </Text>
               </View>
             </View>
@@ -149,22 +169,24 @@ export const PrescriptionPdf = () => (
         <View style={PrescriptionPdfStyle.userContainer}>
           <Text>
             <Text style={PrescriptionPdfStyle.label}>Name: </Text>
-            <Text style={PrescriptionPdfStyle.value}>MD. Joynal Ahmed</Text>
+            <Text style={PrescriptionPdfStyle.value}>{prescription?.name}</Text>
           </Text>
 
           <Text>
             <Text style={PrescriptionPdfStyle.label}>Gender: </Text>
-            <Text style={PrescriptionPdfStyle.value}>Female</Text>
+            <Text style={PrescriptionPdfStyle.value}>
+              {prescription?.gender}
+            </Text>
           </Text>
 
           <Text>
             <Text style={PrescriptionPdfStyle.label}>Age: </Text>
-            <Text style={PrescriptionPdfStyle.value}>23</Text>
+            <Text style={PrescriptionPdfStyle.value}>{prescription?.age}</Text>
           </Text>
 
           <Text style={PrescriptionPdfStyle.dateText}>
             <Text style={PrescriptionPdfStyle.label}>Date: </Text>
-            November 20th, 2025
+            {format(prescription?.prescribeDate, "PPP")}
           </Text>
         </View>
       </View>
@@ -179,7 +201,7 @@ export const PrescriptionPdf = () => (
                 C/C:{" "}
               </Text>
               <Text style={PrescriptionPdfStyle.value}>
-                Mild headache and watering eyes
+                {prescription?.cc || "-"}
               </Text>
             </View>
             <View style={PrescriptionPdfStyle.prescriptNoteItem}>
@@ -187,7 +209,7 @@ export const PrescriptionPdf = () => (
                 O/E:{" "}
               </Text>
               <Text style={PrescriptionPdfStyle.value}>
-                Mild headache and watering eyes
+                {prescription?.oe || "-"}
               </Text>
             </View>
             <View style={PrescriptionPdfStyle.prescriptNoteItem}>
@@ -195,7 +217,7 @@ export const PrescriptionPdf = () => (
                 VaR:{" "}
               </Text>
               <Text style={PrescriptionPdfStyle.value}>
-                Mild headache and watering eyes
+                {prescription?.var || "-"}
               </Text>
             </View>
             <View style={PrescriptionPdfStyle.prescriptNoteItem}>
@@ -203,7 +225,7 @@ export const PrescriptionPdf = () => (
                 Ant. Segment:{" "}
               </Text>
               <Text style={PrescriptionPdfStyle.value}>
-                Mild headache and watering eyes
+                {prescription?.antSegment || "-"}
               </Text>
             </View>
             <View style={PrescriptionPdfStyle.prescriptNoteItem}>
@@ -211,7 +233,7 @@ export const PrescriptionPdf = () => (
                 Post. Segment:{" "}
               </Text>
               <Text style={PrescriptionPdfStyle.value}>
-                Mild headache and watering eyes
+                {prescription?.postSegment || "-"}
               </Text>
             </View>
           </View>
@@ -219,32 +241,30 @@ export const PrescriptionPdf = () => (
           <View style={PrescriptionPdfStyle.medicineColumn}>
             <Text style={PrescriptionPdfStyle.rxTitle}>Rx</Text>
             <View>
-              <View style={PrescriptionPdfStyle.prescriptionMedicineRow}>
-                <Text style={PrescriptionPdfStyle.medicineItemTitle}>
-                  TAB. Etorix 90 MG{" "}
-                </Text>
-                <View style={PrescriptionPdfStyle.medicineInstruction}>
-                  <Text style={PrescriptionPdfStyle.value}>0 + 0 + 1</Text>
-                  <Text style={PrescriptionPdfStyle.valueBangla}>খাবার পর</Text>
-                  <Text style={PrescriptionPdfStyle.value}>30 Days</Text>
-                  <Text style={PrescriptionPdfStyle.value}>
-                    Take one capsule after 1 week
+              {prescription?.medicine?.map((medicine, id) => (
+                <View
+                  key={id}
+                  style={PrescriptionPdfStyle.prescriptionMedicineRow}
+                >
+                  <Text style={PrescriptionPdfStyle.medicineItemTitle}>
+                    {medicine?.name}
                   </Text>
+                  <View style={PrescriptionPdfStyle.medicineInstruction}>
+                    <Text style={PrescriptionPdfStyle.value}>
+                      {medicine?.timing}
+                    </Text>
+                    <Text style={PrescriptionPdfStyle.valueBangla}>
+                      {medicine?.mealTiming}
+                    </Text>
+                    <Text style={PrescriptionPdfStyle.value}>
+                      {medicine?.duration}
+                    </Text>
+                    <Text style={PrescriptionPdfStyle.value}>
+                      {medicine?.instruction}
+                    </Text>
+                  </View>
                 </View>
-              </View>
-              <View style={PrescriptionPdfStyle.prescriptionMedicineRow}>
-                <Text style={PrescriptionPdfStyle.medicineItemTitle}>
-                  TAB. Etorix 90 MG{" "}
-                </Text>
-                <View style={PrescriptionPdfStyle.medicineInstruction}>
-                  <Text style={PrescriptionPdfStyle.value}>0 + 0 + 1</Text>
-                  <Text style={PrescriptionPdfStyle.valueBangla}>খাবার পর</Text>
-                  <Text style={PrescriptionPdfStyle.value}>30 Days</Text>
-                  <Text style={PrescriptionPdfStyle.value}>
-                    Take one capsule after 1 week
-                  </Text>
-                </View>
-              </View>
+              ))}
             </View>
           </View>
         </View>
