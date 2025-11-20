@@ -162,4 +162,33 @@ export const PrescriptionPdfStyle = StyleSheet.create({
   dateText: {
     fontSize: 9,
   },
+
+  // prescription area
+  prescriptionSection: {
+    paddingHorizontal: 20,
+  },
+
+  prescriptionContainer: {
+    flexDirection: "row",
+  },
+
+  historyColumn: {
+    width: "30%",
+    fontWeight: "bold",
+    marginRight: 40,
+    paddingVertical: 20,
+    paddingRight: 40,
+  },
+  prescriptNoteItem: {
+    marginBottom: 24,
+  },
+  prescriptNoteItemTitle: {
+    marginBottom: 5,
+    fontSize: 10,
+    fontWeight: 600,
+  },
+  medicineColumn: {
+    flex: 1,
+    paddingVertical: 20,
+  },
 });

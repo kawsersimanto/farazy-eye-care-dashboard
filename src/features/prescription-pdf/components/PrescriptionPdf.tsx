@@ -83,7 +83,7 @@ export const PrescriptionPdf = () => (
         </View>
       </View>
 
-      {/* doctor  */}
+      {/* doctor Information */}
       <View style={PrescriptionPdfStyle.section}>
         <View style={PrescriptionPdfStyle.doctorContainer}>
           {/* LEFT SECTION */}
@@ -118,6 +118,7 @@ export const PrescriptionPdf = () => (
         </View>
       </View>
 
+      {/* Patient Information */}
       <View style={PrescriptionPdfStyle.userSection}>
         <View style={PrescriptionPdfStyle.userContainer}>
           <Text>
@@ -139,6 +140,57 @@ export const PrescriptionPdf = () => (
             <Text style={PrescriptionPdfStyle.label}>Date: </Text>
             November 20th, 2025
           </Text>
+        </View>
+      </View>
+
+      {/* Prescription Section */}
+      <View style={PrescriptionPdfStyle.prescriptionSection}>
+        <View style={PrescriptionPdfStyle.prescriptionContainer}>
+          <View style={PrescriptionPdfStyle.historyColumn}>
+            <View style={PrescriptionPdfStyle.prescriptNoteItem}>
+              <Text style={PrescriptionPdfStyle.prescriptNoteItemTitle}>
+                C/C:{" "}
+              </Text>
+              <Text style={PrescriptionPdfStyle.value}>
+                Mild headache and watering eyes
+              </Text>
+            </View>
+            <View style={PrescriptionPdfStyle.prescriptNoteItem}>
+              <Text style={PrescriptionPdfStyle.prescriptNoteItemTitle}>
+                O/E:{" "}
+              </Text>
+              <Text style={PrescriptionPdfStyle.value}>
+                Mild headache and watering eyes
+              </Text>
+            </View>
+            <View style={PrescriptionPdfStyle.prescriptNoteItem}>
+              <Text style={PrescriptionPdfStyle.prescriptNoteItemTitle}>
+                VaR:{" "}
+              </Text>
+              <Text style={PrescriptionPdfStyle.value}>
+                Mild headache and watering eyes
+              </Text>
+            </View>
+            <View style={PrescriptionPdfStyle.prescriptNoteItem}>
+              <Text style={PrescriptionPdfStyle.prescriptNoteItemTitle}>
+                Ant. Segment:{" "}
+              </Text>
+              <Text style={PrescriptionPdfStyle.value}>
+                Mild headache and watering eyes
+              </Text>
+            </View>
+            <View style={PrescriptionPdfStyle.prescriptNoteItem}>
+              <Text style={PrescriptionPdfStyle.prescriptNoteItemTitle}>
+                Post. Segment:{" "}
+              </Text>
+              <Text style={PrescriptionPdfStyle.value}>
+                Mild headache and watering eyes
+              </Text>
+            </View>
+          </View>
+          <View style={PrescriptionPdfStyle.medicineColumn}>
+            <Text>Rx</Text>
+          </View>
         </View>
       </View>
     </Page>
