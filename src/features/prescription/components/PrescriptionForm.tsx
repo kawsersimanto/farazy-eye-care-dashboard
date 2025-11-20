@@ -64,7 +64,7 @@ export const PrescriptionForm = () => {
       const medicineData = {
         id: selectedMedicine.id,
         name: selectedMedicine.name,
-        timing: "",
+        timing: "1 + 0 + 1",
         mealTiming: "",
         duration: "",
         instruction: "",
@@ -79,9 +79,12 @@ export const PrescriptionForm = () => {
       } else {
         append(medicineData);
       }
+
+      form.trigger("medicine");
+
       dispatch(setSelectedMedicine(null));
     }
-  }, [selectedMedicine, append, update, fields, dispatch]);
+  }, [selectedMedicine, append, update, fields, dispatch, form]);
 
   useEffect(() => {
     form.reset(getInitialFormValues(selectedPatient, patient));

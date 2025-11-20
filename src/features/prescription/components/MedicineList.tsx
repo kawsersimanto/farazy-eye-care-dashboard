@@ -35,7 +35,7 @@ export const MedicineList = ({
             append({
               id: "",
               name: "",
-              timing: "",
+              timing: "1 + 0 + 1",
               mealTiming: "",
               duration: "",
               instruction: "",
