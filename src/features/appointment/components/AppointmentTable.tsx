@@ -19,7 +19,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useAuth } from "@/features/auth/hooks/useAuth";
+import { setSelectedPatient } from "@/features/prescription/store/prescription.slice";
 import { useDebounce } from "@/hooks/useDebounce";
+import { useAppDispatch } from "@/redux/hook";
 import { formatDate, getTodayDateOnly } from "@/utils/date";
 import { handleMutationRequest } from "@/utils/handleMutationRequest";
 import { ColumnDef } from "@tanstack/react-table";
@@ -27,11 +29,13 @@ import {
   Calendar,
   Edit,
   EyeIcon,
+  FilePlus,
   MoreHorizontal,
   Phone,
   PlusCircle,
 } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import {
   useGetAppointmentsQuery,
@@ -40,6 +44,8 @@ import {
 import { IAppointment } from "../appointment.interface";
 
 export const AppointmentTable = () => {
+  const router = useRouter();
+  const dispatch = useAppDispatch();
   const { profile } = useAuth();
   const branchId = profile?.branchId ? profile?.branchId : "";
   const doctorId = profile?.id ? profile?.id : "";
@@ -98,6 +104,19 @@ export const AppointmentTable = () => {
         successMessage: () => "Gender Updated Successfully!",
       }
     );
+  };
+
+  const handlePrescribe = (appointment: IAppointment) => {
+    dispatch(
+      setSelectedPatient({
+        id: appointment.id,
+        name: appointment.name || "",
+        phone: appointment.phone || "",
+        age: appointment.age || 0,
+        gender: appointment.gender || "MALE",
+      })
+    );
+    router.push("/prescription/create");
   };
 
   const columns: ColumnDef<IAppointment>[] = [
@@ -267,6 +286,10 @@ export const AppointmentTable = () => {
                 <EyeIcon className="text-inherit" />
                 View Details
               </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handlePrescribe(row.original)}>
+              <FilePlus className="text-inherit" />
+              Prescribe
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
               <Link href={`/appointments/${row.original.id}/edit`}>
