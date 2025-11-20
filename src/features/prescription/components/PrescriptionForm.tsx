@@ -13,7 +13,6 @@ import { IUser } from "@/features/user/user.interface";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { usePDF } from "@react-pdf/renderer";
-import Link from "next/link";
 import { useEffect, useMemo } from "react";
 import { useFieldArray, useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
@@ -109,6 +108,33 @@ export const PrescriptionForm = () => {
     );
   }, [profile, formValues, schedules, updateInstance]);
 
+  const handlePrintPrescription = () => {
+    updateInstance(
+      <PrescriptionPdf
+        profile={profile as IUser}
+        prescription={formValues as PrescriptionSchemaType}
+        schedules={schedules}
+      />
+    );
+
+    if (!instance.url) {
+      toast.error("PDF not ready");
+      return;
+    }
+
+    const printWindow = window.open(instance.url);
+
+    if (!printWindow) {
+      toast.error("Please allow popups to print the prescription.");
+      return;
+    }
+
+    printWindow.onload = () => {
+      printWindow.focus();
+      printWindow.print();
+    };
+  };
+
   function onSubmit(values: PrescriptionSchemaType) {
     try {
       console.log(values);
@@ -158,21 +184,16 @@ export const PrescriptionForm = () => {
                 onClick={() => window.open(instance.url || "", "_blank")}
                 disabled={instance.loading}
               >
-                {instance.loading ? "Generating..." : "Preview PDF"}
+                Preview PDF
               </Button>
-              <Link
-                href={instance.url || ""}
-                download="prescription.pdf"
-                style={{ textDecoration: "none" }}
+              <Button
+                type="button"
+                variant="outline"
+                onClick={handlePrintPrescription}
+                disabled={instance.loading}
               >
-                <Button
-                  type="button"
-                  variant="outline"
-                  disabled={instance.loading}
-                >
-                  {instance.loading ? "Generating..." : "Download PDF"}
-                </Button>
-              </Link>
+                Print Prescription
+              </Button>
             </div>
           </form>
         </Form>
