@@ -288,12 +288,12 @@ export const PrescriptionPdf = ({
                   </View>
                   <View style={PrescriptionPdfStyle.eyeCell}>
                     <Text style={PrescriptionPdfStyle.eyeCellData}>
-                      {prescription?.rightEye?.sph}
+                      {prescription?.rightEye?.sph || "-"}
                     </Text>
                   </View>
                   <View style={PrescriptionPdfStyle.eyeCellLast}>
                     <Text style={PrescriptionPdfStyle.eyeCellData}>
-                      {prescription?.leftEye?.sph}
+                      {prescription?.leftEye?.sph || "-"}
                     </Text>
                   </View>
                 </View>
@@ -305,12 +305,12 @@ export const PrescriptionPdf = ({
                   </View>
                   <View style={PrescriptionPdfStyle.eyeCell}>
                     <Text style={PrescriptionPdfStyle.eyeCellData}>
-                      {prescription?.rightEye?.cyl}
+                      {prescription?.rightEye?.cyl || "-"}
                     </Text>
                   </View>
                   <View style={PrescriptionPdfStyle.eyeCellLast}>
                     <Text style={PrescriptionPdfStyle.eyeCellData}>
-                      {prescription?.leftEye?.cyl}
+                      {prescription?.leftEye?.cyl || "-"}
                     </Text>
                   </View>
                 </View>
@@ -324,12 +324,12 @@ export const PrescriptionPdf = ({
                   </View>
                   <View style={PrescriptionPdfStyle.eyeCell}>
                     <Text style={PrescriptionPdfStyle.eyeCellData}>
-                      {prescription?.rightEye?.axis}
+                      {prescription?.rightEye?.axis || "-"}
                     </Text>
                   </View>
                   <View style={PrescriptionPdfStyle.eyeCellLast}>
                     <Text style={PrescriptionPdfStyle.eyeCellData}>
-                      {prescription?.leftEye?.axis}
+                      {prescription?.leftEye?.axis || "-"}
                     </Text>
                   </View>
                 </View>
@@ -343,15 +343,38 @@ export const PrescriptionPdf = ({
                   </View>
                   <View style={PrescriptionPdfStyle.eyeCell}>
                     <Text style={PrescriptionPdfStyle.eyeCellData}>
-                      {prescription?.rightEye?.bcva}
+                      {prescription?.rightEye?.bcva || "-"}
                     </Text>
                   </View>
                   <View style={PrescriptionPdfStyle.eyeCellLast}>
                     <Text style={PrescriptionPdfStyle.eyeCellData}>
-                      {prescription?.leftEye?.bcva}
+                      {prescription?.leftEye?.bcva || "-"}
                     </Text>
                   </View>
                 </View>
+              </View>
+              <View style={PrescriptionPdfStyle.eyeExaminationExtraRow}>
+                <View style={PrescriptionPdfStyle.addRow}>
+                  <Text style={PrescriptionPdfStyle.label}>Add:</Text>
+                  <Text style={PrescriptionPdfStyle.value}>
+                    {prescription?.add || "-"}
+                  </Text>
+                </View>
+                <View style={PrescriptionPdfStyle.addRow}>
+                  <Text style={PrescriptionPdfStyle.label}>I.P.D:</Text>
+                  <Text style={PrescriptionPdfStyle.value}>
+                    {prescription?.add || "-"}
+                  </Text>
+                </View>
+                <View style={PrescriptionPdfStyle.addRow}>
+                  <Text style={PrescriptionPdfStyle.label}>MM:</Text>
+                  <Text style={PrescriptionPdfStyle.value}>
+                    {prescription?.add || "-"}
+                  </Text>
+                </View>
+              </View>
+              <View style={PrescriptionPdfStyle.eyeExaminationExtraRow}>
+                <Text style={PrescriptionPdfStyle.label}>Advice:</Text>
               </View>
             </View>
           </View>

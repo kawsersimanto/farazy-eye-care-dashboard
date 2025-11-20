@@ -37,7 +37,7 @@ export const PrescriptionPdfStyle = StyleSheet.create({
   },
 
   contactText: {
-    fontSize: 10,
+    fontSize: 9,
     color: "#000",
   },
 
@@ -253,5 +253,17 @@ export const PrescriptionPdfStyle = StyleSheet.create({
     textAlign: "center",
     paddingTop: 8,
     paddingBottom: 4,
+  },
+  // Add row
+  addRow: {
+    flexDirection: "row",
+    gap: 2,
+  },
+
+  eyeExaminationExtraRow: {
+    marginTop: 10,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
 });
