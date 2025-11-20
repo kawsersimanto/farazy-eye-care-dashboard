@@ -190,6 +190,7 @@ export const PrescriptionPdfStyle = StyleSheet.create({
   medicineColumn: {
     flex: 1,
     paddingVertical: 20,
+    flexDirection: "column",
   },
   rxTitle: {
     marginBottom: 10,
@@ -210,5 +211,35 @@ export const PrescriptionPdfStyle = StyleSheet.create({
   },
   prescriptionMedicineRow: {
     marginBottom: 10,
+  },
+
+  // Eye examination
+  eyeExamination: {
+    flexDirection: "row",
+    marginTop: "auto",
+    border: "1px solid #e4e4e7",
+    borderRadius: 8,
+  },
+
+  eyeExaminationSectionTitle: {
+    fontSize: 9,
+    fontWeight: 500,
+  },
+
+  eyeColumn: {
+    width: "20%",
+    paddingVertical: 4,
+    borderRight: "1px solid #e4e4e7",
+  },
+  eyeLastColumn: {
+    width: "20%",
+    paddingVertical: 4,
+  },
+  eyeCell: {
+    padding: 8,
+    borderBottom: "1px solid #e4e4e7",
+  },
+  eyeCellLast: {
+    padding: 8,
   },
 });

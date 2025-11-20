@@ -94,6 +94,24 @@ export const PrescriptionForm = () => {
     control: form.control,
   });
 
+  const handlePreview = async () => {
+    try {
+      const blob = await pdf(
+        <PrescriptionPdf
+          profile={profile as IUser}
+          prescription={formValues as PrescriptionSchemaType}
+          schedules={schedules}
+        />
+      ).toBlob();
+
+      const blobURL = URL.createObjectURL(blob);
+      window.open(blobURL, "_blank");
+    } catch (error) {
+      console.error("PDF preview error:", error);
+      toast.error("Failed to preview PDF.");
+    }
+  };
+
   const handlePrint = async () => {
     try {
       const blob = await pdf(
@@ -174,14 +192,9 @@ export const PrescriptionForm = () => {
               <Button type="submit" className="text-white">
                 Submit
               </Button>
-              {/* <Button
-                type="button"
-                variant="outline"
-                onClick={handlePrintPrescription}
-                disabled={instance.loading}
-              >
-                Print Prescription
-              </Button> */}
+              <Button type="button" variant="outline" onClick={handlePreview}>
+                Preview PDF
+              </Button>
               <Button type="button" variant="outline" onClick={handlePrint}>
                 Print Prescription
               </Button>
