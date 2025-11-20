@@ -22,11 +22,14 @@ import {
 } from "../prescription.schema";
 import { getInitialFormValues } from "../prescription.utils";
 import { setSelectedMedicine } from "../store/prescription.slice";
+import { EyeExamination } from "./EyeExamination";
+import { LeftEyeExamination } from "./LeftEyeExamination";
 import { MedicalNotesSection } from "./MedicalNotesSection";
 import { MedicineList } from "./MedicineList";
 import { PatientInfoSection } from "./PatientInfoSection";
 import { PrescriptionConsultant } from "./PrescriptionConsultant";
 import { PrescriptionHeader } from "./PrescriptionHeader";
+import { RightEyeExamination } from "./RightEyeExamination";
 
 export const PrescriptionForm = () => {
   const { profile } = useAuth();
@@ -165,14 +168,21 @@ export const PrescriptionForm = () => {
             <PatientInfoSection form={form} />
 
             <Separator className="mt-5" />
-            <div className="grid grid-cols-[1fr_3fr] gap-10">
+            <div className="grid grid-cols-[1fr_3fr] gap-10 relative">
               <MedicalNotesSection form={form} />
-              <MedicineList
-                form={form}
-                fields={fields}
-                append={append}
-                remove={remove}
-              />
+              <div>
+                <MedicineList
+                  form={form}
+                  fields={fields}
+                  append={append}
+                  remove={remove}
+                />
+                <div className="pb-32 flex flex-col gap-4">
+                  <LeftEyeExamination form={form} />
+                  <RightEyeExamination form={form} />
+                  <EyeExamination form={form} />
+                </div>
+              </div>
             </div>
             <div className="flex items-center gap-2 absolute bottom-5 right-5">
               <Button type="submit" className="text-white">

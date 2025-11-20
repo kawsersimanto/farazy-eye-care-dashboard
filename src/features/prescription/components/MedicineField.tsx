@@ -48,7 +48,12 @@ export const MedicineField = ({
             <FormItem>
               <FormLabel>Medicine Name</FormLabel>
               <FormControl>
-                <Input placeholder="ex. Paracetamol" type="text" {...field} />
+                <Input
+                  disabled
+                  placeholder="ex. Paracetamol"
+                  type="text"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

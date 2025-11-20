@@ -47,6 +47,10 @@ export interface PatientInfoSectionProps {
   form: UseFormReturn<PrescriptionSchemaType>;
 }
 
+export interface EyeExaminationProps {
+  form: UseFormReturn<PrescriptionSchemaType>;
+}
+
 export interface PrescriptionEditFormProps {
   prescriptionId: string;
 }
