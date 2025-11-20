@@ -18,8 +18,31 @@ export const getInitialFormValues = (
     postSegment: "",
     var: "",
     medicine: [
-      { name: "", timing: "", mealTiming: "", duration: "", instruction: "" },
+      {
+        id: "",
+        name: "",
+        timing: "",
+        mealTiming: "",
+        duration: "",
+        instruction: "",
+      },
     ],
+    rightEye: {
+      sph: "",
+      cyl: "",
+      axis: "",
+      bcva: "",
+    },
+    leftEye: {
+      sph: "",
+      cyl: "",
+      axis: "",
+      bcva: "",
+    },
+    add: "",
+    ipd: "",
+    mm: "",
+    advice: "",
   };
 
   if (selectedPatient) {
