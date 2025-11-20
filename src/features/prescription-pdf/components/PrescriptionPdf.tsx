@@ -83,7 +83,37 @@ export const PrescriptionPdf = () => (
       </View>
 
       <View style={PrescriptionPdfStyle.section}>
-        <Text>Section #2</Text>
+        <View style={PrescriptionPdfStyle.doctorContainer}>
+          {/* LEFT SECTION */}
+          <View style={PrescriptionPdfStyle.left}>
+            <Text style={PrescriptionPdfStyle.doctorName}>Kamal Hasan</Text>
+            <Text style={PrescriptionPdfStyle.doctorPosition}>
+              Senior Retina Doctor
+            </Text>
+            <Text style={PrescriptionPdfStyle.doctorDegree}>MBBS, MS, EYE</Text>
+            <Text style={PrescriptionPdfStyle.doctorSpecialty}>
+              Cataract, Eye
+            </Text>
+          </View>
+
+          {/* RIGHT SECTION */}
+          <View style={PrescriptionPdfStyle.right}>
+            <View style={PrescriptionPdfStyle.consultCard}>
+              <View style={PrescriptionPdfStyle.consultHeader}>
+                <Text style={PrescriptionPdfStyle.consultHeaderText}>
+                  Consultant Time
+                </Text>
+              </View>
+
+              <View style={PrescriptionPdfStyle.consultBody}>
+                <Text style={PrescriptionPdfStyle.consultBodyText}>
+                  Monday (09:00 AM - 05:00 PM), Wednesday (10:00 PM - 12:30 AM)
+                  & Thursday (07:59 PM - 08:15 PM)
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
       </View>
     </Page>
   </Document>
