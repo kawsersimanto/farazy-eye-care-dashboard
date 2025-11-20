@@ -185,10 +185,30 @@ export const PrescriptionPdfStyle = StyleSheet.create({
   prescriptNoteItemTitle: {
     marginBottom: 5,
     fontSize: 10,
-    fontWeight: 600,
+    fontWeight: 500,
   },
   medicineColumn: {
     flex: 1,
     paddingVertical: 20,
+  },
+  rxTitle: {
+    marginBottom: 10,
+  },
+  medicineItemTitle: {
+    marginBottom: 5,
+    fontSize: 10,
+    fontWeight: 600,
+  },
+  medicineInstruction: {
+    flexDirection: "row",
+    gap: 10,
+  },
+  valueBangla: {
+    fontFamily: "Noto Sans Bengali",
+    fontSize: 9,
+    fontWeight: 400,
+  },
+  prescriptionMedicineRow: {
+    marginBottom: 10,
   },
 });

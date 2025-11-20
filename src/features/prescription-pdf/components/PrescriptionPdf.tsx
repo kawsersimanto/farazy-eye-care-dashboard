@@ -54,6 +54,32 @@ Font.register({
   ],
 });
 
+Font.register({
+  family: "Noto Sans Bengali",
+  fonts: [
+    {
+      src: "/fonts/noto-sans-bengali/noto-sans-bengali-regular.ttf",
+      fontWeight: 400,
+      fontStyle: "normal",
+    },
+    {
+      src: "/fonts/noto-sans-bengali/noto-sans-bengali-medium.ttf",
+      fontWeight: 500,
+      fontStyle: "normal",
+    },
+    {
+      src: "/fonts/noto-sans-bengali/noto-sans-bengali-semibold.ttf",
+      fontWeight: 600,
+      fontStyle: "normal",
+    },
+    {
+      src: "/fonts/noto-sans-bengali/noto-sans-bengali-bold.ttf",
+      fontWeight: 700,
+      fontStyle: "normal",
+    },
+  ],
+});
+
 export const PrescriptionPdf = () => (
   <Document>
     <Page size="A4" style={PrescriptionPdfStyle.body}>
@@ -146,6 +172,7 @@ export const PrescriptionPdf = () => (
       {/* Prescription Section */}
       <View style={PrescriptionPdfStyle.prescriptionSection}>
         <View style={PrescriptionPdfStyle.prescriptionContainer}>
+          {/* History Column */}
           <View style={PrescriptionPdfStyle.historyColumn}>
             <View style={PrescriptionPdfStyle.prescriptNoteItem}>
               <Text style={PrescriptionPdfStyle.prescriptNoteItemTitle}>
@@ -188,8 +215,37 @@ export const PrescriptionPdf = () => (
               </Text>
             </View>
           </View>
+          {/* Medicine Column */}
           <View style={PrescriptionPdfStyle.medicineColumn}>
-            <Text>Rx</Text>
+            <Text style={PrescriptionPdfStyle.rxTitle}>Rx</Text>
+            <View>
+              <View style={PrescriptionPdfStyle.prescriptionMedicineRow}>
+                <Text style={PrescriptionPdfStyle.medicineItemTitle}>
+                  TAB. Etorix 90 MG{" "}
+                </Text>
+                <View style={PrescriptionPdfStyle.medicineInstruction}>
+                  <Text style={PrescriptionPdfStyle.value}>0 + 0 + 1</Text>
+                  <Text style={PrescriptionPdfStyle.valueBangla}>খাবার পর</Text>
+                  <Text style={PrescriptionPdfStyle.value}>30 Days</Text>
+                  <Text style={PrescriptionPdfStyle.value}>
+                    Take one capsule after 1 week
+                  </Text>
+                </View>
+              </View>
+              <View style={PrescriptionPdfStyle.prescriptionMedicineRow}>
+                <Text style={PrescriptionPdfStyle.medicineItemTitle}>
+                  TAB. Etorix 90 MG{" "}
+                </Text>
+                <View style={PrescriptionPdfStyle.medicineInstruction}>
+                  <Text style={PrescriptionPdfStyle.value}>0 + 0 + 1</Text>
+                  <Text style={PrescriptionPdfStyle.valueBangla}>খাবার পর</Text>
+                  <Text style={PrescriptionPdfStyle.value}>30 Days</Text>
+                  <Text style={PrescriptionPdfStyle.value}>
+                    Take one capsule after 1 week
+                  </Text>
+                </View>
+              </View>
+            </View>
           </View>
         </View>
       </View>
