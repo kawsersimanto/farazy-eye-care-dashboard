@@ -266,4 +266,8 @@ export const PrescriptionPdfStyle = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
   },
+
+  eyeExaminationTable: {
+    marginTop: 40,
+  },
 });

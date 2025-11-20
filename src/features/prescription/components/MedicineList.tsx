@@ -10,7 +10,7 @@ export const MedicineList = ({
   append,
   remove,
 }: MedicineListProps) => (
-  <div className="pt-10 pb-16">
+  <div className="pt-10 pb-10">
     <div className="flex flex-col gap-2">
       <FormLabel className="mb-4">Rx</FormLabel>
       <div className="flex flex-col gap-5">

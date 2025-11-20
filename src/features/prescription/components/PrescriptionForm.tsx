@@ -2,7 +2,9 @@
 
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
+import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import { Switch } from "@/components/ui/switch";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { IBranch } from "@/features/branch/branch.interface";
 import { IDoctor } from "@/features/doctor/doctor.interface";
@@ -13,7 +15,7 @@ import { IUser } from "@/features/user/user.interface";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { pdf } from "@react-pdf/renderer";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useFieldArray, useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 import {
@@ -48,6 +50,8 @@ export const PrescriptionForm = () => {
   const selectedPatient = useAppSelector((state) => state.prescription.patient);
   const { data: patientData } = useGetUserByIdQuery("6917665d84030b43c9ed6a36");
   const patient = patientData?.data;
+
+  const [showEyeExamination, setShowEyeExamination] = useState(false);
 
   const form = useForm<PrescriptionSchemaType>({
     resolver: zodResolver(PrescriptionSchema),
@@ -101,6 +105,7 @@ export const PrescriptionForm = () => {
           profile={profile as IUser}
           prescription={formValues as PrescriptionSchemaType}
           schedules={schedules}
+          showEyeExamination={showEyeExamination}
         />
       ).toBlob();
 
@@ -156,6 +161,29 @@ export const PrescriptionForm = () => {
     }
   }
 
+  const handleEyeExaminationChange = (checked: boolean) => {
+    setShowEyeExamination(checked);
+
+    // Clear eye examination fields when toggling off
+    if (!checked) {
+      form.setValue("rightEye", {
+        sph: "",
+        cyl: "",
+        axis: "",
+        bcva: "",
+      });
+      form.setValue("leftEye", {
+        sph: "",
+        cyl: "",
+        axis: "",
+        bcva: "",
+      });
+      form.setValue("add", "");
+      form.setValue("ipd", "");
+      form.setValue("mm", "");
+    }
+  };
+
   return (
     <div>
       <div>
@@ -181,11 +209,25 @@ export const PrescriptionForm = () => {
                   append={append}
                   remove={remove}
                 />
-                <div className="pb-32 flex flex-col gap-4">
-                  <RightEyeExamination form={form} />
-                  <LeftEyeExamination form={form} />
-                  <EyeExamination form={form} />
+
+                <div className="flex items-center gap-1 mb-5">
+                  <div className="scale-75 origin-left">
+                    <Switch
+                      id="eye-examination"
+                      checked={showEyeExamination}
+                      onCheckedChange={handleEyeExaminationChange}
+                    />
+                  </div>
+                  <Label htmlFor="eye-examination">Eye Examination</Label>
                 </div>
+
+                {showEyeExamination && (
+                  <div className="pb-32 flex flex-col gap-4">
+                    <RightEyeExamination form={form} />
+                    <LeftEyeExamination form={form} />
+                    <EyeExamination form={form} />
+                  </div>
+                )}
               </div>
             </div>
             <div className="flex items-center gap-2 absolute bottom-5 right-5">

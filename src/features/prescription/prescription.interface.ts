@@ -22,6 +22,7 @@ export interface IPrescription {
   antSegment: string;
   postSegment: string;
   medicine: IPrescriptionMedicine[];
+  eyeExamination: boolean;
 }
 
 export interface MedicalNotesSectionProps {

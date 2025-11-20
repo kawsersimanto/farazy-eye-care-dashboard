@@ -89,10 +89,12 @@ export const PrescriptionPdf = ({
   profile,
   prescription,
   schedules,
+  showEyeExamination = false,
 }: {
   profile: IUser;
   prescription: PrescriptionSchemaType;
   schedules: ISchedule[];
+  showEyeExamination?: boolean;
 }) => (
   <Document>
     <Page size="A4" style={PrescriptionPdfStyle.body}>
@@ -266,117 +268,129 @@ export const PrescriptionPdf = ({
                 </View>
               ))}
             </View>
-            <View>
-              <View style={PrescriptionPdfStyle.eyeExamination}>
-                {/* Column */}
-                <View style={PrescriptionPdfStyle.eyeColumn}>
-                  <View style={PrescriptionPdfStyle.eyeCell}>
-                    <Text style={PrescriptionPdfStyle.eyeCellHeading}>Eye</Text>
+            {/* Eye Examination - Conditional Render */}
+            {showEyeExamination && (
+              <View style={PrescriptionPdfStyle.eyeExaminationTable}>
+                <View style={PrescriptionPdfStyle.eyeExamination}>
+                  {/* Column */}
+                  <View style={PrescriptionPdfStyle.eyeColumn}>
+                    <View style={PrescriptionPdfStyle.eyeCell}>
+                      <Text style={PrescriptionPdfStyle.eyeCellHeading}>
+                        Eye
+                      </Text>
+                    </View>
+                    <View style={PrescriptionPdfStyle.eyeCell}>
+                      <Text style={PrescriptionPdfStyle.eyeCellData}>RE</Text>
+                    </View>
+                    <View style={PrescriptionPdfStyle.eyeCellLast}>
+                      <Text style={PrescriptionPdfStyle.eyeCellData}>LE</Text>
+                    </View>
                   </View>
-                  <View style={PrescriptionPdfStyle.eyeCell}>
-                    <Text style={PrescriptionPdfStyle.eyeCellData}>RE</Text>
-                  </View>
-                  <View style={PrescriptionPdfStyle.eyeCellLast}>
-                    <Text style={PrescriptionPdfStyle.eyeCellData}>LE</Text>
-                  </View>
-                </View>
 
-                {/* Column 2 */}
-                <View style={PrescriptionPdfStyle.eyeColumn}>
-                  <View style={PrescriptionPdfStyle.eyeCell}>
-                    <Text style={PrescriptionPdfStyle.eyeCellHeading}>Sph</Text>
+                  {/* Column 2 */}
+                  <View style={PrescriptionPdfStyle.eyeColumn}>
+                    <View style={PrescriptionPdfStyle.eyeCell}>
+                      <Text style={PrescriptionPdfStyle.eyeCellHeading}>
+                        Sph
+                      </Text>
+                    </View>
+                    <View style={PrescriptionPdfStyle.eyeCell}>
+                      <Text style={PrescriptionPdfStyle.eyeCellData}>
+                        {prescription?.rightEye?.sph || "-"}
+                      </Text>
+                    </View>
+                    <View style={PrescriptionPdfStyle.eyeCellLast}>
+                      <Text style={PrescriptionPdfStyle.eyeCellData}>
+                        {prescription?.leftEye?.sph || "-"}
+                      </Text>
+                    </View>
                   </View>
-                  <View style={PrescriptionPdfStyle.eyeCell}>
-                    <Text style={PrescriptionPdfStyle.eyeCellData}>
-                      {prescription?.rightEye?.sph || "-"}
-                    </Text>
-                  </View>
-                  <View style={PrescriptionPdfStyle.eyeCellLast}>
-                    <Text style={PrescriptionPdfStyle.eyeCellData}>
-                      {prescription?.leftEye?.sph || "-"}
-                    </Text>
-                  </View>
-                </View>
 
-                {/* Column 3 */}
-                <View style={PrescriptionPdfStyle.eyeColumn}>
-                  <View style={PrescriptionPdfStyle.eyeCell}>
-                    <Text style={PrescriptionPdfStyle.eyeCellHeading}>Cyl</Text>
+                  {/* Column 3 */}
+                  <View style={PrescriptionPdfStyle.eyeColumn}>
+                    <View style={PrescriptionPdfStyle.eyeCell}>
+                      <Text style={PrescriptionPdfStyle.eyeCellHeading}>
+                        Cyl
+                      </Text>
+                    </View>
+                    <View style={PrescriptionPdfStyle.eyeCell}>
+                      <Text style={PrescriptionPdfStyle.eyeCellData}>
+                        {prescription?.rightEye?.cyl || "-"}
+                      </Text>
+                    </View>
+                    <View style={PrescriptionPdfStyle.eyeCellLast}>
+                      <Text style={PrescriptionPdfStyle.eyeCellData}>
+                        {prescription?.leftEye?.cyl || "-"}
+                      </Text>
+                    </View>
                   </View>
-                  <View style={PrescriptionPdfStyle.eyeCell}>
-                    <Text style={PrescriptionPdfStyle.eyeCellData}>
-                      {prescription?.rightEye?.cyl || "-"}
-                    </Text>
-                  </View>
-                  <View style={PrescriptionPdfStyle.eyeCellLast}>
-                    <Text style={PrescriptionPdfStyle.eyeCellData}>
-                      {prescription?.leftEye?.cyl || "-"}
-                    </Text>
-                  </View>
-                </View>
 
-                {/* Column 4 */}
-                <View style={PrescriptionPdfStyle.eyeColumn}>
-                  <View style={PrescriptionPdfStyle.eyeCell}>
-                    <Text style={PrescriptionPdfStyle.eyeCellHeading}>
-                      Axis
-                    </Text>
+                  {/* Column 4 */}
+                  <View style={PrescriptionPdfStyle.eyeColumn}>
+                    <View style={PrescriptionPdfStyle.eyeCell}>
+                      <Text style={PrescriptionPdfStyle.eyeCellHeading}>
+                        Axis
+                      </Text>
+                    </View>
+                    <View style={PrescriptionPdfStyle.eyeCell}>
+                      <Text style={PrescriptionPdfStyle.eyeCellData}>
+                        {prescription?.rightEye?.axis || "-"}
+                      </Text>
+                    </View>
+                    <View style={PrescriptionPdfStyle.eyeCellLast}>
+                      <Text style={PrescriptionPdfStyle.eyeCellData}>
+                        {prescription?.leftEye?.axis || "-"}
+                      </Text>
+                    </View>
                   </View>
-                  <View style={PrescriptionPdfStyle.eyeCell}>
-                    <Text style={PrescriptionPdfStyle.eyeCellData}>
-                      {prescription?.rightEye?.axis || "-"}
-                    </Text>
-                  </View>
-                  <View style={PrescriptionPdfStyle.eyeCellLast}>
-                    <Text style={PrescriptionPdfStyle.eyeCellData}>
-                      {prescription?.leftEye?.axis || "-"}
-                    </Text>
-                  </View>
-                </View>
 
-                {/* Column 5 */}
-                <View style={PrescriptionPdfStyle.eyeLastColumn}>
-                  <View style={PrescriptionPdfStyle.eyeCell}>
-                    <Text style={PrescriptionPdfStyle.eyeCellHeading}>
-                      BC VA
+                  {/* Column 5 */}
+                  <View style={PrescriptionPdfStyle.eyeLastColumn}>
+                    <View style={PrescriptionPdfStyle.eyeCell}>
+                      <Text style={PrescriptionPdfStyle.eyeCellHeading}>
+                        BC VA
+                      </Text>
+                    </View>
+                    <View style={PrescriptionPdfStyle.eyeCell}>
+                      <Text style={PrescriptionPdfStyle.eyeCellData}>
+                        {prescription?.rightEye?.bcva || "-"}
+                      </Text>
+                    </View>
+                    <View style={PrescriptionPdfStyle.eyeCellLast}>
+                      <Text style={PrescriptionPdfStyle.eyeCellData}>
+                        {prescription?.leftEye?.bcva || "-"}
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+                <View style={PrescriptionPdfStyle.eyeExaminationExtraRow}>
+                  <View style={PrescriptionPdfStyle.addRow}>
+                    <Text style={PrescriptionPdfStyle.label}>Add:</Text>
+                    <Text style={PrescriptionPdfStyle.value}>
+                      {prescription?.add || "-"}
                     </Text>
                   </View>
-                  <View style={PrescriptionPdfStyle.eyeCell}>
-                    <Text style={PrescriptionPdfStyle.eyeCellData}>
-                      {prescription?.rightEye?.bcva || "-"}
+                  <View style={PrescriptionPdfStyle.addRow}>
+                    <Text style={PrescriptionPdfStyle.label}>I.P.D:</Text>
+                    <Text style={PrescriptionPdfStyle.value}>
+                      {prescription?.ipd || "-"}
                     </Text>
                   </View>
-                  <View style={PrescriptionPdfStyle.eyeCellLast}>
-                    <Text style={PrescriptionPdfStyle.eyeCellData}>
-                      {prescription?.leftEye?.bcva || "-"}
+                  <View style={PrescriptionPdfStyle.addRow}>
+                    <Text style={PrescriptionPdfStyle.label}>MM:</Text>
+                    <Text style={PrescriptionPdfStyle.value}>
+                      {prescription?.mm || "-"}
                     </Text>
                   </View>
                 </View>
-              </View>
-              <View style={PrescriptionPdfStyle.eyeExaminationExtraRow}>
-                <View style={PrescriptionPdfStyle.addRow}>
-                  <Text style={PrescriptionPdfStyle.label}>Add:</Text>
+                <View style={PrescriptionPdfStyle.eyeExaminationExtraRow}>
+                  <Text style={PrescriptionPdfStyle.label}>Advice:</Text>
                   <Text style={PrescriptionPdfStyle.value}>
-                    {prescription?.add || "-"}
+                    {prescription?.advice || "-"}
                   </Text>
                 </View>
-                <View style={PrescriptionPdfStyle.addRow}>
-                  <Text style={PrescriptionPdfStyle.label}>I.P.D:</Text>
-                  <Text style={PrescriptionPdfStyle.value}>
-                    {prescription?.add || "-"}
-                  </Text>
-                </View>
-                <View style={PrescriptionPdfStyle.addRow}>
-                  <Text style={PrescriptionPdfStyle.label}>MM:</Text>
-                  <Text style={PrescriptionPdfStyle.value}>
-                    {prescription?.add || "-"}
-                  </Text>
-                </View>
               </View>
-              <View style={PrescriptionPdfStyle.eyeExaminationExtraRow}>
-                <Text style={PrescriptionPdfStyle.label}>Advice:</Text>
-              </View>
-            </View>
+            )}
           </View>
         </View>
       </View>
