@@ -231,7 +231,7 @@ export const PrescriptionForm = () => {
               control={form.control}
               name="branchId"
               render={({ field }) => (
-                <FormItem>
+                <FormItem hidden>
                   <FormLabel>Branch ID</FormLabel>
                   <FormControl>
                     <Input placeholder="" className="resize-none" {...field} />
@@ -244,7 +244,7 @@ export const PrescriptionForm = () => {
               control={form.control}
               name="doctorId"
               render={({ field }) => (
-                <FormItem>
+                <FormItem hidden>
                   <FormLabel>Doctor ID</FormLabel>
                   <FormControl>
                     <Input placeholder="" className="resize-none" {...field} />
