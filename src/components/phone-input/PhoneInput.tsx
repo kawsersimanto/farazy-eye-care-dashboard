@@ -29,6 +29,33 @@ type PhoneInputProps = Omit<
     onChange?: (value: RPNInput.Value) => void;
   };
 
+/* -------------------------------------------
+   SAFE NORMALIZER (Fixes double 880 issue)
+-------------------------------------------- */
+function normalizePhone(value?: string) {
+  if (!value) return undefined;
+
+  value = value.trim();
+
+  // Already E.164 → keep as-is
+  if (value.startsWith("+")) return value;
+
+  const digits = value.replace(/\D/g, "");
+
+  // Starts with 880 (BD code)
+  if (digits.startsWith("880")) {
+    return `+${digits}`;
+  }
+
+  // Local BD number starting with 0
+  if (digits.startsWith("0")) {
+    return `+880${digits.slice(1)}`;
+  }
+
+  // Otherwise treat as BD number missing leading 0
+  return `+880${digits}`;
+}
+
 const PhoneInput: React.ForwardRefExoticComponent<PhoneInputProps> =
   React.forwardRef<React.ElementRef<typeof RPNInput.default>, PhoneInputProps>(
     ({ className, onChange, value, ...props }, ref) => {
@@ -40,9 +67,10 @@ const PhoneInput: React.ForwardRefExoticComponent<PhoneInputProps> =
           countrySelectComponent={CountrySelect}
           inputComponent={InputComponent}
           smartCaret={false}
-          value={value ? `+${value.replace(/^\+/, "")}` : undefined}
-          onChange={(value) => {
-            const cleaned = value ? value.replace(/^\+/, "") : "";
+          value={normalizePhone(value)}
+          onChange={(val) => {
+            // Remove leading + because your form expects raw digits
+            const cleaned = val ? val.replace(/^\+/, "") : "";
             onChange?.(cleaned as RPNInput.Value);
           }}
           {...props}
@@ -203,15 +231,8 @@ const FlagComponent = ({ country, countryName }: RPNInput.FlagProps) => {
 
 export { PhoneInput };
 
+/* Optional helper if you still need external formatting */
 export const formatPhoneToE164 = (phone: string | undefined) => {
   if (!phone) return undefined;
-
-  if (phone.startsWith("+")) {
-    return phone;
-  }
-
-  const bangladeshCode = "880";
-  const cleanPhone = phone.replace(/\D/g, "");
-
-  return `+${bangladeshCode}${cleanPhone}`;
+  return normalizePhone(phone);
 };
