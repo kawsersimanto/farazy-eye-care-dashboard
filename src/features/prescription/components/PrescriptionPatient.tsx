@@ -21,6 +21,7 @@ import { IUser } from "@/features/user/user.interface";
 import { useDebounce } from "@/hooks/useDebounce";
 import { cn } from "@/lib/utils";
 import { useAppSelector } from "@/redux/hook";
+import { getTodayDateOnly } from "@/utils/date";
 import { Check, Search } from "lucide-react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
@@ -33,11 +34,13 @@ export const PrescriptionPatient = () => {
   const [searchInput, setSearchInput] = useState("");
   const debouncedSearch = useDebounce(searchInput, 500);
   const selectedPatient = useAppSelector((state) => state.prescription.patient);
+  const date = getTodayDateOnly();
 
   const { data } = useGetAppointmentsQuery({
     limit: 50,
     page,
     searchTerm: debouncedSearch,
+    date,
   });
 
   const users = data?.data?.data;

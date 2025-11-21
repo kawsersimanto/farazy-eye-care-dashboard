@@ -8,6 +8,8 @@ const EyeExaminationSchema = z.object({
 });
 
 export const PrescriptionSchema = z.object({
+  branchId: z.string().min(1, "Branch ID is required"),
+  doctorId: z.string().min(1, "Doctor ID is required"),
   name: z.string().min(1, "Name is required"),
   phone: z.string().min(1, "Phone is required"),
   gender: z.string().min(1, "Gender is required"),

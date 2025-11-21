@@ -7,6 +7,8 @@ export const getInitialFormValues = (
   patient?: any
 ): PrescriptionSchemaType => {
   const baseValues: PrescriptionSchemaType = {
+    branchId: "",
+    doctorId: "",
     name: "",
     age: 18,
     gender: "MALE",

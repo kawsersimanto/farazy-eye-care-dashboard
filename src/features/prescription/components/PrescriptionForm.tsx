@@ -1,7 +1,15 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Form } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
@@ -38,21 +46,24 @@ import { RightEyeExamination } from "./RightEyeExamination";
 export const PrescriptionForm = () => {
   const { profile, isLoading: isLoadingProfile } = useAuth();
   const doctor = profile?.doctorProfile;
+  const branch = profile?.branch;
   const id = profile?.id as string;
   const { data: scheduleData, isLoading: isLoadingSchedule } =
     useGetDoctorScheduleByIdQuery(id, {
       skip: !id,
     });
-  const schedules = useMemo(() => scheduleData?.data || [], [scheduleData]);
-
-  const branch = profile?.branch;
   const selectedMedicine = useAppSelector(
     (state) => state.prescription.selectedMedicine
   );
+  const selectedPatientId = selectedMedicine?.id as string;
+  const schedules = useMemo(() => scheduleData?.data || [], [scheduleData]);
+
   const dispatch = useAppDispatch();
   const selectedPatient = useAppSelector((state) => state.prescription.patient);
   const { data: patientData, isLoading: isLoadingPatientData } =
-    useGetUserByIdQuery("6917665d84030b43c9ed6a36");
+    useGetUserByIdQuery(selectedPatientId, {
+      skip: !selectedPatientId,
+    });
   const patient = patientData?.data;
 
   const [showEyeExamination, setShowEyeExamination] = useState(false);
@@ -95,8 +106,20 @@ export const PrescriptionForm = () => {
   }, [selectedMedicine, append, update, fields, dispatch, form]);
 
   useEffect(() => {
-    form.reset(getInitialFormValues(selectedPatient, patient));
+    if (selectedPatient) {
+      form.setValue("name", selectedPatient?.name);
+      form.setValue("phone", selectedPatient?.phone);
+      form.setValue("age", selectedPatient?.age);
+      form.setValue("gender", selectedPatient?.gender);
+    }
   }, [selectedPatient, patient, form]);
+
+  useEffect(() => {
+    if (profile && branch) {
+      form.setValue("doctorId", profile?.id);
+      form.setValue("branchId", branch?.id);
+    }
+  }, [profile, branch, form]);
 
   const formValues = useWatch({
     control: form.control,
@@ -204,6 +227,32 @@ export const PrescriptionForm = () => {
         <Separator className="my-5" />
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
+            <FormField
+              control={form.control}
+              name="branchId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Branch ID</FormLabel>
+                  <FormControl>
+                    <Input placeholder="" className="resize-none" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="doctorId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Doctor ID</FormLabel>
+                  <FormControl>
+                    <Input placeholder="" className="resize-none" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <PatientInfoSection form={form} />
 
             <Separator className="mt-5" />
