@@ -22,7 +22,7 @@ export const getInitialFormValues = (
         id: "",
         name: "",
         timing: "1 + 0 + 1",
-        mealTiming: "খাবার পর",
+        mealTiming: "",
         duration: "",
         instruction: "",
       },

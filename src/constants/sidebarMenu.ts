@@ -6,7 +6,7 @@ import {
   Calendar,
   Clock,
   Contact,
-  FileText,
+  FilePlus,
   Hospital,
   LayoutDashboard,
   Stethoscope,
@@ -121,22 +121,16 @@ export const ALL_MENU_ITEMS: Record<string, SidebarMenuItem> = {
   },
   prescription: {
     title: "Prescription",
-    icon: Calendar,
+    icon: FilePlus,
     url: "#",
     items: [
       { title: "All Prescriptions", url: "/prescription" },
       { title: "Add Prescription", url: "/prescription/create" },
     ],
   },
-  medicalRecords: {
-    title: "Medical Records",
-
-    icon: FileText,
-    url: "/medical-records",
-  },
   doctorSchedule: {
     title: "My Schedule",
-    icon: Calendar,
+    icon: Clock,
     url: "#",
     items: [
       { title: "All Schedules", url: "/schedules" },
@@ -194,7 +188,6 @@ export const ROLE_MENU_CONFIG: Record<IRole, string[]> = {
     "appointments",
     "doctorSchedule",
     "prescription",
-    "medicalRecords",
     "patient",
   ],
   [IRole.PATIENT]: ["dashboard", "medicalRecords"],

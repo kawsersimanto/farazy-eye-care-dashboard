@@ -36,7 +36,7 @@ export const PatientInfoSection = ({ form }: PatientInfoSectionProps) => (
           <FormItem>
             <FormLabel>Name</FormLabel>
             <FormControl>
-              <Input placeholder="ex. MD Abdul Salam" type="text" {...field} />
+              <Input placeholder="" type="text" {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -52,11 +52,7 @@ export const PatientInfoSection = ({ form }: PatientInfoSectionProps) => (
           <FormItem className="flex flex-col items-start">
             <FormLabel>Phone</FormLabel>
             <FormControl className="w-full">
-              <PhoneInput
-                placeholder="ex. 01234133351"
-                {...field}
-                defaultCountry="BD"
-              />
+              <PhoneInput placeholder="" {...field} defaultCountry="BD" />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -79,7 +75,7 @@ export const PatientInfoSection = ({ form }: PatientInfoSectionProps) => (
             >
               <FormControl>
                 <SelectTrigger>
-                  <SelectValue placeholder="Select Gender" />
+                  <SelectValue placeholder="" />
                 </SelectTrigger>
               </FormControl>
               <SelectContent>
@@ -101,7 +97,7 @@ export const PatientInfoSection = ({ form }: PatientInfoSectionProps) => (
           <FormItem>
             <FormLabel>Age</FormLabel>
             <FormControl>
-              <Input placeholder="ex. 18" type="" {...field} />
+              <Input placeholder="" type="" {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
