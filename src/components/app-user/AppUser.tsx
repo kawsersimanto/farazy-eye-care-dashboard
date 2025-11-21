@@ -68,7 +68,7 @@ export const AppUser = () => {
                     className="object-contain"
                   />
                   <AvatarFallback className="rounded-lg bg-primary text-white">
-                    CN
+                    {user?.name?.slice(0, 2)}
                   </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
