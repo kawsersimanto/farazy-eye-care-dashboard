@@ -12,21 +12,27 @@ export const prescriptionApi = baseApi.injectEndpoints({
       query: (id) => `/prescription/${id}`,
       providesTags: ["prescription"],
     }),
-    createPrescription: builder.mutation<IPrescription, Partial<IPrescription>>({
-      query: (body) => ({ url: "/prescription", method: "POST", body }),
-      invalidatesTags: ["prescription"],
-    }),
-    updatePrescription: builder.mutation<IPrescription, Partial<IPrescription> & { id: string }>(
+    createPrescription: builder.mutation<IPrescription, Partial<IPrescription>>(
       {
-        query: ({ id, ...body }) => ({
-          url: `/prescription/${id}`,
-          method: "PUT",
-          body,
-        }),
+        query: (body) => ({ url: "/prescription", method: "POST", body }),
         invalidatesTags: ["prescription"],
       }
     ),
-    deletePrescription: builder.mutation<{ success: boolean; id: string }, string>({
+    updatePrescription: builder.mutation<
+      IPrescription,
+      Partial<IPrescription> & { id: string }
+    >({
+      query: ({ id, ...body }) => ({
+        url: `/prescription/${id}`,
+        method: "PUT",
+        body,
+      }),
+      invalidatesTags: ["prescription"],
+    }),
+    deletePrescription: builder.mutation<
+      { success: boolean; id: string },
+      string
+    >({
       query: (id) => ({ url: `/prescription/${id}`, method: "DELETE" }),
       invalidatesTags: ["prescription"],
     }),

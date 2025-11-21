@@ -1,15 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Form } from "@/components/ui/form";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
@@ -21,11 +13,14 @@ import { useGetDoctorScheduleByIdQuery } from "@/features/schedule/schedule.api"
 import { useGetUserByIdQuery } from "@/features/user/user.api";
 import { IUser } from "@/features/user/user.interface";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
+import { ApiResponse } from "@/types/api";
+import { handleMutationRequest } from "@/utils/handleMutationRequest";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { pdf } from "@react-pdf/renderer";
 import { useEffect, useMemo, useState } from "react";
 import { useFieldArray, useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
+import { useCreatePrescriptionMutation } from "../prescription.api";
 import {
   PrescriptionSchema,
   PrescriptionSchemaType,
@@ -47,6 +42,7 @@ export const PrescriptionForm = () => {
   const { profile, isLoading: isLoadingProfile } = useAuth();
   const doctor = profile?.doctorProfile;
   const branch = profile?.branch;
+  const branchId = branch?.id;
   const id = profile?.id as string;
   const { data: scheduleData, isLoading: isLoadingSchedule } =
     useGetDoctorScheduleByIdQuery(id, {
@@ -65,6 +61,9 @@ export const PrescriptionForm = () => {
       skip: !selectedPatientId,
     });
   const patient = patientData?.data;
+
+  const [createPrescriptionFn, { isLoading: isCreatingPrescription }] =
+    useCreatePrescriptionMutation();
 
   const [showEyeExamination, setShowEyeExamination] = useState(false);
 
@@ -111,15 +110,13 @@ export const PrescriptionForm = () => {
       form.setValue("phone", selectedPatient?.phone);
       form.setValue("age", selectedPatient?.age);
       form.setValue("gender", selectedPatient?.gender);
+
+      form.trigger("name");
+      form.trigger("phone");
+      form.trigger("age");
+      form.trigger("gender");
     }
   }, [selectedPatient, patient, form]);
-
-  useEffect(() => {
-    if (profile && branch) {
-      form.setValue("doctorId", profile?.id);
-      form.setValue("branchId", branch?.id);
-    }
-  }, [profile, branch, form]);
 
   const formValues = useWatch({
     control: form.control,
@@ -174,19 +171,18 @@ export const PrescriptionForm = () => {
     }
   };
 
-  function onSubmit(values: PrescriptionSchemaType) {
-    try {
-      console.log(values);
-      toast(
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(values, null, 2)}</code>
-        </pre>
-      );
-    } catch (error) {
-      console.error("Form submission error", error);
-      toast.error("Failed to submit the form. Please try again.");
-    }
-  }
+  const onSubmit = async (values: PrescriptionSchemaType) => {
+    const payload = {
+      branchId,
+      doctorId: id,
+      ...values,
+    };
+    await handleMutationRequest(createPrescriptionFn, payload, {
+      loadingMessage: "Saving Prescription",
+      successMessage: (res: ApiResponse<string>) => res?.message,
+      onSuccess: () => form.reset(),
+    });
+  };
 
   const handleEyeExaminationChange = (checked: boolean) => {
     setShowEyeExamination(checked);
@@ -227,32 +223,6 @@ export const PrescriptionForm = () => {
         <Separator className="my-5" />
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            <FormField
-              control={form.control}
-              name="branchId"
-              render={({ field }) => (
-                <FormItem hidden>
-                  <FormLabel>Branch ID</FormLabel>
-                  <FormControl>
-                    <Input placeholder="" className="resize-none" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="doctorId"
-              render={({ field }) => (
-                <FormItem hidden>
-                  <FormLabel>Doctor ID</FormLabel>
-                  <FormControl>
-                    <Input placeholder="" className="resize-none" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
             <PatientInfoSection form={form} />
 
             <Separator className="mt-5" />
@@ -290,7 +260,10 @@ export const PrescriptionForm = () => {
             <div className="flex items-center gap-2 absolute bottom-5 right-5">
               <Button
                 disabled={
-                  isLoadingSchedule || isLoadingProfile || isLoadingPatientData
+                  isLoadingSchedule ||
+                  isLoadingProfile ||
+                  isLoadingPatientData ||
+                  isCreatingPrescription
                 }
                 type="submit"
                 className="text-white"
@@ -299,7 +272,23 @@ export const PrescriptionForm = () => {
               </Button>
               <Button
                 disabled={
-                  isLoadingSchedule || isLoadingProfile || isLoadingPatientData
+                  isLoadingSchedule ||
+                  isLoadingProfile ||
+                  isLoadingPatientData ||
+                  isCreatingPrescription
+                }
+                type="button"
+                variant="outline"
+                onClick={() => form.reset()}
+              >
+                Reset
+              </Button>
+              <Button
+                disabled={
+                  isLoadingSchedule ||
+                  isLoadingProfile ||
+                  isLoadingPatientData ||
+                  isCreatingPrescription
                 }
                 type="button"
                 variant="outline"
@@ -309,7 +298,10 @@ export const PrescriptionForm = () => {
               </Button>
               <Button
                 disabled={
-                  isLoadingSchedule || isLoadingProfile || isLoadingPatientData
+                  isLoadingSchedule ||
+                  isLoadingProfile ||
+                  isLoadingPatientData ||
+                  isCreatingPrescription
                 }
                 type="button"
                 variant="outline"

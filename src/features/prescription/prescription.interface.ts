@@ -5,17 +5,19 @@ import { PrescriptionSchemaType } from "./prescription.schema";
 export interface IPrescriptionMedicine {
   name: string;
   timing: string;
-  mealTiming: string;
-  duration: string;
-  instruction: string;
+  mealTiming?: string;
+  duration?: string;
+  instruction?: string;
 }
 
 export interface IPrescription {
+  branchId: string;
+  doctorId: string;
   name: string;
   phone: string;
   gender: string;
   age: number;
-  prescribeDate: string;
+  prescribeDate: Date;
   cc: string;
   oe: string;
   var: string;

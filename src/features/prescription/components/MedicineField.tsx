@@ -48,12 +48,7 @@ export const MedicineField = ({
             <FormItem>
               <FormLabel>Medicine Name</FormLabel>
               <FormControl>
-                <Input
-                  disabled
-                  placeholder="ex. Paracetamol"
-                  type="text"
-                  {...field}
-                />
+                <Input disabled placeholder="" type="text" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -74,7 +69,7 @@ export const MedicineField = ({
               >
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="ex. 1 + 0 + 1" />
+                    <SelectValue placeholder="" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
@@ -104,7 +99,7 @@ export const MedicineField = ({
               >
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="ex. খাবার আগে" />
+                    <SelectValue placeholder="" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
@@ -127,7 +122,7 @@ export const MedicineField = ({
             <FormItem>
               <FormLabel>Duration</FormLabel>
               <FormControl>
-                <Input placeholder="ex. 5 days" type="text" {...field} />
+                <Input placeholder="" type="text" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -142,11 +137,7 @@ export const MedicineField = ({
               <FormItem>
                 <FormLabel>Instruction</FormLabel>
                 <FormControl>
-                  <Input
-                    placeholder="ex. Take 1 tablet twice daily"
-                    type="text"
-                    {...field}
-                  />
+                  <Input placeholder="" type="text" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
