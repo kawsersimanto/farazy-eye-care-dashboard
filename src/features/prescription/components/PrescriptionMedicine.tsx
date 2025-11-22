@@ -35,7 +35,7 @@ export const PrescriptionMedicine = () => {
   return (
     <div className="flex flex-col gap-2">
       <div>
-        <Label className="mb-2">Search Patient</Label>
+        <Label className="mb-2">Search Medicine</Label>
         <InputGroup>
           <InputGroupInput
             placeholder="ex. Renova"
